@@ -1,0 +1,158 @@
+<theme-selector></theme-selector>
+
+<script is:inline>
+  if (!customElements.get("theme-selector")) {
+    customElements.define(
+      "theme-selector",
+      class extends HTMLElement {
+        connectedCallback() {
+          this.innerHTML = `
+            <button
+              aria-label="Cambiar tema del sitio"
+              data-toggle="theme"
+              class="group rounded-full w-12 h-12 inline-flex items-center justify-center overflow-hidden backdrop-blur-md hover:bg-foreground/5 focus:bg-foreground/10"
+            >
+              <span class="sr-only">Cambiar tema</span>
+              <div class="relative h-8 w-8">
+
+                <div data-theme-icon="dark" class="theme-icon">
+                  <span class="material-symbols-rounded material-symbols-lg material-symbols-weight-300">dark_mode</span>
+                  <input type="hidden" name="theme" value="dark">
+                </div>
+
+                <div data-theme-icon="light" class="theme-icon">
+                  <span class="material-symbols-rounded material-symbols-lg material-symbols-weight-300">light_mode</span>
+                  <input type="hidden" name="theme" value="light">
+                </div>
+
+                <div data-theme-icon="auto" class="theme-icon">
+                  <span class="material-symbols-rounded material-symbols-lg material-symbols-weight-300">computer</span>
+                  <input type="hidden" name="theme" value="auto">
+                </div>
+
+              </div>
+            </button>
+
+            <style>
+              .theme-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                inset: 0;
+                transform-origin: 50% 100px;
+                transition: transform 0.7s, top 0.7s;
+              }
+              .rotate-0 {
+                transform: rotate(0deg);
+              }
+              .rotate-90 {
+                transform: rotate(90deg);
+              }
+              .-rotate-90 {
+                transform: rotate(-90deg);
+              }
+              .top-0 {
+                top: 0;
+              }
+              .top-24 {
+                top: 6rem;
+              }
+            </style>
+          `;
+
+          const button = this.querySelector("button");
+
+          // Ciclo entre los tres modos
+          button.onclick = () => {
+            const current = theme.getTheme();
+            const next = current === "dark" ? "light" : current === "light" ? "auto" : "dark";
+
+            if (next === "auto") {
+              theme.setTheme("auto");
+              // Forzar actualización visual
+              document.dispatchEvent(new CustomEvent("theme-changed", { detail: { theme: "auto" } }));
+            } else {
+              theme.setTheme(next);
+            }
+          };
+
+          // Inicialización visual
+          this.updateVisual(theme.getTheme());
+
+          // Evento personalizado cuando cambia el tema
+          document.addEventListener("theme-changed", (event) => {
+            this.updateVisual(event.detail.theme);
+          });
+
+          // Cambios del SO cuando está en modo auto
+          window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+            if (theme.getTheme() === "auto") {
+              this.updateVisual("auto");
+            }
+          });
+        }
+
+        updateVisual(themeValue = "auto") {
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const effective = themeValue === "auto" ? (prefersDark ? "dark" : "light") : themeValue;
+
+          // Aplica la clase .dark según el modo efectivo
+          document.documentElement.classList.toggle("dark", effective === "dark");
+
+          // Animación de íconos
+          const icons = this.querySelectorAll(".theme-icon");
+          icons.forEach((icon) => {
+            icon.classList.remove("rotate-0", "rotate-90", "-rotate-90", "top-0", "top-24");
+          });
+
+          if (effective === "dark") {
+            this.querySelector('[data-theme-icon="dark"]')?.classList.add("rotate-0");
+            this.querySelector('[data-theme-icon="light"]')?.classList.add("-rotate-90");
+            this.querySelector('[data-theme-icon="auto"]')?.classList.add("top-24");
+          } else if (effective === "light") {
+            this.querySelector('[data-theme-icon="dark"]')?.classList.add("rotate-90");
+            this.querySelector('[data-theme-icon="light"]')?.classList.add("rotate-0");
+            this.querySelector('[data-theme-icon="auto"]')?.classList.add("top-24");
+          }
+
+          if (themeValue === "auto") {
+            this.querySelector('[data-theme-icon="auto"]')?.classList.add("top-0");
+          } else {
+            this.querySelector('[data-theme-icon="auto"]')?.classList.add("top-24");
+          }
+        }
+      }
+    );
+  }
+</script>
+
+<!-- <script is:inline>
+  if (!customElements.get("theme-selector")) {
+    customElements.define(
+      "theme-selector",
+      class extends HTMLElement {
+        connectedCallback() {
+          this.innerHTML = `
+            <select>
+              <option value="auto">Auto</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          `;
+          this.querySelector("select").onchange = (event) => theme.setTheme(event.target.value);
+          this.setAttribute("aria-label", "Select Theme");
+          this.updateSelectedTheme();
+
+          document.addEventListener("theme-changed", (event) => {
+            this.updateSelectedTheme(event.detail.theme);
+          });
+        }
+
+        updateSelectedTheme(newTheme = theme.getTheme()) {
+          this.querySelector("select").value = newTheme;
+        }
+      }
+    );
+  }
+</script> -->

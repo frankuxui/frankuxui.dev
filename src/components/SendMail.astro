@@ -1,0 +1,86 @@
+---
+import { isInputError } from "astro:actions";
+import { actions } from "astro:actions";
+
+const result = Astro.getActionResult(actions.send);
+
+let message = "Enviando mensaje...";
+if (result?.error) {
+  if (isInputError(result.error)) {
+    message = "Por favor, completa todos los campos correctamente.";
+  } else {
+    message = "Ocurrió un error al enviar el mensaje. Inténtalo de nuevo más tarde.";
+  }
+} else if (result?.data) {
+  message = "Mensaje enviado exitosamente.";
+}
+
+if (result?.data) {
+  console.log("Mensaje enviado exitosamente:", result.data);
+}
+const inputErrors = isInputError(result?.error) ? result.error.fields : {};
+---
+
+<form action={actions.send} method="post" class="relative" id="fmhx438f934xj43dd__">
+  <div class="grid gap-6">
+    <div class="grid gap-4">
+      <label html-for="name" class="font-medium text-lg">Nombre</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Nombre"
+        class="h-20 px-6 rounded-lg text-base font-roboto-mono placeholder:text-sm placeholder:font-normal font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
+        required
+        aria-describedby={inputErrors.name ? "name-error" : undefined}
+      />
+    </div>
+    <div class="grid gap-4">
+      <label html-for="email" class="font-medium text-lg">Correo</label>
+      <input
+        type="text"
+        id="email"
+        name="email"
+        placeholder="Correo electrónico"
+        class="h-20 px-6 rounded-lg text-base font-roboto-mono placeholder:text-sm placeholder:font-normal font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
+        required
+        aria-describedby={inputErrors.email ? "email-error" : undefined}
+      />
+    </div>
+    <div class="grid gap-4">
+      <label html-for="message" class="font-medium text-lg">Mensaje</label>
+      <textarea
+        id="message"
+        name="message"
+        placeholder="Deja tu mensaje"
+        rows={4}
+        cols={30}
+        class="resize-none px-6 py-4 rounded-lg text-base font-roboto-mono placeholder:text-sm placeholder:font-normal font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
+        required></textarea>
+    </div>
+    <div class="grid gap-3">
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center rounded-full uppercase font-roboto-mono font-medium border-2 border-transparent cursor-pointer disabled:pointer-events-none motion-safe:transition-colors motion-safe:duration-500 bg-primary text-primary-foreground hover:bg-primary-hover h-16 px-8 sm:px-10 text-sm sm:text-base"
+      >
+        Envíame un mensaje
+      </button>
+    </div>
+    {result ? <div class={`text-base font-medium ${result.error ? "text-red-500" : "text-green-500"}`}>{message}</div> : null}
+  </div>
+</form>
+
+<script>
+  const form = document.getElementById("fmhx438f934xj43dd__") as HTMLFormElement;
+  const button = form.querySelector("button[type='submit']") as HTMLButtonElement;
+  form.addEventListener("submit", (event) => {
+    button.disabled = true;
+    button.classList.add("cursor-not-allowed", "opacity-50");
+    button.textContent = "Enviando mensaje...";
+    setTimeout(() => {
+      button.disabled = false;
+      button.classList.remove("cursor-not-allowed", "opacity-50");
+      button.textContent = "Envíame un mensaje";
+    }, 3000); // Rehabilita el botón después de 3 segundos
+  });
+</script>

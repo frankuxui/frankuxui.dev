@@ -1,0 +1,120 @@
+<button
+  aria-label="Switch theme"
+  data-toggle="theme"
+  class="group rounded-full w-12 h-12 inline-flex items-center justify-center overflow-hidden backdrop-blur-md hover:bg-foreground/5 focus:bg-foreground/10"
+>
+  <span class="sr-only">Switch theme</span>
+  <div class="relative h-8 w-8">
+    <div data-theme-icon="dark" class="theme-icon">
+      <span class="material-symbols-rounded material-symbols-lg material-symbols-weight-300">dark_mode</span>
+    </div>
+    <div data-theme-icon="light" class="theme-icon">
+      <span class="material-symbols-rounded material-symbols-lg material-symbols-weight-300">light_mode</span>
+    </div>
+    <div data-theme-icon="system" class="theme-icon">
+      <span class="material-symbols-rounded material-symbols-lg material-symbols-weight-300">computer</span>
+    </div>
+  </div>
+</button>
+
+<style>
+  .theme-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 100px;
+    transition:
+      transform 0.7s,
+      top 0.7s;
+  }
+  .rotate-0 {
+    transform: rotate(0deg);
+  }
+  .rotate-90 {
+    transform: rotate(90deg);
+  }
+  .-rotate-90 {
+    transform: rotate(-90deg);
+  }
+  .top-0 {
+    top: 0;
+  }
+  .top-24 {
+    top: 6rem;
+  }
+</style>
+
+<script>
+  type ThemeType = "dark" | "light" | "system";
+
+  function initTheme() {
+    const toggleBtn = document.querySelector('[data-toggle="theme"]') as HTMLButtonElement;
+
+    const darkIcon = toggleBtn.querySelector('[data-theme-icon="dark"]') as HTMLElement;
+    const lightIcon = toggleBtn.querySelector('[data-theme-icon="light"]') as HTMLElement;
+    const systemIcon = toggleBtn.querySelector('[data-theme-icon="system"]') as HTMLElement;
+
+    const icons = { dark: darkIcon, light: lightIcon, system: systemIcon };
+
+    const theme: {
+      getTheme: () => ThemeType;
+      setTheme: (t: ThemeType) => void;
+    } = window.theme || {
+      getTheme: () => "system",
+      setTheme: (t) => {
+        document.documentElement.dataset.theme = t;
+        document.documentElement.classList.toggle("dark", t === "dark");
+      },
+    };
+
+    const clearClasses = () => {
+      Object.values(icons).forEach((icon) => {
+        icon.classList.remove("rotate-0", "rotate-90", "-rotate-90", "top-0", "top-24");
+      });
+    };
+
+    const applyIconState = (mode: ThemeType) => {
+      clearClasses();
+
+      if (mode === "dark") {
+        icons.dark.classList.add("rotate-0");
+        icons.light.classList.add("-rotate-90");
+        icons.system.classList.add("top-24");
+      } else if (mode === "light") {
+        icons.dark.classList.add("rotate-90");
+        icons.light.classList.add("rotate-0");
+        icons.system.classList.add("top-24");
+      } else {
+        icons.dark.classList.add("rotate-90");
+        icons.light.classList.add("-rotate-90");
+        icons.system.classList.add("top-0");
+      }
+    };
+
+    const cycleTheme = () => {
+      const current = theme.getTheme();
+      const next: ThemeType = current === "dark" ? "light" : current === "light" ? "system" : "dark";
+
+      theme.setTheme(next);
+      applyIconState(next);
+
+      document.dispatchEvent(new CustomEvent("theme-changed", { detail: { theme: next } }));
+    };
+
+    toggleBtn.addEventListener("click", cycleTheme);
+
+    document.addEventListener("astro:page-load", () => {
+      applyIconState(theme.getTheme());
+    });
+
+    // Init on first load
+    applyIconState(theme.getTheme());
+  }
+
+  document.addEventListener("DOMContentLoaded", initTheme);
+  document.addEventListener("astro:after-swap", initTheme);
+  document.addEventListener("astro:before-swap", initTheme);
+  document.addEventListener("astro:page-load", initTheme);
+</script>

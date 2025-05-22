@@ -1,0 +1,26 @@
+---
+import type { Post } from "@/types/Post";
+
+const { post } = Astro.props as { post: Post };
+---
+
+<article>
+  <a class="w-full flex flex-col gap-4 border rounded-2xl p-6 border-border" href={`/blog/${post?.slug}`} transition:name={`post-${post?.slug}`}>
+    {
+      post?.cover?.src ? (
+        <picture>
+          <source src-set={post?.cover?.src} type="image/webp" media="(min-width: 1280px)" />
+          <source src-set={post?.cover?.src} type="image/webp" media="(min-width: 768px)" />
+          <img src={post?.cover?.src} alt={post?.cover?.alt} class="rounded-lg w-full min-w-0 max-w-full object-cover min-h-70" />
+        </picture>
+      ) : (
+        <div class="rounded-lg w-full min-w-0 min-h-70 max-w-full bg-foreground/6" />
+      )
+    }
+    <div class="flex flex-col items-start gap-1">
+      <p class="text-base text-foreground/70">Creado el {post?.date}</p>
+      <h2 class="text-2xl font-medium">{post?.title}</h2>
+    </div>
+    <p class="text-base">{post?.subtitle}</p>
+  </a>
+</article>

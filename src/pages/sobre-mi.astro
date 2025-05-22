@@ -1,0 +1,104 @@
+---
+import Root from "@/layouts/Root.astro";
+---
+
+<Root transition:name="age-about" transition:animate="fade">
+  <div class="w-full mx-auto max-w-7xl px-10">
+    <header class="w-full grid gap-6 pt-10 sm:pt-20">
+      <h1
+        class="font-medium text-xl motion-safe:animate-text-reveal"
+        style={{
+          "--hero-text-reveal-opacity-step-0": 1,
+          "--hero-text-reveal-x-step-0": 0,
+          "--hero-text-reveal-y-step-0": "0px",
+          "--hero-text-reveal-opacity-step-1": 1,
+          "--hero-text-reveal-x-step-1": 0,
+          "--hero-text-reveal-y-step-1": "0px",
+          "--hero-text-reveal-opacity-step-2": 1,
+          "--hero-text-reveal-x-step-2": 0,
+          "--hero-text-reveal-y-step-2": "0px",
+          "--hero-text-reveal-opacity-step-3": 1,
+          "--hero-text-reveal-x-step-3": 0,
+          "--hero-text-reveal-y-step-3": "0px",
+        }}
+      >
+        Sobre mí
+      </h1>
+      <p
+        class="text-left w-full leading-10 text-3xl sm:leading-12 sm:text-4xl font-normal motion-safe:animate-text-reveal"
+        style={{
+          "--hero-text-reveal-opacity-step-0": 0,
+          "--hero-text-reveal-x-step-0": 0,
+          "--hero-text-reveal-y-step-0": "25px",
+          "--hero-text-reveal-opacity-step-1": 1,
+          "--hero-text-reveal-x-step-1": 0,
+          "--hero-text-reveal-y-step-1": "0px",
+          "--hero-text-reveal-opacity-step-2": 1,
+          "--hero-text-reveal-x-step-2": 0,
+          "--hero-text-reveal-y-step-2": "0px",
+          "--hero-text-reveal-opacity-step-3": 1,
+          "--hero-text-reveal-x-step-3": 0,
+          "--hero-text-reveal-y-step-3": "0px",
+        }}
+      >
+        Hola, soy Frank Esteban.
+      </p>
+      <p
+        class="text-xl motion-safe:animate-text-reveal"
+        style={{
+          "--hero-text-reveal-opacity-step-0": 0,
+          "--hero-text-reveal-x-step-0": 0,
+          "--hero-text-reveal-y-step-0": "25px",
+          "--hero-text-reveal-opacity-step-1": 0,
+          "--hero-text-reveal-x-step-1": 0,
+          "--hero-text-reveal-y-step-1": "25px",
+          "--hero-text-reveal-opacity-step-2": 1,
+          "--hero-text-reveal-x-step-2": 0,
+          "--hero-text-reveal-y-step-2": "0px",
+          "--hero-text-reveal-opacity-step-3": 1,
+          "--hero-text-reveal-x-step-3": 0,
+          "--hero-text-reveal-y-step-3": "0px",
+        }}
+      >
+        Desarrollador front-end y diseñador UX/UI con más de 8 años de experiencia, dedicado a crear soluciones digitales innovadoras y efectivas que mejoren la experiencia del
+        usuario.
+      </p>
+    </header>
+  </div>
+
+  <section class="w-full py-20">
+    <div class="w-full mx-auto px-10 sm:px-14 md:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
+      <div class="flex items-start justify-between flex-col lg:flex-row w-full gap-10">
+        <div class="flex flex-col gap-10 w-full lg:max-w-md xl:max-w-md 2xl:max-w-lg flex-none">
+          <section class="w-full grid gap-10">
+            <picture class="w-full">
+              <source src-set="./images/imagen_de_frankuxui.webp" type="image/webp" />
+              <img src="./images/imagen_de_frankuxui.webp" alt="Contacto con Frankuxui" class="w-full max-w-full object-contain rounded-2xl sm:animate-hero-reveal" />
+            </picture>
+          </section>
+        </div>
+        <article class="w-full gap-6 lg:flex-1 lg:sticky lg:top-40">
+          <h2>Mis skills</h2>
+          {
+            /* <p class='text-xl'>Me gusta ir de pesca, echar unas buenas patadas al balón y mandarme a cualquier deporte que implique mover el cuerpo &#40;y después quejarme del cansancio 😂&#41;. Pero lo mejor de todo es pasarla bien con amigos, familia o mi pareja. Esos momentos que te recargan las pilas y te hacen decir: bueno, un día más… ¡vamos de nuevo!</p> */
+          }
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="w-full py-20">
+    <div class="w-full mx-auto px-10 sm:px-14 md:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
+      <header class="flex flex-col gap-4 text-left w-full max-w-5xl">
+        <h2 class="text-left w-full leading-10 text-3xl sm:leading-12 sm:text-4xl font-normal">Skills serios... y no tan serios</h2>
+        <p class="leading-9 text-2xl w-full">
+          Desde programar interfaces hasta preparar la mejor parrillada, estos son mis superpoderes. Algunos vienen del teclado, otros del asador, pero todos los disfruto al
+          máximo.
+        </p>
+      </header>
+      <section class="mt-10">
+        <!-- <Skill skills={ skills } /> -->
+      </section>
+    </div>
+  </section>
+</Root>

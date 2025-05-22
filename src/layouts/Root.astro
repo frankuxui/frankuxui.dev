@@ -1,0 +1,203 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import { siteConfig } from "@/config";
+import { ClientRouter } from "astro:transitions";
+import Footer from "@/views/Footer.astro";
+import MenuMobile from "@/components/MenuMobile.astro";
+import ThemeManager from "@/components/ThemeManager.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { title = siteConfig.title, description = siteConfig.description, image } = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head class="motion-safe:scroll-smooth">
+    <BaseHead title={title} description={description} image={image} />
+    <ThemeManager defaultTheme="light" />
+    <ClientRouter fallback="animate" />
+  </head>
+  <body>
+    <Header />
+    <main class="mt-24">
+      <slot />
+    </main>
+    <Footer />
+    <div id="portal" class="z-[999]">
+      <MenuMobile />
+    </div>
+  </body>
+</html>
+
+<style>
+  :root {
+    --animate-slide-in-top: slide-in-top 0.25s ease-out forwards;
+    --animate-slide-out-top: slide-out-top 0.25s ease-in forwards;
+    --animate-slide-in-bottom: slide-in-bottom 0.25s ease-out forwards;
+    --animate-slide-out-bottom: slide-out-bottom 0.25s ease-in forwards;
+    --animate-slide-in-left: slide-in-left 0.25s ease-out forwards;
+    --animate-slide-out-left: slide-out-left 0.25s ease-in forwards;
+    --animate-slide-in-right: slide-in-right 0.25s ease-out forwards;
+    --animate-slide-out-right: slide-out-right 0.25s ease-in forwards;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+  }
+
+  ::view-transition-old(root) {
+    animation-name: fade-out, slide-up;
+  }
+
+  ::view-transition-new(root) {
+    animation-name: fade-in, slide-down;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50px);
+    }
+  }
+
+  @keyframes slide-down {
+    from {
+      transform: translateY(50px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-in-top {
+    animation: var(--animate-slide-in-top);
+  }
+  .animate-slide-out-top {
+    animation: var(--animate-slide-out-top);
+  }
+  .animate-slide-in-bottom {
+    animation: var(--animate-slide-in-bottom);
+  }
+  .animate-slide-out-bottom {
+    animation: var(--animate-slide-out-bottom);
+  }
+  .animate-slide-in-left {
+    animation: var(--animate-slide-in-left);
+  }
+  .animate-slide-out-left {
+    animation: var(--animate-slide-out-left);
+  }
+  .animate-slide-in-right {
+    animation: var(--animate-slide-in-right);
+  }
+  .animate-slide-out-right {
+    animation: var(--animate-slide-out-right);
+  }
+
+  /** Drawer **/
+
+  /* Bottom */
+  @keyframes slide-in-bottom {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-out-bottom {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+
+  /* Top */
+  @keyframes slide-in-top {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-out-top {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-100%);
+    }
+  }
+
+  /* Left */
+  @keyframes slide-in-left {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-out-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  /* Right */
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slide-out-right {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+</style>

@@ -1,0 +1,111 @@
+---
+import Root from "@/layouts/Root.astro";
+import PostCard from "@/components/PostCard.astro";
+import { getPosts, getPostTags } from "@/utils/getPosts";
+import type { Post } from "@/types/Post";
+import PostTag from "@/components/PostTag.astro";
+
+export const prerender = false;
+
+const url = new URL(Astro.request.url);
+const searchParams = new URLSearchParams(url.search);
+const queryRaw = searchParams.get("q") || "all";
+const query = queryRaw.toLowerCase();
+
+const arrayFromQuery = query.split(" ").filter(Boolean);
+
+const matchesPosts = await getPosts();
+const tags = await getPostTags();
+
+const filterPosts = matchesPosts.filter((post: Post) => {
+  const tagsMatch = post?.tags?.some((tag) => {
+    const tagSlug = tag.toLowerCase();
+    return arrayFromQuery.includes(tagSlug);
+  });
+  return tagsMatch;
+});
+
+const posts = filterPosts.length > 0 ? filterPosts : matchesPosts;
+---
+
+<Root transition:name="page-blog" transition:animate="fade">
+  <div class="w-full pt-10 sm:pt-20">
+    <section class="w-full max-w-7xl mx-auto px-10" id="blog">
+      <header class="w-full grid gap-6">
+        <h1
+          class="font-medium text-xl motion-safe:animate-text-reveal"
+          style={{
+            "--hero-text-reveal-opacity-step-0": 1,
+            "--hero-text-reveal-x-step-0": 0,
+            "--hero-text-reveal-y-step-0": "0px",
+            "--hero-text-reveal-opacity-step-1": 1,
+            "--hero-text-reveal-x-step-1": 0,
+            "--hero-text-reveal-y-step-1": "0px",
+            "--hero-text-reveal-opacity-step-2": 1,
+            "--hero-text-reveal-x-step-2": 0,
+            "--hero-text-reveal-y-step-2": "0px",
+            "--hero-text-reveal-opacity-step-3": 1,
+            "--hero-text-reveal-x-step-3": 0,
+            "--hero-text-reveal-y-step-3": "0px",
+          }}
+        >
+          Blog
+        </h1>
+        <p
+          class="text-left w-full leading-10 text-3xl sm:leading-12 sm:text-4xl font-normal motion-safe:animate-text-reveal"
+          style={{
+            "--hero-text-reveal-opacity-step-0": 0,
+            "--hero-text-reveal-x-step-0": 0,
+            "--hero-text-reveal-y-step-0": "25px",
+            "--hero-text-reveal-opacity-step-1": 1,
+            "--hero-text-reveal-x-step-1": 0,
+            "--hero-text-reveal-y-step-1": "0px",
+            "--hero-text-reveal-opacity-step-2": 1,
+            "--hero-text-reveal-x-step-2": 0,
+            "--hero-text-reveal-y-step-2": "0px",
+            "--hero-text-reveal-opacity-step-3": 1,
+            "--hero-text-reveal-x-step-3": 0,
+            "--hero-text-reveal-y-step-3": "0px",
+          }}
+        >
+          Mis artículos
+        </p>
+        <p
+          class="text-xl motion-safe:animate-text-reveal"
+          style={{
+            "--hero-text-reveal-opacity-step-0": 0,
+            "--hero-text-reveal-x-step-0": 0,
+            "--hero-text-reveal-y-step-0": "25px",
+            "--hero-text-reveal-opacity-step-1": 0,
+            "--hero-text-reveal-x-step-1": 0,
+            "--hero-text-reveal-y-step-1": "25px",
+            "--hero-text-reveal-opacity-step-2": 1,
+            "--hero-text-reveal-x-step-2": 0,
+            "--hero-text-reveal-y-step-2": "0px",
+            "--hero-text-reveal-opacity-step-3": 1,
+            "--hero-text-reveal-x-step-3": 0,
+            "--hero-text-reveal-y-step-3": "0px",
+          }}
+        >
+          Dalle un vistazo a mis últimos artículos y reflexiones sobre desarrollo web, diseño y tecnología. Comparto lo que voy aprendiendo en el camino, con la idea de que también
+          pueda servirte a ti.
+        </p>
+      </header>
+      <section class="py-10">
+        {
+          tags.length > 0 && (
+            <div class="flex flex-wrap gap-2 mb-4">
+              {tags.map(({ name, slug }) => (
+                <PostTag name={name as string} slug={slug as string} />
+              ))}
+            </div>
+          )
+        }
+      </section>
+
+      <section class="grid sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {posts.map((post: Post) => <PostCard post={post} />)}
+      </section>
+    </section>
+  </div>
+</Root>

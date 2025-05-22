@@ -1,0 +1,78 @@
+---
+interface Props {
+  name: string;
+  slug: string;
+}
+
+const { name, slug } = Astro.props;
+---
+
+<label
+  class="post-category relative inline-flex items-center justify-center cursor-pointer font-medium h-12 px-6 rounded-full motion-safe:transition-colors bg-foreground/3 hover:bg-foreground/5"
+  data-slug={slug}
+>
+  <input type="checkbox" class="sr-only category-checkbox" value={slug} />
+  <span class="pointer-events-none">{name}</span>
+</label>
+
+<script>
+  import { navigate } from "astro:transitions/client";
+  const updateStyles = (label: HTMLLabelElement, checked: boolean) => {
+    if (checked) {
+      label.classList.add("bg-foreground", "text-background");
+      label.classList.remove("bg-foreground/3", "hover:bg-foreground/5");
+    } else {
+      label.classList.remove("bg-foreground", "text-background");
+      label.classList.add("bg-foreground/3", "hover:bg-foreground/5");
+    }
+  };
+
+  const initCategoryFilter = () => {
+    const labels = document.querySelectorAll<HTMLLabelElement>(".post-category");
+
+    labels.forEach((label) => {
+      const input = label.querySelector<HTMLInputElement>("input.category-checkbox");
+      const slug = label.dataset.slug;
+      if (!input || !slug) return;
+
+      const params = new URLSearchParams(window.location.search);
+      const selectedSlugs = (params.get("q") || "").split(" ").filter(Boolean);
+      const isChecked = selectedSlugs.includes(slug);
+
+      input.checked = isChecked;
+      label.dataset.state = isChecked ? "checked" : "unchecked";
+      updateStyles(label, isChecked);
+
+      input.addEventListener("change", (e) => {
+        const target = e.target as HTMLInputElement;
+        const checked = target.checked;
+        // window.location.href = `?q=${checked ? selectedSlugs.concat(slug).join(" ") : selectedSlugs.filter((s) => s !== slug).join(" ")}`;
+
+        const currentParams = new URLSearchParams(window.location.search);
+        let current = (currentParams.get("q") || "").split(" ").filter(Boolean);
+
+        current = checked ? Array.from(new Set([...current, slug])) : current.filter((s) => s !== slug);
+
+        if (current.length > 0) {
+          currentParams.set("q", current.join(" "));
+          history.pushState({}, "", `${window.location.pathname}?${currentParams.toString()}`);
+          navigate(`${window.location.pathname}?${currentParams.toString()}`, { history: "replace" });
+        } else {
+          currentParams.delete("q");
+          history.pushState({}, "", window.location.pathname);
+          navigate(window.location.pathname, { history: "push" });
+        }
+
+        const newUrl = `${window.location.pathname}?${currentParams.toString()}`;
+        history.pushState({}, "", newUrl);
+
+        label.dataset.state = checked ? "checked" : "unchecked";
+        updateStyles(label, checked);
+      });
+    });
+  };
+
+  document.addEventListener("DOMContentLoaded", initCategoryFilter);
+  document.addEventListener("astro:page-load", initCategoryFilter);
+  document.addEventListener("astro:after-swap", initCategoryFilter);
+</script>

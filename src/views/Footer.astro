@@ -1,0 +1,131 @@
+---
+import Logo from "@/components/Logo.astro";
+import SendMail from "@/components/SendMail.astro";
+import { siteConfig } from "@/config";
+
+const today = new Date();
+---
+
+<footer class="w-full py-36 border-t border-border">
+  <div class="w-full max-w-7xl mx-auto px-10">
+    <div class="grid">
+      <section class="grid lg:grid-cols-12 items-start gap-10 2xl:gap-20" aria-labelledby="footer-info">
+        <article class="grid gap-12 w-full col-span-6" aria-labelledby="footer-info">
+          <header>
+            <Logo />
+            <p id="footer-info" class="mt-10 w-full max-w-md font-medium text-xl">Apasionado por el desarrollo web y el diseño de interfaces intuitivas.</p>
+            <p class="mt-4 text-lg">Cada error es un paso. Cada línea, un aprendizaje.</p>
+          </header>
+          <ul class="flex items-center justify-start gap-6 2xl:gap-12" aria-label="Redes sociales">
+            <li>
+              <a href="https://github.com/frankuxui" aria-label="Ir al perfil de GitHub" target="_blank" rel="noopener noreferrer">
+                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"
+                  ><path
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width={1.5}
+                    d="M6.517 17.113c.395.578 1.592 1.81 3.225 2.12M9.864 22C8.836 21.83 2 19.606 2 12.093C2 5.063 8.002 2 12 2c4 0 10 3.063 10 10.093c0 7.513-6.836 9.738-7.864 9.907c0 0-.21-3.417-.087-4.003c.122-.586-.294-1.528-.294-1.528c.971-.364 2.45-.884 2.945-2.282c.385-1.084.627-2.658-.45-4.138c0 0 .282-2.39-.25-2.484c-.533-.092-2.1.947-2.1.947c-.457-.13-1.476-.377-1.898-.333c-.423-.044-1.445.203-1.902.333c0 0-1.568-1.04-2.1-.947s-.25 2.484-.25 2.484c-1.077 1.48-.835 3.054-.45 4.138c.496 1.398 1.974 1.918 2.945 2.282c0 0-.416.942-.294 1.528S9.864 22 9.864 22"
+                    color="currentColor"></path></svg
+                >
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/frankuxui/" aria-label="Ir al perfil de LinkedIn" target="_blank" rel="noopener noreferrer">
+                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"
+                  ><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width={1.5} color="currentColor"
+                    ><path d="M7 10v7m4-4v4m0-4a3 3 0 1 1 6 0v4m-6-4v-3M7.008 7h-.009"></path><path
+                      d="M2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12"
+                    ></path></g
+                  ></svg
+                >
+              </a>
+            </li>
+            <li>
+              <a href="https://codepen.io/frankuxui" aria-label="Ir al perfil de Codepen" target="_blank" rel="noopener noreferrer">
+                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 16 16"
+                  ><path
+                    fill="currentColor"
+                    d="m14.777 5.751l-7-4.667a.5.5 0 0 0-.555 0l-7 4.667a.5.5 0 0 0-.223.416v4.667c0 .167.084.323.223.416l7 4.667a.5.5 0 0 0 .554 0l7-4.667a.5.5 0 0 0 .223-.416V6.167a.5.5 0 0 0-.223-.416zM7.5 10.232L4.901 8.5L7.5 6.768L10.099 8.5zM8 5.899V2.434l5.599 3.732L11 7.898l-3-2zm-1 0l-3 2l-2.599-1.732L7 2.435V5.9zM3.099 8.5L1 9.899V7.101zM4 9.101l3 2v3.465l-5.599-3.732zm4 2l3-2l2.599 1.732L8 14.565V11.1zM11.901 8.5L14 7.101v2.798z"
+                  ></path></svg
+                >
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/frankuxui/" aria-label="Ir al perfil de Instagram" target="_blank" rel="noopener noreferrer">
+                <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"
+                  ><g fill="none" stroke="currentColor" stroke-width="1.5"
+                    ><path stroke-linecap="round" stroke-linejoin="round" d="M12 16a4 4 0 1 0 0-8a4 4 0 0 0 0 8"></path><path
+                      d="M3 16V8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5Z"></path><path stroke-linecap="round" stroke-linejoin="round" d="m17.5 6.51l.01-.011"
+                    ></path></g
+                  ></svg
+                >
+              </a>
+            </li>
+          </ul>
+          <section class="w-full">
+            <address class="flex flex-col gap-4 not-italic text-base text-foreground/70">
+              <span>📍 &nbsp; Salou, Tarragona, España</span>
+              <span> ✉️ &nbsp; <a href="mailto:fisdray@gmail.com" class="hover:text-foreground">fisdray@gmail.com</a> </span>
+              <span> 📞 &nbsp; <a href="tel:+34641932611" class="hover:text-foreground">+34 641 93 26 11</a> </span>
+            </address>
+          </section>
+          <article class="w-full flex items-start gap-10" aria-labelledby="navegacion-footer">
+            <nav class="w-full grid gap-10" aria-labelledby="navegacion-footer">
+              <h2 id="navegacion-footer" class="text-lg font-semibold">Mapa del sitio</h2>
+              <ul class="flex flex-col gap-2" aria-label="Mapa del sitio">
+                <li>
+                  <a href="/" class="text-lg text-foreground/70 hover:text-foreground">Inicio</a>
+                </li>
+                <li>
+                  <a href="/blog" class="text-lg text-foreground/70 hover:text-foreground">Blog</a>
+                </li>
+                <li>
+                  <a href="/proyectos" class="text-lg text-foreground/70 hover:text-foreground">Proyectos</a>
+                </li>
+                <li>
+                  <a href="/sobre-mi" class="text-lg text-foreground/70 hover:text-foreground">Sobre mi</a>
+                </li>
+                <li>
+                  <a href="/mision" class="text-lg text-foreground/70 hover:text-foreground">Mi misión</a>
+                </li>
+                <li>
+                  <a href="/sitemap.xml" class="text-lg text-foreground/70 hover:text-foreground">Sitemap</a>
+                </li>
+              </ul>
+            </nav>
+            <nav class="w-full grid gap-10">
+              <h6 class="text-lg font-semibold">Contácto</h6>
+              <ul class="flex flex-col gap-2">
+                <li>
+                  <a href="/" class="text-lg text-foreground/70 hover:text-foreground">Página de contácto</a>
+                </li>
+                <li>
+                  <a href="/" class="text-lg text-foreground/70 hover:text-foreground">LinkedIn</a>
+                </li>
+                <li>
+                  <a href="/" class="text-lg text-foreground/70 hover:text-foreground">GitHub</a>
+                </li>
+              </ul>
+            </nav>
+          </article>
+        </article>
+        <section class="grid col-span-6" aria-labelledby="escribeme">
+          <h2 id="escribeme" class="text-lg font-semibold">Escríbeme</h2>
+          <p class="mt-10 text-xl font-medium w-full max-w-md">¿Proyecto en camino o mente volando? ¡Contáctame y hablemos!</p>
+          <div class="mt-10">
+            <SendMail />
+          </div>
+        </section>
+      </section>
+
+      <section class="mt-30 w-full" aria-label="Información legal">
+        <p class="inline-flex items-center gap-2 text-sm sm:text-base">
+          <span class="material-symbols-rounded material-symbols-md"> copyright </span>
+          <span>{new Date().getFullYear()} {siteConfig.alternateName} - Todos los derechos reservados</span>
+        </p>
+      </section>
+    </div>
+  </div>
+</footer>
