@@ -8,10 +8,6 @@ interface Props {
   message?: string;
 }
 
-// const SITE_TITLE = 'Frankuxui'
-// const SITE_URL = 'https://frankuxui.com'
-// const FRANKUXUI_LOGO = 'https://frankuxui.com/images/frankuxui_frontend_developer_ux_ui_designer_logo_redondo.png'
-
 export default function EmailTemplate({ name, email, message }: Props) {
   return (
     <Tailwind
@@ -31,8 +27,8 @@ export default function EmailTemplate({ name, email, message }: Props) {
           <meta name="viewport" content="width=device-width" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
-          <link rel="icon" type="image/png" sizes="16x16" href="https://frankuxui.com/favicon-16x16.png" />
-          <link rel="icon" type="image/png" sizes="32x32" href="https://frankuxui.com/favicon-32x32.png" />
+          <link rel="icon" type="image/png" sizes="16x16" href="https://frankuxui.dev/favicon-16x16.png" />
+          <link rel="icon" type="image/png" sizes="32x32" href="https://frankuxui.dev/favicon-32x32.png" />
 
           <title>{`Mensaje recibido a través del formulario de contacto de ${siteConfig.title}`}</title>
           <Font

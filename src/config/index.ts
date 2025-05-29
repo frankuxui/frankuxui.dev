@@ -15,7 +15,7 @@ export const SITE_DESCRIPTION = 'Explora el portafolio de Frank Esteban Isdray J
 export const KEYWORDS = 'frankuxui, frankuxui portfolio, frankuxui developer, frankuxui designer, frankuxui front-end developer, frankuxui ux/ui designer, frankuxui tarragona, frankuxui españa'
 
 // URL del sitio
-export const SITE_URL = isDev ? 'http://localhost:4312' : 'https://frankuxui.com'
+export const SITE_URL = isDev ? 'http://localhost:4312' : 'https://frankuxui.dev'
 
 // Información de contacto
 export const PHONE = '+34 641932611'
