@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import EmailTemplate from "@/mail/email-template";
 import { render } from "@react-email/render";
 import { z } from "astro:schema";
-import { RESEND_API_KEY } from "astro:env/server";
+import { RESEND_API_KEY, EMAIL_FROM } from "astro:env/server";
 
 const resend = new Resend(RESEND_API_KEY as string);
 
@@ -25,7 +25,7 @@ export const server = {
 
       // send an email
       const { data, error } = await resend.emails.send({
-        from: import.meta.env.EMAIL_FROM,
+        from: EMAIL_FROM as string,
         to: email,
         subject: "Gracias por contactarme",
         text: `Hola ${name}, gracias por contactarme, te responderé lo más pronto posible.`,
