@@ -3,9 +3,72 @@ import Root from "@/layouts/Root.astro";
 ---
 
 <Root transition:name="page-projects" transition:animate="fade">
-  <div class="w-full max-w-7xl mx-auto px-10">
+  <div class="w-full mx-auto max-w-7xl px-10">
     <header class="w-full grid gap-6 pt-10 sm:pt-20">
-      <h1>Proyectos</h1>
+      <h1
+        class="font-medium text-xl motion-safe:animate-text-reveal"
+        style={{
+          "--hero-text-reveal-opacity-step-0": 1,
+          "--hero-text-reveal-x-step-0": 0,
+          "--hero-text-reveal-y-step-0": "0px",
+          "--hero-text-reveal-opacity-step-1": 1,
+          "--hero-text-reveal-x-step-1": 0,
+          "--hero-text-reveal-y-step-1": "0px",
+          "--hero-text-reveal-opacity-step-2": 1,
+          "--hero-text-reveal-x-step-2": 0,
+          "--hero-text-reveal-y-step-2": "0px",
+          "--hero-text-reveal-opacity-step-3": 1,
+          "--hero-text-reveal-x-step-3": 0,
+          "--hero-text-reveal-y-step-3": "0px",
+        }}
+      >
+        Proyectos
+      </h1>
+      <p
+        class="text-left w-full leading-10 text-3xl sm:leading-12 sm:text-4xl font-normal motion-safe:animate-text-reveal"
+        style={{
+          "--hero-text-reveal-opacity-step-0": 0,
+          "--hero-text-reveal-x-step-0": 0,
+          "--hero-text-reveal-y-step-0": "25px",
+          "--hero-text-reveal-opacity-step-1": 1,
+          "--hero-text-reveal-x-step-1": 0,
+          "--hero-text-reveal-y-step-1": "0px",
+          "--hero-text-reveal-opacity-step-2": 1,
+          "--hero-text-reveal-x-step-2": 0,
+          "--hero-text-reveal-y-step-2": "0px",
+          "--hero-text-reveal-opacity-step-3": 1,
+          "--hero-text-reveal-x-step-3": 0,
+          "--hero-text-reveal-y-step-3": "0px",
+        }}
+      >
+        Descubre mis proyectos personales
+      </p>
+      <p
+        class="text-xl motion-safe:animate-text-reveal"
+        style={{
+          "--hero-text-reveal-opacity-step-0": 0,
+          "--hero-text-reveal-x-step-0": 0,
+          "--hero-text-reveal-y-step-0": "25px",
+          "--hero-text-reveal-opacity-step-1": 0,
+          "--hero-text-reveal-x-step-1": 0,
+          "--hero-text-reveal-y-step-1": "25px",
+          "--hero-text-reveal-opacity-step-2": 1,
+          "--hero-text-reveal-x-step-2": 0,
+          "--hero-text-reveal-y-step-2": "0px",
+          "--hero-text-reveal-opacity-step-3": 1,
+          "--hero-text-reveal-x-step-3": 0,
+          "--hero-text-reveal-y-step-3": "0px",
+        }}
+      >
+        Estos trabajos reflejan mi pasión por el diseño innovador y mis habilidades como desarrollador front-end y diseñador UX/UI, destacando soluciones únicas y eficientes.
+      </p>
     </header>
+  </div>
+  <div class="w-full mx-auto max-w-7xl px-10">
+    <section class="py-20">
+      <div class="flex items-center justify-center p-12 sm:p-20 rounded-2xl bg-foreground/5">
+        <p class="sm:text-2xl">Agregando proyectos...</p>
+      </div>
+    </section>
   </div>
 </Root>

@@ -5,7 +5,10 @@ import ThemeToGlleReact from "./ThemeToggleReact";
 const pathname = Astro.url.pathname;
 ---
 
-<header class="fixed top-0 left-0 w-full h-24 flex items-center justify-center z-50 duration-300 border-b border-border bg-background/70 backdrop-blur-2xl">
+<header
+  class="fixed top-0 left-0 w-full h-24 flex items-center justify-center z-50 duration-300 border-b border-border bg-background/70 backdrop-blur-2xl"
+  transition:animate="none"
+>
   <div class="w-full max-w-7xl mx-auto px-10">
     <div class="w-full relative flex items-center">
       <div class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 right-0 -top-20 w-44 h-44 bg-green-500/10 blur-2xl"></div>
