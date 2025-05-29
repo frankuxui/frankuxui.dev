@@ -12,7 +12,7 @@ import vercel from '@astrojs/vercel';
 // https://astro.build/config
 export default defineConfig({
 	output: 'static',
-	site: import.meta.env.SITE_URL || 'https://frankuxui.dev',
+	site: 'https://frankuxui.dev',
 	adapter: vercel(),
 	env: {
 		schema: {
