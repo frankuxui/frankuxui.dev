@@ -1,6 +1,7 @@
 ---
-import { isInputError } from "astro:actions";
-import { actions } from "astro:actions";
+import { actions, isInputError } from "astro:actions";
+
+export const prerender = false;
 
 const result = Astro.getActionResult(actions.send);
 
@@ -18,6 +19,7 @@ if (result?.error) {
 if (result?.data) {
   console.log("Mensaje enviado exitosamente:", result.data);
 }
+
 const inputErrors = isInputError(result?.error) ? result.error.fields : {};
 ---
 
@@ -71,12 +73,14 @@ const inputErrors = isInputError(result?.error) ? result.error.fields : {};
 </form>
 
 <script>
+  import { navigate } from "astro:transitions/client";
   const form = document.getElementById("fmhx438f934xj43dd__") as HTMLFormElement;
   const button = form.querySelector("button[type='submit']") as HTMLButtonElement;
   form.addEventListener("submit", (event) => {
     button.disabled = true;
     button.classList.add("cursor-not-allowed", "opacity-50");
     button.textContent = "Enviando mensaje...";
+    navigate("/gracias");
     setTimeout(() => {
       button.disabled = false;
       button.classList.remove("cursor-not-allowed", "opacity-50");
