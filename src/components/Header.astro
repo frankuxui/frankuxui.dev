@@ -22,11 +22,11 @@ const pathname = Astro.url.pathname;
           <ul class="hidden md:flex flex-none items-center justify-center mx-auto gap-2" role="list">
             {
               [
-                { href: "/sobre-mi", label: "Sobre mi", transitionName: "page-about" },
-                { href: "/proyectos", label: "Proyectos", transitionName: "page-projects" },
-                { href: "/contacto", label: "Contacto", transitionName: "page-contact" },
-                { href: "/blog", label: "Blog", transitionName: "page-blog" },
-              ].map(({ href, label, transitionName }) => (
+                { href: "/sobre-mi", label: "Sobre mi" },
+                { href: "/proyectos", label: "Proyectos" },
+                { href: "/contacto", label: "Contacto" },
+                { href: "/blog", label: "Blog" },
+              ].map(({ href, label }) => (
                 <li role="listitem">
                   <a
                     href={href}
@@ -37,7 +37,7 @@ const pathname = Astro.url.pathname;
                     ]}
                     data-state={pathname === href ? "active" : "inactive"}
                     aria-current={pathname === href ? "page" : undefined}
-                    transition:name={transitionName}
+                    transition:animate="none"
                   >
                     {label}
                   </a>
