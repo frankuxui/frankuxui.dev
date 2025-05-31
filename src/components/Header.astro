@@ -2,14 +2,6 @@
 import Logo from "@/components/Logo.astro";
 import ThemeToggle from "@/components/ThemeToggle.astro";
 const pathname = Astro.url.pathname;
-
-function cn(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
-const a = Astro.url
-console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", a);
-
 ---
 
 <header
@@ -28,29 +20,31 @@ console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", a);
             <Logo />
           </div>
           <ul class="hidden md:flex flex-none items-center justify-center mx-auto gap-2" role="list">
-  {
-    [
-      { href: "/sobre-mi", label: "Sobre mi", transitionName: "page-about" },
-      { href: "/proyectos", label: "Proyectos", transitionName: "page-projects" },
-      { href: "/contacto", label: "Contacto", transitionName: "page-contact" },
-      { href: "/blog", label: "Blog", transitionName: "page-blog" },
-    ].map(({ href, label, transitionName }) => (
-      <li role="listitem">
-        <a
-          href={href}
-          class:list={[
-            "inline-flex items-center uppercase justify-center font-medium px-6 h-10 rounded-full text-sm transition-colors duration-200 hover:bg-foreground/5 data-[state='active']:bg-foreground data-[state='active']:text-background",
-            { "bg-foreground text-background": pathname === href }
-          ]}
-          data-state={pathname === href ? "active" : "inactive"}
-          aria-current={pathname === href ? "page" : undefined}
-          transition:name={transitionName}>
-          {label}
-        </a>
-      </li>
-    ))
-  }
-</ul>
+            {
+              [
+                { href: "/sobre-mi", label: "Sobre mi", transitionName: "page-about" },
+                { href: "/proyectos", label: "Proyectos", transitionName: "page-projects" },
+                { href: "/contacto", label: "Contacto", transitionName: "page-contact" },
+                { href: "/blog", label: "Blog", transitionName: "page-blog" },
+              ].map(({ href, label, transitionName }) => (
+                <li role="listitem">
+                  <a
+                    href={href}
+                    data-toggle="header-link"
+                    class:list={[
+                      "inline-flex items-center uppercase justify-center font-medium px-6 h-10 rounded-full text-sm transition-colors duration-200 hover:bg-foreground/5 data-[state='active']:bg-foreground data-[state='active']:text-background",
+                      { "bg-foreground text-background": pathname === href },
+                    ]}
+                    data-state={pathname === href ? "active" : "inactive"}
+                    aria-current={pathname === href ? "page" : undefined}
+                    transition:name={transitionName}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
 
           <div class="ml-auto flex flex-1 items-center justify-end gap-4">
             <button
@@ -72,6 +66,8 @@ console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", a);
 
 <script>
   const header = document.querySelector("[data-toggle='header']") as HTMLElement;
+  const headerLinks = document.querySelectorAll("[data-toggle='header-link']") as NodeListOf<HTMLElement>;
+
   let lastScroll = 0;
   let ticking = false;
 
@@ -79,15 +75,15 @@ console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", a);
     const currentScroll = window.scrollY;
 
     if (currentScroll > lastScroll && currentScroll > 80) {
-      header.style.transform = 'translateY(-100%)';
+      header.style.transform = "translateY(-100%)";
     } else {
-      header.style.transform = 'translateY(0)';
+      header.style.transform = "translateY(0)";
     }
 
     lastScroll = currentScroll;
   }
 
-  window.addEventListener('scroll', () => {
+  window.addEventListener("scroll", () => {
     if (!ticking) {
       window.requestAnimationFrame(() => {
         onScroll();
@@ -99,12 +95,21 @@ console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", a);
 
   // Opcional: reset transform al cambiar de página en Astro
   document.addEventListener("astro:after-swap", () => {
-    header.style.transform = 'translateY(0)';
+    header.style.transform = "translateY(0)";
+  });
+
+  // Add attr data-state in case pathname is active
+  headerLinks.forEach((link) => {
+    if (link.getAttribute("href") === window.location.pathname) {
+      link.setAttribute("data-state", "active");
+    } else {
+      link.setAttribute("data-state", "inactive");
+    }
   });
 </script>
 
 <style>
-  [data-toggle='header'] {
+  [data-toggle="header"] {
     transition: transform 0.2s ease-in-out;
   }
 </style>
