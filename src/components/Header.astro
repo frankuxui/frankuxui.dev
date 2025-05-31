@@ -56,7 +56,6 @@ const pathname = Astro.url.pathname;
               >
             </button>
             <ThemeToggle />
-            <!-- <ThemeToGlleReact client:only /> -->
           </div>
         </nav>
       </div>
@@ -99,13 +98,19 @@ const pathname = Astro.url.pathname;
   });
 
   // Add attr data-state in case pathname is active
-  headerLinks.forEach((link) => {
-    if (link.getAttribute("href") === window.location.pathname) {
-      link.setAttribute("data-state", "active");
-    } else {
-      link.setAttribute("data-state", "inactive");
-    }
-  });
+  function addAttr() {
+    headerLinks.forEach((link) => {
+      if (link.getAttribute("href") === window.location.pathname) {
+        link.setAttribute("data-state", "active");
+      } else {
+        link.setAttribute("data-state", "inactive");
+      }
+    });
+  }
+
+  document.addEventListener("astro:after-swap", addAttr);
+  document.addEventListener("DOMContentLoaded", addAttr);
+  document.addEventListener("astro:page-load", addAttr);
 </script>
 
 <style>
