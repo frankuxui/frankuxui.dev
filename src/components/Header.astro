@@ -101,7 +101,8 @@ const pathname = Astro.url.pathname;
   // Add attr data-state in case pathname is active
   function addAttr() {
     headerLinks.forEach((link) => {
-      if (window.location.pathname.includes(link.getAttribute("href")) || link.getAttribute("href") === window.location.pathname) {
+      const href = link?.getAttribute("href") ?? "";
+      if (window.location.pathname.includes(href) || href === window.location.pathname) {
         link.setAttribute("data-state", "active");
       } else {
         link.setAttribute("data-state", "");
