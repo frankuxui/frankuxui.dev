@@ -2,11 +2,11 @@
 
 ---
 
-<section class="mx-auto min-h-screen grid items-start mt-8">
-  <div class="w-full mx-auto max-w-7xl px-10">
-    <div class="flex flex-col-reverse lg:flex-row items-start lg:items-center justify-between gap-10 3xl:mt-20">
-      <section class="flex-1 max-w-xl">
-        <header class="flex flex-col items-start justify-start gap-4">
+<section class="mx-auto grid md:place-items-center md:min-h-[calc(100vh_-_96px)]">
+  <div class="w-full mx-auto max-w-6xl md:px-10">
+    <div class="flex flex-col-reverse md:flex-row items-start md:items-center justify-between md:gap-6 lg:gap-10">
+      <section class="flex-1 min-w-full md:min-w-80 p-10 md:p-0 max-w-xs lg:max-w-xl">
+        <header class="flex flex-col items-start justify-start gap-2 md:gap-4">
           <h1
             class="relative text-left leading-9 text-2xl motion-safe:animate-text-reveal"
             style={{
@@ -27,7 +27,7 @@
             Frankuxui
           </h1>
           <p
-            class="text-left w-full leading-14 text-4xl lg:leading-17 lg:text-5xl font-semibold motion-safe:animate-text-reveal"
+            class="text-left w-full leading-12 text-4xl lg:leading-17 lg:text-5xl font-semibold motion-safe:animate-text-reveal"
             style={{
               "--hero-text-reveal-opacity-step-0": 0,
               "--hero-text-reveal-x-step-0": 0,
@@ -166,36 +166,30 @@
         </section>
       </section>
 
-      <figure class="col-span-8 flex justify-end max-w-full lg:max-w-sm 3xl:max-w-lg">
+      <figure class="flex justify-center md:justify-end w-full max-w-full md:max-w-sm 3xl:max-w-md">
         <div
-          class="relative w-full flex-1 rounded-full overflow-hidden flex items-end justify-end border-12 border-background ring-1 ring-foreground/5 motion-safe:animate-img-reveal"
+          class="relative w-full flex-1 md:rounded-full overflow-hidden flex items-end justify-end md:border-12 border-background ring-1 ring-foreground/5 motion-safe:animate-img-reveal"
         >
           <div
             class="z-0 opacity-80 pointer-events-none h-full absolute top-0 left-0 w-full border-x border-x-(--pattern-fg) bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 block dark:[--pattern-fg:var(--color-white)]/3"
           >
           </div>
-          <div class="relative flex items-end justify-end w-full h-full pt-10">
+          <div class="relative flex items-end justify-center md:justify-end w-full h-full md:pt-10">
             <picture>
-              <source srcset="/frankuxui_frontend_developer_ux_ui_designer_hero_3.png" type="image/png" media="(min-width: 1280px)" />
-              <source srcset="/frankuxui_frontend_developer_ux_ui_designer_hero_3.png" type="image/png" media="(min-width: 768px)" />
+              <source srcset="/frankuxui-ux-ui-designer-frontend-developer-cover-desktop.webp" type="image/webp" media="(min-width: 768px)" />
+              <source srcset="/frankuxui-ux-ui-designer-frontend-developer-cover-mobile.webp" type="image/webp" media="(min-width: 768px)" />
               <img
-                src="/frankuxui_frontend_developer_ux_ui_designer_hero_3.png"
+                src="/frankuxui-ux-ui-designer-frontend-developer-cover-mobile.webp"
                 alt="Frank Esteban"
                 width={367}
                 height={517}
                 loading="lazy"
-                class="rounded-none sm:rounded-2xl w-full min-w-0 max-w-full"
+                class="rounded-none w-full min-w-0 max-w-sm md:max-w-full"
               />
             </picture>
           </div>
         </div>
       </figure>
-    </div>
-    <div class="w-full mt-20">
-      <a href="#about-me" class="inline-flex items-center justify-start gap-4 group">
-        <span class="material-symbols-rounded material-symbols-weight-300 material-symbols-xl translate-y-0 motion-safe:transition-transform group-hover:translate-y-1">south</span>
-        <span class="font-medium text-xl">Más sobre mi</span>
-      </a>
     </div>
   </div>
 </section>

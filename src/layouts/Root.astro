@@ -1,4 +1,5 @@
 ---
+import "@/styles/global.css";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import { siteConfig } from "@/config";
@@ -25,7 +26,7 @@ const { title = siteConfig.title, description = siteConfig.description, image } 
   </head>
   <body>
     <Header />
-    <main class="mt-24">
+    <main>
       <slot />
     </main>
     <Footer />

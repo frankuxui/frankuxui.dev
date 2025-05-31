@@ -4,17 +4,6 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  --breakpoint-*: initial;
-  --breakpoint-xs: 100%;
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 920px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1536px;
-  --breakpoint-3xl: 1920px;
-
-  --container-8xl: 1400px;
-
   --color-background: var(--color-white);
   --color-foreground: var(--color-gray-950);
   --color-border: var(--color-gray-200);

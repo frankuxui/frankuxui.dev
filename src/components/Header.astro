@@ -1,39 +1,44 @@
 ---
 import Logo from "@/components/Logo.astro";
 import ThemeToggle from "@/components/ThemeToggle.astro";
-import ThemeToGlleReact from "./ThemeToggleReact";
 const pathname = Astro.url.pathname;
 ---
 
 <header
-  class="fixed top-0 left-0 w-full h-24 flex items-center justify-center z-50 duration-300 border-b border-border bg-background/70 backdrop-blur-2xl"
+  class="sticky top-0 left-0 w-full h-20 sm:h-24 flex items-center justify-center z-50 duration-300 border-b border-border bg-background/70 backdrop-blur-2xl"
+  data-toggle="header"
   transition:animate="none"
 >
-  <div class="w-full max-w-7xl mx-auto px-10">
+  <div class="w-full max-w-6xl mx-auto px-10">
     <div class="w-full relative flex items-center">
       <div class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 right-0 -top-20 w-44 h-44 bg-green-500/10 blur-2xl"></div>
       <div class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 right-36 -top-20 w-44 h-44 bg-cyan-500/10 blur-2xl"></div>
       <div class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 left-0 -top-20 w-44 h-44 bg-pink-500/5 blur-2xl"></div>
-      <div class="header-inner flex items-center w-full h-12 lg:h-16">
+      <div class="header-inner flex items-center w-full h-12 md:h-16">
         <nav class="flex items-center justify-between w-full gap-8">
           <div class="mr-auto flex-1">
             <Logo />
           </div>
-          <ul class="hidden lg:flex flex-none items-center justify-center mx-auto gap-2" role="list">
+          <ul class="hidden md:flex flex-none items-center justify-center mx-auto gap-2" role="list">
             {
               [
-                { href: "/sobre-mi", label: "Sobre mi", transitionName: "page-about" },
-                { href: "/proyectos", label: "Proyectos", transitionName: "page-projects" },
-                { href: "/contacto", label: "Contacto", transitionName: "page-contact" },
-                { href: "/blog", label: "Blog", transitionName: "page-blog" },
-              ].map(({ href, label, transitionName }) => (
+                { href: "/sobre-mi", label: "Sobre mi" },
+                { href: "/proyectos", label: "Proyectos" },
+                { href: "/contacto", label: "Contacto" },
+                { href: "/blog", label: "Blog" },
+              ].map(({ href, label }) => (
                 <li role="listitem">
                   <a
                     href={href}
-                    class="inline-flex items-center uppercase justify-center font-medium px-6 h-10 rounded-full text-sm transition-colors duration-200 text-foreground/70 hover:text-foreground hover:bg-foreground/5 data-[state='active']:bg-foreground data-[state='active']:text-background"
-                    data-state={pathname === href ? "active" : "inactive"}
-                    aria-current={pathname === href ? "page" : undefined}
-                    transition:name={transitionName}
+                    data-toggle="header-link"
+                    class:list={[
+                      "inline-flex items-center uppercase justify-center font-medium px-6 h-10 rounded-full text-sm transition-colors duration-200 hover:bg-foreground/5 data-[state='active']:bg-foreground data-[state='active']:text-background",
+                      { "bg-foreground text-background": pathname.includes(href) },
+                    ]}
+                    data-state={pathname.includes(href) ? "active" : ""}
+                    aria-current={pathname.includes(href) ? "page" : undefined}
+                    transition:animate="none"
+                    data-astro-reload
                   >
                     {label}
                   </a>
@@ -41,20 +46,77 @@ const pathname = Astro.url.pathname;
               ))
             }
           </ul>
+
           <div class="ml-auto flex flex-1 items-center justify-end gap-4">
             <button
               data-toggle="drawer-menu"
-              class="inline-flex flex-none lg:hidden rounded-full w-12 h-12 items-center justify-center cursor-pointer hover:bg-foreground/6 motion-safe:transition-all duration-200"
+              class="inline-flex flex-none md:hidden rounded-full w-12 h-12 items-center justify-center cursor-pointer hover:bg-foreground/6 motion-safe:transition-all duration-200"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" viewBox="0 0 24 24"
                 ><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.6" d="M9.41 9.66H9.4m5.2 0h-.01m-5.28 4.7H9.3m5.3 0h-.01"></path></svg
               >
             </button>
             <ThemeToggle />
-            <!-- <ThemeToGlleReact client:only /> -->
           </div>
         </nav>
       </div>
     </div>
   </div>
 </header>
+
+<script>
+  const header = document.querySelector("[data-toggle='header']") as HTMLElement;
+  const headerLinks = document.querySelectorAll("[data-toggle='header-link']") as NodeListOf<HTMLElement>;
+
+  let lastScroll = 0;
+  let ticking = false;
+
+  function onScroll() {
+    const currentScroll = window.scrollY;
+
+    if (currentScroll > lastScroll && currentScroll > 80) {
+      header.style.transform = "translateY(-100%)";
+    } else {
+      header.style.transform = "translateY(0)";
+    }
+
+    lastScroll = currentScroll;
+  }
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        onScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // Opcional: reset transform al cambiar de página en Astro
+  document.addEventListener("astro:after-swap", () => {
+    header.style.transform = "translateY(0)";
+  });
+
+  // Add attr data-state in case pathname is active
+  function addAttr() {
+    headerLinks.forEach((link) => {
+      const href = link?.getAttribute("href") ?? "";
+      if (window.location.pathname.includes(href) || href === window.location.pathname) {
+        link.setAttribute("data-state", "active");
+      } else {
+        link.setAttribute("data-state", "");
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", addAttr);
+  document.addEventListener("astro:after-swap", addAttr);
+  document.addEventListener("astro:page-load", addAttr);
+</script>
+
+<style>
+  [data-toggle="header"] {
+    transition: transform 0.2s ease-in-out;
+  }
+</style>
