@@ -38,6 +38,7 @@ const pathname = Astro.url.pathname;
                     data-state={pathname === href ? "active" : "inactive"}
                     aria-current={pathname === href ? "page" : undefined}
                     transition:animate="none"
+                    data-astro-reload
                   >
                     {label}
                   </a>
@@ -108,9 +109,7 @@ const pathname = Astro.url.pathname;
     });
   }
 
-  document.addEventListener("astro:after-swap", addAttr);
   document.addEventListener("DOMContentLoaded", addAttr);
-  document.addEventListener("astro:page-load", addAttr);
 </script>
 
 <style>
