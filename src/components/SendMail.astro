@@ -73,18 +73,41 @@ const inputErrors = isInputError(result?.error) ? result.error.fields : {};
 </form>
 
 <script>
-  import { navigate } from "astro:transitions/client";
+  import { actions } from "astro:actions";
+
   const form = document.getElementById("fmhx438f934xj43dd__") as HTMLFormElement;
-  const button = form.querySelector("button[type='submit']") as HTMLButtonElement;
-  form.addEventListener("submit", (event) => {
+  const container = document.getElementById("form-container") as HTMLDivElement;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const button = form.querySelector("button[type='submit']") as HTMLButtonElement;
     button.disabled = true;
     button.classList.add("cursor-not-allowed", "opacity-50");
     button.textContent = "Enviando mensaje...";
-    navigate("/gracias");
-    setTimeout(() => {
+
+    const formData = new FormData(form);
+    const result = await actions.send(formData);
+
+    if (result?.data) {
+      container.innerHTML = `
+        <div class="flex flex-col items-center justify-center gap-4 mt-10">
+          <svg width="115" height="115" viewBox="0 0 133 133" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" fill-rule="evenodd">
+              <circle fill="#07b481" cx="66.5" cy="66.5" r="54.5"></circle>
+              <circle fill="#FFFFFF" cx="66.5" cy="66.5" r="55.5"></circle>
+              <circle stroke="#07b481" stroke-width="4" cx="66.5" cy="66.5" r="54.5"></circle>
+              <polyline stroke="#FFFFFF" stroke-width="5.5" points="41 70 56 85 92 49"></polyline>
+            </g>
+          </svg>
+          <p class="text-green-600 font-medium text-lg">Mensaje enviado exitosamente.</p>
+        </div>
+      `;
+    } else {
+      alert("Ocurrió un error al enviar el mensaje.");
       button.disabled = false;
       button.classList.remove("cursor-not-allowed", "opacity-50");
       button.textContent = "Envíame un mensaje";
-    }, 3000); // Rehabilita el botón después de 3 segundos
+    }
   });
 </script>

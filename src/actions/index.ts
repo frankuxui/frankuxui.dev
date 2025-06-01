@@ -16,12 +16,8 @@ export const server = {
       message: z.string().optional(),
     }),
     handler: async ({ name, email, message }) => {
-      // create the email
       const emailContent = EmailTemplate({ name, email, message });
       const html = await render(emailContent);
-      /* const text = await render(emailContent, {
-        plainText: true,
-      }); */
 
       // send an email
       const { data, error } = await resend.emails.send({
