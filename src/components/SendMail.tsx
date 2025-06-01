@@ -28,9 +28,8 @@ export default function ContactForm() {
 
     setLoading(false);
   }
-  const a = false;
 
-  if (a) {
+  if (success) {
     return (
       <div className="grid text-center place-items-center sm:p-20">
         <Success size={80} color="#4709e0" />
