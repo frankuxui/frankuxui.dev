@@ -22,7 +22,7 @@ const filterTags = allTags.filter((tag) => tags?.includes(tag.slug as string));
 <Root title={title} description={description} image={cover?.src}>
   <section class="w-full py-20">
     <header class="mx-auto px-10 sm:px-14 md:max-w-5xl">
-      <div class="w-full mx-auto max-w-6xl px-10">
+      <div class="w-full mx-auto">
         <a href="/blog" class="text-sm font-medium text-foreground"> ← Volver a la lista de posts </a>
         <div class="grid gap-2 mt-10">
           <p class="text-sm text-foreground/70">Post</p>
@@ -37,7 +37,7 @@ const filterTags = allTags.filter((tag) => tags?.includes(tag.slug as string));
 
     <section class="w-full max-w-5xl mx-auto mt-20">
       <picture class="w-full lg:max-w-xl xl:max-w-2xl">
-        <img src={cover?.src} alt={cover?.alt} class="w-full min-w-0 rounded-2xl" transition:name={`post-${slug}`} />
+        <img src={cover?.src} alt={cover?.alt} class="w-full min-w-0 sm:rounded-2xl" transition:name={`post-${slug}`} />
       </picture>
     </section>
 

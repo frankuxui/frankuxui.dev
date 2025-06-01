@@ -32,9 +32,7 @@ export default defineConfig({
 		})
 	],
 	vite: {
-		plugins: [
-			tailwindcss()
-		]
+		plugins: [tailwindcss()],
 	},
 	markdown: {
 		syntaxHighlight: false,
