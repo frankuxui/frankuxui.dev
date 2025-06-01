@@ -1,5 +1,5 @@
 ---
-import SendMail from "@/components/SendMail.tsx";
+import SendMail from "@/components/SendMail";
 import Root from "@/layouts/Root.astro";
 import { social } from "@/data/social";
 ---
@@ -103,7 +103,7 @@ import { social } from "@/data/social";
         </header>
         <section class="md:col-span-7">
           <!-- <SendMail /> -->
-          <SendMail client:only="react" />
+          <SendMail client:load />
         </section>
       </div>
     </div>
