@@ -33,7 +33,8 @@ export default defineConfig({
 	],
 	vite: {
 		plugins: [
-			tailwindcss()
+			tailwindcss(),
+
 		]
 	},
 	markdown: {
