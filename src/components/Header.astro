@@ -65,54 +65,93 @@ const pathname = Astro.url.pathname;
 </header>
 
 <script>
-  const header = document.querySelector("[data-toggle='header']") as HTMLElement;
-  const headerLinks = document.querySelectorAll("[data-toggle='header-link']") as NodeListOf<HTMLElement>;
+  (function () {
+    let header: HTMLDivElement | null = null;
+    let lastScroll = 0;
+    let ticking = false;
+    const threshold = 80;
+    const tolerance = 5;
 
-  let lastScroll = 0;
-  let ticking = false;
+    function onScroll() {
+      const currentScroll = window.scrollY;
+      const delta = currentScroll - lastScroll;
 
-  function onScroll() {
-    const currentScroll = window.scrollY;
+      if (Math.abs(delta) < tolerance) return;
 
-    if (currentScroll > lastScroll && currentScroll > 80) {
-      header.style.transform = "translateY(-100%)";
-    } else {
+      if (currentScroll > threshold && delta > 0) {
+        if (header) header.style.transform = "translateY(-100%)";
+      } else {
+        if (header) header.style.transform = "translateY(0)";
+      }
+
+      lastScroll = currentScroll;
+    }
+
+    function scrollHandler() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          onScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    function setup() {
+      header = document.querySelector("[data-toggle='header']") as HTMLDivElement;
+      if (!header) return;
+
+      // Reiniciamos posición
       header.style.transform = "translateY(0)";
+      lastScroll = window.scrollY;
+
+      // Quitamos listeners anteriores por si acaso (prevención si Astro rehidrata)
+      window.removeEventListener("scroll", scrollHandler);
+      window.addEventListener("scroll", scrollHandler, { passive: true });
     }
 
-    lastScroll = currentScroll;
-  }
-
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        onScroll();
-        ticking = false;
-      });
-      ticking = true;
+    // Setup inicial
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", setup);
+    } else {
+      setup();
     }
-  });
 
-  // Opcional: reset transform al cambiar de página en Astro
-  document.addEventListener("astro:after-swap", () => {
-    header.style.transform = "translateY(0)";
-  });
+    // Re-setup tras navegación cliente de Astro
+    document.addEventListener("astro:after-swap", setup);
+    document.addEventListener("astro:page-load", setup);
+  })();
 
-  // Add attr data-state in case pathname is active
-  function addAttr() {
+  // Header links
+
+  function updateActiveLinks() {
+    const headerLinks = document.querySelectorAll("[data-toggle='header-link']") as NodeListOf<HTMLAnchorElement>;
+    const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+
     headerLinks.forEach((link) => {
-      const href = link?.getAttribute("href") ?? "";
-      if (window.location.pathname.includes(href) || href === window.location.pathname) {
+      const href = (link.getAttribute("href") ?? "").replace(/\/+$/, "") || "/";
+      if (href === "/" && currentPath === "/") {
+        link.setAttribute("data-state", "active");
+      } else if (href !== "/" && (currentPath === href || currentPath.startsWith(href + "/"))) {
         link.setAttribute("data-state", "active");
       } else {
-        link.setAttribute("data-state", "");
+        link.removeAttribute("data-state");
       }
     });
   }
 
-  document.addEventListener("DOMContentLoaded", addAttr);
-  document.addEventListener("astro:after-swap", addAttr);
-  document.addEventListener("astro:page-load", addAttr);
+  function setupActiveLinkHandler() {
+    updateActiveLinks();
+    document.addEventListener("astro:after-swap", updateActiveLinks);
+    document.addEventListener("astro:page-load", updateActiveLinks);
+  }
+
+  // Ejecutamos cuando el DOM esté listo
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupActiveLinkHandler);
+  } else {
+    setupActiveLinkHandler();
+  }
 </script>
 
 <style>
