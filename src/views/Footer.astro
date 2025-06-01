@@ -8,14 +8,14 @@ const today = new Date();
 
 <footer class="w-full py-36 border-t border-border">
   <div class="w-full max-w-6xl mx-auto px-10">
-    <div class="grid">
+    <header>
+      <Logo />
+      <p id="footer-info" class="mt-10 w-full max-w-md font-medium text-xl">Apasionado por el desarrollo web y el diseño de interfaces intuitivas.</p>
+      <p class="mt-4 text-lg">Cada error es un paso. Cada línea, un aprendizaje.</p>
+    </header>
+    <div class="grid mt-10">
       <section class="grid lg:grid-cols-12 items-start gap-10 2xl:gap-20" aria-labelledby="footer-info">
         <article class="grid gap-12 w-full col-span-6" aria-labelledby="footer-info">
-          <header>
-            <Logo />
-            <p id="footer-info" class="mt-10 w-full max-w-md font-medium text-xl">Apasionado por el desarrollo web y el diseño de interfaces intuitivas.</p>
-            <p class="mt-4 text-lg">Cada error es un paso. Cada línea, un aprendizaje.</p>
-          </header>
           <ul class="flex items-center justify-start gap-6 2xl:gap-12" aria-label="Redes sociales">
             <li>
               <a href="https://github.com/frankuxui" aria-label="Ir al perfil de GitHub" target="_blank" rel="noopener noreferrer">
@@ -71,53 +71,46 @@ const today = new Date();
               <span> 📞 &nbsp; <a href="tel:+34641932611" class="hover:text-foreground">+34 641 93 26 11</a> </span>
             </address>
           </section>
-          <article class="w-full flex items-start gap-10" aria-labelledby="navegacion-footer">
-            <nav class="w-full grid gap-10" aria-labelledby="navegacion-footer">
-              <h2 id="navegacion-footer" class="text-lg font-semibold">Mapa del sitio</h2>
-              <ul class="flex flex-col gap-2" aria-label="Mapa del sitio">
-                <li>
-                  <a href="/" class="text-lg text-foreground/70 hover:text-foreground">Inicio</a>
-                </li>
-                <li>
-                  <a href="/blog" class="text-lg text-foreground/70 hover:text-foreground">Blog</a>
-                </li>
-                <li>
-                  <a href="/proyectos" class="text-lg text-foreground/70 hover:text-foreground">Proyectos</a>
-                </li>
-                <li>
-                  <a href="/sobre-mi" class="text-lg text-foreground/70 hover:text-foreground">Sobre mi</a>
-                </li>
-                <li>
-                  <a href="/mision" class="text-lg text-foreground/70 hover:text-foreground">Mi misión</a>
-                </li>
-                <li>
-                  <a href="/sitemap.xml" class="text-lg text-foreground/70 hover:text-foreground">Sitemap</a>
-                </li>
-              </ul>
-            </nav>
-            <nav class="w-full grid gap-10">
-              <h6 class="text-lg font-semibold">Contácto</h6>
-              <ul class="flex flex-col gap-2">
-                <li>
-                  <a href="/" class="text-lg text-foreground/70 hover:text-foreground">Página de contácto</a>
-                </li>
-                <li>
-                  <a href="/" class="text-lg text-foreground/70 hover:text-foreground">LinkedIn</a>
-                </li>
-                <li>
-                  <a href="/" class="text-lg text-foreground/70 hover:text-foreground">GitHub</a>
-                </li>
-              </ul>
-            </nav>
-          </article>
         </article>
-        <section class="grid col-span-6" aria-labelledby="escribeme">
-          <h2 id="escribeme" class="text-lg font-semibold">Escríbeme</h2>
-          <p class="mt-10 text-xl font-medium w-full max-w-md">¿Proyecto en camino o mente volando? ¡Contáctame y hablemos!</p>
-          <div class="mt-10">
-            <SendMail />
-          </div>
-        </section>
+        <article class="w-full col-span-6 flex items-start gap-10" aria-labelledby="navegacion-footer">
+          <nav class="w-full grid gap-10" aria-labelledby="navegacion-footer">
+            <h2 id="navegacion-footer" class="text-lg font-semibold">Mapa del sitio</h2>
+            <ul class="flex flex-col gap-2" aria-label="Mapa del sitio">
+              <li>
+                <a href="/" class="text-lg text-foreground/70 hover:text-foreground">Inicio</a>
+              </li>
+              <li>
+                <a href="/blog" class="text-lg text-foreground/70 hover:text-foreground">Blog</a>
+              </li>
+              <li>
+                <a href="/proyectos" class="text-lg text-foreground/70 hover:text-foreground">Proyectos</a>
+              </li>
+              <li>
+                <a href="/sobre-mi" class="text-lg text-foreground/70 hover:text-foreground">Sobre mi</a>
+              </li>
+              <li>
+                <a href="/mision" class="text-lg text-foreground/70 hover:text-foreground">Mi misión</a>
+              </li>
+              <li>
+                <a href="/sitemap.xml" class="text-lg text-foreground/70 hover:text-foreground">Sitemap</a>
+              </li>
+            </ul>
+          </nav>
+          <nav class="w-full grid gap-10">
+            <h6 class="text-lg font-semibold">Contácto</h6>
+            <ul class="flex flex-col gap-2">
+              <li>
+                <a href="/" class="text-lg text-foreground/70 hover:text-foreground">Página de contácto</a>
+              </li>
+              <li>
+                <a href="/" class="text-lg text-foreground/70 hover:text-foreground">LinkedIn</a>
+              </li>
+              <li>
+                <a href="/" class="text-lg text-foreground/70 hover:text-foreground">GitHub</a>
+              </li>
+            </ul>
+          </nav>
+        </article>
       </section>
 
       <section class="mt-30 w-full" aria-label="Información legal">

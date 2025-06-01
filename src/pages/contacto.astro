@@ -1,5 +1,5 @@
 ---
-import SendMail from "@/components/SendMail.astro";
+import SendMail from "@/components/SendMail.tsx";
 import Root from "@/layouts/Root.astro";
 import { social } from "@/data/social";
 ---
@@ -92,20 +92,18 @@ import { social } from "@/data/social";
 
   <section class="-mt-20 pt-40 py-20" id="send-mail">
     <div class="w-full max-w-6xl mx-auto px-10">
-      <div class="flex items-center justify-between flex-col lg:flex-row gap-14 xl:gap-20">
-        <header class="w-full lg:max-w-lg grid gap-6">
+      <div class="grid md:grid-cols-12 items-start gap-10 lg:gap-16">
+        <header class="md:col-span-5 grid gap-6">
           <span class="material-symbols-rounded material-symbols-2xl material-symbols-weight-300">mail</span>
-          <h2 class="text-left w-full leading-10 text-3xl sm:leading-12 sm:text-4xl font-normal">Envíame un mensaje</h2>
-          <p class="leading-9 text-2xl w-full">Envíame un mensaje y con mucho gusto te responderé lo antes posible.</p>
-          <p>
-            Estoy siempre disponible para discutir tus preguntas, propuestas o cualquier idea que tengas en mente. Tu mensaje es importante para mí y me comprometo a ofrecerte una
-            respuesta rápida y atenta.
-          </p>
+          <h2 class="text-left w-full leading-10 text-3xl sm:leading-12 sm:text-4xl font-normal">Contáctame</h2>
+          <p class="leading-9 text-2xl w-full">Responderé lo antes posible.</p>
+          <p>Estoy disponible para cualquier consulta, propuesta o idea que quieras compartir.</p>
           <p class="text-sm">Normalmente respondo en menos de 24 horas.</p>
-          <p class="text-sm">Si no recibes respuesta, revisa tu bandeja de spam o correo no deseado.</p>
+          <p class="text-sm">Si no ves respuesta, revisa tu bandeja de spam o correo no deseado.</p>
         </header>
-        <section class="w-full lg:flex-1 grid lg:sticky lg:top-36">
-          <SendMail />
+        <section class="md:col-span-7">
+          <!-- <SendMail /> -->
+          <SendMail client:load />
         </section>
       </div>
     </div>
