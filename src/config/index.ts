@@ -104,5 +104,6 @@ export const siteConfig = {
     robots: `${SITE_URL}/robots.txt`,
   },
   logo: FRANKUXUI_LOGO,
+  keywords: KEYWORDS,
 };
 
