@@ -4,30 +4,6 @@ import Hero from "@/views/Hero.astro";
 import About from "@/views/About.astro";
 ---
 
-<script
-  type="application/ld+json"
-  is:inline
-  set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    mainEntityOfPage: {
-      "@type": "ProfilePage",
-      name: "Frankuxui",
-      description: "Portafolio de Frankuxui, desarrollador front-end y diseñador UX/UI en Tarragona con más de 8 años de experiencia.",
-      url: "https://frankuxui.dev",
-      image: "https://frankuxui.dev/images/Opengraph_imagen_de_Frankuxui_desarrollador_frontend_en_Tarragona_Salou.png",
-      publisher: {
-        "@type": "Organization",
-        name: "Frankuxui",
-        logo: {
-          "@type": "ImageObject",
-          url: "https://frankuxui.dev/logo.png",
-        },
-      },
-    },
-  })}
-/>
-
 <Root>
   <Hero />
   <About />
