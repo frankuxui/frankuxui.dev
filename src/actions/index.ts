@@ -3,7 +3,10 @@ import { Resend } from "resend";
 import EmailTemplate from "@/mail/email-template";
 import { render } from "@react-email/render";
 import { z } from "astro:schema";
-import { RESEND_API_KEY, EMAIL_FROM } from "astro:env/server";
+import { getSecret } from "astro:env/server";
+
+const RESEND_API_KEY = getSecret("RESEND_API_KEY");
+const EMAIL_FROM = getSecret("EMAIL_FROM");
 
 const resend = new Resend(RESEND_API_KEY as string);
 

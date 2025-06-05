@@ -18,11 +18,11 @@ export default function ContactForm() {
 
     if (result?.data) {
       setSuccess(true);
-      console.log("Email sent successfully:", result.data);
+      // console.log("Email sent successfully:", result.data);
     } else if (result.error) {
       setError("Por favor completa todos los campos correctamente.");
     } else {
-      console.error("Error sending email:", result);
+      // console.error("Error sending email:", result);
       setError("Ocurrió un error al enviar el mensaje.");
     }
 

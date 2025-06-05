@@ -1,5 +1,4 @@
 ---
-// Import y props igual que tú
 import { siteConfig } from "@/config";
 
 interface Props {
@@ -8,11 +7,54 @@ interface Props {
   image?: string;
 }
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Normalizar Astro.url.pathname para quitar trailing slash (menos para "/")
+const pathname = Astro.url.pathname === "/" ? "/" : Astro.url.pathname.replace(/\/$/, "");
+
+// Crear la URL canónica normalizada
+const canonicalURL = new URL(pathname, Astro.site).toString();
 const { title, description, image = siteConfig.openGraph.image } = Astro.props as Props;
-// const ogImage = new URL(image, Astro.site).toString();
 const ogImage = new URL(image, Astro.site?.href || "https://frankuxui.dev").href;
-// console.log("Canonical URL:", Astro.site);
+
+const JsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  dateCreated: "2024-12-23T12:34:00-05:00", // Puedes actualizar a la fecha real de tu proyecto
+  dateModified: "2024-12-26T14:53:00-05:00", // Igual aquí
+  mainEntity: {
+    "@type": "Person",
+    name: "Frankuxui",
+    alternateName: "frankuxui",
+    identifier: "frankuxui", // Si tienes un ID real, lo pones aquí
+    interactionStatistic: [
+      {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/FollowAction",
+        userInteractionCount: 1,
+      },
+      {
+        "@type": "InteractionCounter",
+        interactionType: "https://schema.org/LikeAction",
+        userInteractionCount: 5,
+      },
+    ],
+    agentInteractionStatistic: {
+      "@type": "InteractionCounter",
+      interactionType: "https://schema.org/WriteAction",
+      userInteractionCount: 2346,
+    },
+    description: siteConfig.description,
+    image: new URL("/frankuxui_frontend_developer_ux_ui_designer_logo_cuadrado.png", Astro.site).toString(),
+    sameAs: [
+      siteConfig.social.github,
+      siteConfig.social.linkedin,
+      siteConfig.social.figma,
+      siteConfig.social.codepen,
+      siteConfig.social.codesandbox,
+      siteConfig.social.devto,
+      siteConfig.social.instagram,
+    ],
+  },
+};
 ---
 
 <!-- Global Metadata -->
@@ -36,11 +78,17 @@ const ogImage = new URL(image, Astro.site?.href || "https://frankuxui.dev").href
 <link rel="alternate" type="application/rss+xml" title={siteConfig.title} href={new URL("rss.xml", Astro.site)} />
 <meta name="generator" content={Astro.generator} />
 
+<!-- SEO Metadata -->
+<meta name="keywords" content={siteConfig.keywords} />
+<meta name="author" content="Frankuxui" />
+<meta name="application-name" content={siteConfig.title} />
+<meta name="theme-color" content="#ffffff" />
+
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Primary Meta Tags -->
-<title>{title} | {siteConfig.title}</title>
+<title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 
@@ -58,4 +106,6 @@ const ogImage = new URL(image, Astro.site?.href || "https://frankuxui.dev").href
 <meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, Astro.site)} />
+<meta property="twitter:image" content={ogImage} />
+
+{JsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(JsonLd)} />}
