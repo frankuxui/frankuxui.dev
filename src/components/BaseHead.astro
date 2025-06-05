@@ -18,13 +18,13 @@ const ogImage = new URL(image, Astro.site?.href || "https://frankuxui.dev").href
 const JsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
-  dateCreated: "2024-12-23T12:34:00-05:00", // Puedes actualizar a la fecha real de tu proyecto
-  dateModified: "2024-12-26T14:53:00-05:00", // Igual aquí
+  dateCreated: "2024-12-23T12:34:00-05:00",
+  dateModified: "2024-12-26T14:53:00-05:00",
   mainEntity: {
     "@type": "Person",
-    name: "Frankuxui",
-    alternateName: "frankuxui",
-    identifier: "frankuxui", // Si tienes un ID real, lo pones aquí
+    name: siteConfig.authorName,
+    alternateName: siteConfig.alternateName,
+    identifier: siteConfig.alternateName,
     description: siteConfig.description,
     image: new URL(siteConfig.openGraph.image, Astro.site).toString(),
     sameAs: [
@@ -36,6 +36,14 @@ const JsonLd = {
       siteConfig.social.devto,
       siteConfig.social.instagram,
     ],
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.alternateName,
+      logo: {
+        "@type": "ImageObject",
+        url: new URL(siteConfig.logo, Astro.site).toString(),
+      },
+    },
   },
 };
 ---
