@@ -100,3 +100,15 @@ const JsonLd = {
 <meta property="twitter:image" content={ogImage} />
 
 {JsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(JsonLd)} />}
+
+<!-- Google tag (gtag.js) -->
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-0G619YVEY7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(...args: any[]) {
+    window.dataLayer.push(args);
+  }
+  gtag("js", new Date());
+
+  gtag("config", "G-0G619YVEY7");
+</script>
