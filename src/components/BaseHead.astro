@@ -25,25 +25,8 @@ const JsonLd = {
     name: "Frankuxui",
     alternateName: "frankuxui",
     identifier: "frankuxui", // Si tienes un ID real, lo pones aquí
-    interactionStatistic: [
-      {
-        "@type": "InteractionCounter",
-        interactionType: "https://schema.org/FollowAction",
-        userInteractionCount: 1,
-      },
-      {
-        "@type": "InteractionCounter",
-        interactionType: "https://schema.org/LikeAction",
-        userInteractionCount: 5,
-      },
-    ],
-    agentInteractionStatistic: {
-      "@type": "InteractionCounter",
-      interactionType: "https://schema.org/WriteAction",
-      userInteractionCount: 2346,
-    },
     description: siteConfig.description,
-    image: new URL("/frankuxui_frontend_developer_ux_ui_designer_logo_cuadrado.png", Astro.site).toString(),
+    image: new URL(siteConfig.openGraph.image, Astro.site).toString(),
     sameAs: [
       siteConfig.social.github,
       siteConfig.social.linkedin,
