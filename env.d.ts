@@ -18,4 +18,5 @@ interface Window {
     getSystemTheme: () => "light" | "dark";
     getDefaultTheme: () => "system" | "dark" | "light";
   };
+  dataLayer: Array<Record<string, any>>;
 }
