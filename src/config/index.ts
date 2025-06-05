@@ -39,9 +39,9 @@ export const PROFILE_DRIBBBLE = 'https://dribbble.com/frankuxui'
 export const PROFILE_TAILWIND_COMPONENTS = 'https://www.creative-tim.com/twcomponents/u/frankuxui'
 export const PROFILE_DEVTO = 'https://dev.to/frankuxui'
 
-export const FRANKUXUI_IMAGE = `${SITE_URL}/images/frankuxui_frontend_developer_ux_ui_designer.png`
-export const OPENGRAPH_IMAGE = `${SITE_URL}/images/Opengraph_imagen_de_Frankuxui_desarrollador_frontend_en_Tarragona_Salou.png`
-export const FRANKUXUI_LOGO = `${SITE_URL}/images/frankuxui_frontend_developer_ux_ui_designer_logo_redondo.png`
+export const FRANKUXUI_IMAGE = `${SITE_URL}/frankuxui_frontend_developer_ux_ui_designer.png`
+export const OPENGRAPH_IMAGE = `${SITE_URL}/Opengraph_imagen_de_Frankuxui_desarrollador_frontend_en_Tarragona_Salou.png`
+export const FRANKUXUI_LOGO = `${SITE_URL}/frankuxui_frontend_developer_ux_ui_designer_logo.png`
 
 
 export const siteConfig = {

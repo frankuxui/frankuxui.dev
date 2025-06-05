@@ -4,6 +4,7 @@ import PostCard from "@/components/PostCard.astro";
 import { getPosts, getPostTags } from "@/utils/getPosts";
 import type { Post } from "@/types/Post";
 import PostTag from "@/components/PostTag.astro";
+import { siteConfig } from "@/config";
 
 export const prerender = false;
 
@@ -26,9 +27,35 @@ const filterPosts = matchesPosts.filter((post: Post) => {
 });
 
 const posts = filterPosts.length > 0 ? filterPosts : matchesPosts;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": `${Astro.site}${Astro.url.pathname}`,
+  },
+  headline: "Blog",
+  image: `${siteConfig.logo}`,
+  author: {
+    "@type": "Organization",
+    name: "Frankuxui",
+    url: `${siteConfig.siteUrl}`,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "Frankuxui",
+    logo: {
+      "@type": "ImageObject",
+      url: `${siteConfig.logo}`,
+    },
+  },
+  datePublished: "",
+};
 ---
 
 <Root transition:name="page-blog" transition:animate="fade">
+  {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
   <div class="w-full pt-10 sm:pt-20 pb-20">
     <section class="w-full max-w-6xl mx-auto px-10" id="blog">
       <header class="w-full grid gap-6">

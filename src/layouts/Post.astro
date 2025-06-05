@@ -3,12 +3,12 @@ import type { CollectionEntry } from "astro:content";
 import Root from "./Root.astro";
 import { getPostTags } from "@/utils/getPosts";
 import moment from "moment";
+import { siteConfig } from "@/config";
 moment.locale("es");
 
 type Props = CollectionEntry<"blog">["data"];
 
 const { title, description, date, tags, subtitle, id, cover, slug } = Astro.props;
-const { headings } = Astro.props as any;
 
 const allTags = await getPostTags().then((tags) => {
   return tags.map((tag) => ({
@@ -17,9 +17,39 @@ const allTags = await getPostTags().then((tags) => {
   }));
 });
 const filterTags = allTags.filter((tag) => tags?.includes(tag.slug as string));
+
+// JSon-LD metadata for the post
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  author: {
+    "@type": "Person",
+    name: siteConfig.alternateName,
+    url: siteConfig.siteUrl,
+  },
+  headline: title,
+  description: description,
+  datePublished: date,
+  dateModified: date,
+  keywords: tags?.join(", "),
+  image: siteConfig.siteUrl + (cover?.src || siteConfig.openGraph.image),
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": new URL(Astro.url.pathname, Astro.site).toString(),
+  },
+  publisher: {
+    "@type": "Organization",
+    name: siteConfig.alternateName,
+    logo: {
+      "@type": "ImageObject",
+      url: siteConfig.logo,
+    },
+  },
+};
 ---
 
 <Root title={title} description={description} image={cover?.src}>
+  {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   <section class="w-full py-20">
     <header class="mx-auto px-10 sm:px-14 md:max-w-5xl">
       <div class="w-full mx-auto">

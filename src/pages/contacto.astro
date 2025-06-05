@@ -2,9 +2,33 @@
 import SendMail from "@/components/SendMail";
 import Root from "@/layouts/Root.astro";
 import { social } from "@/data/social";
+import { siteConfig } from "@/config";
+
+// JSON-LD for SEO
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    name: "Contacto",
+    description: "Página de contacto de Frankuxui, desarrollador front-end y diseñador UX/UI en Tarragona.",
+    url: new URL(Astro.url.pathname, Astro.site).toString(),
+    image: siteConfig.openGraph.image,
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.alternateName,
+      logo: {
+        "@type": "ImageObject",
+        url: siteConfig.logo,
+      },
+    },
+  },
+};
 ---
 
 <Root transition:name="page-contact" transition:animate="fade">
+  {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
   <div class="w-full max-w-6xl mx-auto px-10">
     <header class="flex flex-col items-start gap-6 pt-10 sm:pt-20">
       <h1
