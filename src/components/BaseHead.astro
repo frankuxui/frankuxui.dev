@@ -74,6 +74,7 @@ const JsonLd = {
 <meta name="author" content="Frankuxui" />
 <meta name="application-name" content={siteConfig.title} />
 <meta name="theme-color" content="#ffffff" />
+<meta name="robots" content="index, follow" />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -100,16 +101,12 @@ const JsonLd = {
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonicalURL} />
-<meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
-<meta property="og:image" content={ogImage} />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@frankuxui" />
 <meta name="twitter:creator" content="@frankuxui" />
+<meta property="twitter:domain" content="frankuxui.dev" />
 <meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />

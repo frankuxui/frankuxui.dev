@@ -25,3 +25,14 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# package lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
