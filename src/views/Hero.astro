@@ -2,12 +2,13 @@
 
 ---
 
-<section class="mx-auto grid md:place-items-center md:min-h-[calc(100vh_-_96px)]">
+<section class="mx-auto grid md:place-items-center md:min-h-[calc(100vh_-_96px)]" itemscope itemtype="https://schema.org/Person">
   <div class="w-full mx-auto max-w-6xl md:px-10">
     <div class="flex flex-col-reverse md:flex-row items-start md:items-center justify-between md:gap-6 lg:gap-10">
       <section class="flex-1 min-w-full md:min-w-80 p-10 md:p-0 max-w-xs lg:max-w-xl">
         <header class="flex flex-col items-start justify-start gap-2 md:gap-4">
           <h1
+            itemprop="name"
             class="relative text-left leading-9 text-2xl motion-safe:animate-text-reveal"
             style={{
               "--hero-text-reveal-opacity-step-0": 1,
@@ -27,6 +28,7 @@
             Frankuxui
           </h1>
           <h2
+            itemprop="jobTitle"
             class="text-left w-full leading-12 text-4xl lg:leading-17 lg:text-5xl font-semibold motion-safe:animate-text-reveal"
             style={{
               "--hero-text-reveal-opacity-step-0": 0,
@@ -47,8 +49,9 @@
           </h2>
         </header>
         <ul
-          class="flex items-center justify-start gap-4 xl:gap-12 mt-10 motion-safe:animate-text-reveal"
+          class="flex items-center justify-start gap-8 xl:gap-12 mt-10 motion-safe:animate-text-reveal"
           aria-label="Redes sociales"
+          role="list"
           style={{
             "--hero-text-reveal-opacity-step-0": 0,
             "--hero-text-reveal-x-step-0": 0,
@@ -64,8 +67,8 @@
             "--hero-text-reveal-y-step-3": "0px",
           }}
         >
-          <li>
-            <a href="https://github.com/frankuxui" aria-label="Ir al perfil de GitHub" target="_blank" rel="noopener noreferrer">
+          <li itemprop="sameAs">
+            <a href="https://github.com/frankuxui" aria-label="Ir al perfil de GitHub de Frankuxui" target="_blank" rel="noopener noreferrer">
               <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"
                 ><path
                   fill="none"
@@ -78,8 +81,8 @@
               >
             </a>
           </li>
-          <li>
-            <a href="https://www.linkedin.com/in/frankuxui/" aria-label="Ir al perfil de LinkedIn" target="_blank" rel="noopener noreferrer">
+          <li itemprop="sameAs">
+            <a href="https://www.linkedin.com/in/frankuxui/" aria-label="Ir al perfil de LinkedIn de Frankuxui" target="_blank" rel="noopener noreferrer">
               <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"
                 ><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width={1.5} color="currentColor"
                   ><path d="M7 10v7m4-4v4m0-4a3 3 0 1 1 6 0v4m-6-4v-3M7.008 7h-.009"></path><path
@@ -89,8 +92,8 @@
               >
             </a>
           </li>
-          <li>
-            <a href="https://www.figma.com/@frankuxui" aria-label="Ir al perfil de Figma" target="_blank" rel="noopener noreferrer">
+          <li itemprop="sameAs">
+            <a href="https://www.figma.com/@frankuxui" aria-label="Ir al perfil de Figma de Frankuxui" target="_blank" rel="noopener noreferrer">
               <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"
                 ><path
                   fill="currentColor"
@@ -99,8 +102,8 @@
               >
             </a>
           </li>
-          <li>
-            <a href="https://codepen.io/frankuxui" aria-label="Ir al perfil de Codepen" target="_blank" rel="noopener noreferrer">
+          <li itemprop="sameAs">
+            <a href="https://codepen.io/frankuxui" aria-label="Ir al perfil de Codepen de Frankuxui" target="_blank" rel="noopener noreferrer">
               <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 16 16"
                 ><path
                   fill="currentColor"
@@ -109,8 +112,8 @@
               >
             </a>
           </li>
-          <li>
-            <a href="https://www.instagram.com/frankuxui/" aria-label="Ir al perfil de Instagram" target="_blank" rel="noopener noreferrer">
+          <li itemprop="sameAs">
+            <a href="https://www.instagram.com/frankuxui/" aria-label="Ir al perfil de Instagram de Frankuxui" target="_blank" rel="noopener noreferrer">
               <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24"
                 ><g fill="none" stroke="currentColor" stroke-width={1.5}
                   ><path stroke-linecap="round" stroke-linejoin="round" d="M12 16a4 4 0 1 0 0-8a4 4 0 0 0 0 8"></path><path
@@ -172,6 +175,7 @@
         >
           <div
             class="z-0 opacity-80 pointer-events-none h-full absolute top-0 left-0 w-full border-x border-x-(--pattern-fg) bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 block dark:[--pattern-fg:var(--color-white)]/3"
+            aria-hidden="true"
           >
           </div>
           <div class="relative flex items-end justify-center md:justify-end w-full h-full md:pt-10">
@@ -180,13 +184,15 @@
               <source srcset="/frankuxui-ux-ui-designer-frontend-developer-cover-mobile.webp" type="image/webp" media="(min-width: 768px)" />
               <img
                 src="/frankuxui-ux-ui-designer-frontend-developer-cover-mobile.webp"
-                alt="Frank Esteban"
-                width={367}
-                height={517}
+                alt="Foto de Frank Esteban, frontend developer y diseñador UX/UI"
+                width="367"
+                height="517"
                 loading="lazy"
                 class="rounded-none w-full min-w-0 max-w-sm md:max-w-full"
+                itemprop="image"
               />
             </picture>
+            <figcaption class="sr-only">Foto de Frank Esteban, Frontend Developer y UX/UI Designer.</figcaption>
           </div>
         </div>
       </figure>

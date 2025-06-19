@@ -6,7 +6,9 @@
     "dev": "astro dev --port 4312 --host",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:e2e": "playwright test",
+    "test:ui": "playwright test --ui --ui-host=localhost --ui-port=9323"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
@@ -28,7 +30,9 @@
     "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.53.1",
     "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^24.0.3",
     "prettier": "3.5.3",
     "prettier-plugin-astro": "0.14.1"
   }
