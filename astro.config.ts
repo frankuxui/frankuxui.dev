@@ -7,15 +7,13 @@ import { rehypePrettyCode } from 'rehype-pretty-code';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
 import react from '@astrojs/react';
 import vercel from '@astrojs/vercel';
-import node from '@astrojs/node';
 
-const isTest = process.env.PLAYWRIGHT === 'true' || process.env.NODE_ENV === 'test';
 
 // https://astro.build/config
 export default defineConfig({
 	output: 'static',
 	site: 'https://frankuxui.dev',
-	adapter: isTest ? node({ mode: 'standalone' }) : vercel(),
+	adapter: vercel(),
 	env: {
 		schema: {
 			RESEND_API: envField.string({ context: "server", access: "secret" }),
