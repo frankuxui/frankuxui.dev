@@ -81,9 +81,9 @@ export default defineConfig({
     process.env.PLAYWRIGHT !== 'true' && !process.env.CI
       ? undefined
       : {
-        command: 'npx serve dist -l 4312',
-        url: baseURL,
-        timeout: 120 * 1000,
+        command: 'npm run preview',
+        url: 'http://localhost:4312',
+        timeout: 120000,
         reuseExistingServer: !process.env.CI,
       },
 });
