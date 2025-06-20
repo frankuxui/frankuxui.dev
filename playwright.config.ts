@@ -1,7 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = 'http://localhost:4312/';
-
+const baseURL = process.env.BASE_URL || 'http://localhost:4312/';
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -78,10 +77,13 @@ export default defineConfig({
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
-  webServer: {
-    command: 'npm run preview',
-    url: baseURL,
-    timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer:
+    process.env.PLAYWRIGHT !== 'true' && !process.env.CI
+      ? undefined
+      : {
+        command: 'npm run preview',
+        url: 'http://localhost:4312',
+        timeout: 120000,
+        reuseExistingServer: !process.env.CI,
+      },
 });
