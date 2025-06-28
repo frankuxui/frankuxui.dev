@@ -4,11 +4,12 @@ import Root from "./Root.astro";
 import { getPostTags } from "@/utils/getPosts";
 import moment from "moment";
 import { siteConfig } from "@/config";
+import type { Post } from "@/types/Post";
 moment.locale("es");
 
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, date, tags, subtitle, id, cover, slug } = Astro.props;
+const { title, description, date, tags, subtitle, id, cover, slug } = Astro.props as Post & Props;
 
 const allTags = await getPostTags().then((tags) => {
   return tags.map((tag) => ({
@@ -48,82 +49,73 @@ const jsonLd = {
 };
 ---
 
-<Root title={title} description={description} image={cover?.src}>
-  {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
-  <section class="w-full py-20">
-    <header class="mx-auto px-10 sm:px-14 md:max-w-5xl">
-      <div class="w-full mx-auto">
-        <a href="/blog" class="text-sm font-medium text-foreground"> ← Volver a la lista de posts </a>
+<Root title={title} description={description}>
+  {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+  <main class="w-full py-20" itemtype="https://schema.org/BlogPosting" itemscope>
+    <header class="mx-auto px-10 sm:px-14 md:max-w-5xl" itemprop="headline">
+      <div>
+        <a href="/blog" class="text-sm font-medium text-foreground" aria-label="Volver al blog">← Volver a la lista de posts</a>
         <div class="grid gap-2 mt-10">
           <p class="text-sm text-foreground/70">Post</p>
-          <h1 class="text-3xl leading-12 md:text-4xl font-medium">
+          <h1 class="text-3xl leading-12 md:text-4xl font-medium" itemprop="name">
             {title}
           </h1>
-          <p class="mt-4 leading-9 text-2xl w-full max-w-4xl">{description}</p>
-          <p class="text-sm text-foreground/50">Artículo creado el {moment(date).format("DD [de] MMMM [de] YYYY")}</p>
+          <p class="mt-4 leading-9 text-2xl w-full max-w-4xl" itemprop="description">{description}</p>
+          <p class="text-sm text-foreground/50" itemprop="datePublished">
+            Artículo creado el {moment(date).format("DD [de] MMMM [de] YYYY")}
+          </p>
         </div>
       </div>
     </header>
 
-    <section class="w-full max-w-5xl mx-auto mt-20">
-      <picture class="w-full lg:max-w-xl xl:max-w-2xl">
-        <img src={cover?.src} alt={cover?.alt} class="w-full min-w-0 sm:rounded-2xl" />
-      </picture>
+    <section class="w-full max-w-5xl mx-auto mt-10">
+      <figure itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+        <img
+          src={cover?.src}
+          alt={cover?.alt || `Imagen destacada del post: ${title}`}
+          data-author={cover?.author}
+          data-author-name={cover?.authorName}
+          title={cover?.alt || title}
+          class="w-full min-w-0 sm:rounded-2xl"
+          itemprop="url"
+        />
+        {
+          cover?.authorName && (
+            <figcaption class="text-sm text-foreground/50 mt-2">
+              Imagen por{" "}
+              <a href={cover.author} target="_blank" rel="noopener noreferrer">
+                {cover.authorName}
+              </a>
+            </figcaption>
+          )
+        }
+      </figure>
     </section>
 
-    <section>
-      <ul class="flex items-center justify-start w-full max-w-5xl px-10 mx-auto mt-10 gap-2">
+    <nav aria-label="Etiquetas del post" class="w-full max-w-5xl px-10 mx-auto mt-10">
+      <ul class="flex items-center gap-2 flex-wrap">
         {
           filterTags?.map((tag) => (
             <li>
               <a
                 href={`/blog?q=${tag.slug}`}
-                class="h-10 text-sm font-medium px-6 inline-flex items-center flex-none justify-end rounded-full motion-safe:transition-colors motion-safe:duration-300 bg-foreground/5 hover:bg-foreground/12"
+                aria-label={`Ver posts etiquetados con ${tag.name}`}
+                class="h-10 text-sm font-medium px-6 inline-flex items-center justify-center rounded-full motion-safe:transition-colors bg-foreground/5 hover:bg-foreground/12"
+                itemprop="keywords"
               >
-                {tag?.name}
+                {tag.name}
               </a>
             </li>
           ))
         }
       </ul>
-    </section>
+    </nav>
 
     <section class="w-full">
-      <div class="w-full max-w-5xl px-10 mx-auto gap-16">
-        <article
-          class="w-full min-w-0 pb-20 max-w-4xl mt-10 md-content prose lg:prose-lg prose-h2:pt-8 prose-h3:pt-6 prose-h2:first:mt-0 prose-a:text-foreground prose-headings:text-foreground prose-p:text-foreground/80 prose-strong:text-foreground prose-ul:text-foreground/80 prose-hr:border-foreground/10 *:text-foreground/80 marker:text-foreground/80 dark:prose-invert prose-blockquote:font-normal prose-h2:font-semibold"
-        >
-          <slot />
-        </article>
-      </div>
+      <article class="w-full max-w-5xl px-10 mx-auto mt-10 pb-20 prose lg:prose-lg dark:prose-invert" itemprop="articleBody">
+        <slot />
+      </article>
     </section>
-  </section>
+  </main>
 </Root>
-
-<!-- <aside class="flex-none max-w-56 sticky top-20 mt-0 pt-20 hidden lg:block">
-  <h2 class="text-2xl font-semibold text-foreground">En esta página</h2>
-  <ul class="flex flex-col list-none mt-4 gap-3">
-    {
-      headings &&
-        headings?.map((heading: any) => {
-          const level1 = heading.depth === 2;
-          const level2 = heading.depth === 3;
-          const level3 = heading.depth === 4;
-          const level4 = heading.depth === 5;
-          const level5 = heading.depth === 6;
-          return (
-            <li
-              style={{
-                "padding-left": `${(heading.depth - 2) * 20}px`,
-              }}
-              class:list={["text-sm", "pl-2", level1 && "font-normal", level2 && "font-normal", level3 && "font-normal", level4 && "font-normal", level5 && "font-normal"]}
-            >
-              <a href={`#${heading.slug}`} class="content-toc text-foreground/70 hover:text-foreground">
-                {heading.text}
-              </a>
-            </li>
-          );
-        })
-    }
-  </ul>
-</aside> -->

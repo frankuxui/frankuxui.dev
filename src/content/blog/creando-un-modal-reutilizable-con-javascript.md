@@ -9,8 +9,10 @@ tags:
   - "html"
   - "css"
 cover:
-  src: "/posts/creando-un-modal-reutilizable-con-javascript.webp"
-  alt: "Imagen de un componente de un modal reutilizable creado con Javascript vanilla."
+  src: "https://images.unsplash.com/photo-1470092306007-055b6797ca72?w=768&h=512&auto=format&fit=crop&crop=center&fm=webp&q=90"
+  author: "https://unsplash.com/es/@scottwebb"
+  authorName: "Scott Webb"
+  alt: "Imagen de unsplash de Scott Webb"
 ---
 
 ## Introducción

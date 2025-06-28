@@ -14,6 +14,8 @@ const blog = defineCollection({
 		cover: z.object({
 			src: z.string(),
 			alt: z.string().optional(),
+			author: z.string().optional(),
+			authorName: z.string().optional(),
 		}).optional(),
 	}),
 });
