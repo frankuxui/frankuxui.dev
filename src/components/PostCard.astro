@@ -2,25 +2,50 @@
 import type { Post } from "@/types/Post";
 
 const { post } = Astro.props as { post: Post };
+const formattedDate = post?.date
+  ? new Date(String(post.date)).toLocaleDateString("es-ES", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  : "";
 ---
 
-<article>
-  <a class="w-full flex flex-col gap-4 border rounded-2xl p-6 border-border" href={`/blog/${post?.slug}`}>
+<article itemscope itemtype="https://schema.org/BlogPosting" aria-labelledby={`post-title-${post.slug}`} class="w-full h-full col-span-4 group">
+  <a href={`/blog/${post.slug}`} class="w-full max-w-full h-full flex flex-col gap-4" itemprop="url">
     {
       post?.cover?.src ? (
         <picture>
-          <source src-set={post?.cover?.src} type="image/webp" media="(min-width: 1280px)" />
-          <source src-set={post?.cover?.src} type="image/webp" media="(min-width: 768px)" />
-          <img src={post?.cover?.src} alt={post?.cover?.alt} class="rounded-lg w-full min-w-0 max-w-full object-cover min-h-70" />
+          <source srcset={post.cover.src} type="image/webp" media="(min-width: 1280px)" />
+          <source srcset={post.cover.src} type="image/webp" media="(min-width: 768px)" />
+          <img
+            src={post.cover.src}
+            alt={post.cover.alt || post.title}
+            data-author={post?.cover?.author}
+            data-author-name={post?.cover?.authorName}
+            title={post.cover.alt || post.title}
+            class="w-full min-w-0 max-w-full object-cover aspect-[6/7] border rounded-xl ring-offset-4 border-border motion-safe:transition-all motion-safe:duration-300 hover:ring-2 group-hover:ring-foreground/50 ring-offset-background"
+            loading="lazy"
+            decoding="async"
+            itemprop="image"
+          />
         </picture>
       ) : (
-        <div class="rounded-lg w-full min-w-0 min-h-70 max-w-full bg-foreground/6" />
+        <div class="rounded-lg w-full min-w-0 min-h-70 max-w-full bg-foreground/6" aria-hidden="true" />
       )
     }
+
     <div class="flex flex-col items-start gap-1">
-      <p class="text-base text-foreground/70">Creado el {post?.date}</p>
-      <h2 class="text-2xl font-medium">{post?.title}</h2>
+      <time class="text-base text-foreground/70" datetime={post.date} itemprop="datePublished">
+        Creado el {formattedDate}
+      </time>
+      <h2 id={`post-title-${post.slug}`} class="leading-8 text-xl font-semibold" itemprop="headline">
+        {post.title}
+      </h2>
     </div>
-    <p class="text-base">{post?.subtitle}</p>
+
+    <p class="text-base" itemprop="description">
+      {post.subtitle}
+    </p>
   </a>
 </article>

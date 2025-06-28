@@ -10,8 +10,10 @@ tags:
   - "shiki"
   - "mdx"
 cover:
-  src: "/posts/configurando-shiki-syntax-highlighter.webp"
-  alt: "Imagen de un ordenador antiguo para mostrar un código Shiki Syntax Highlighter en Next.js"
+  src: "https://images.unsplash.com/photo-1582967788606-a171c1080cb0?w=768&h=512&auto=format&fit=crop&crop=center&fm=webp&q=90"
+  author: "https://unsplash.com/es/@francesco_ungaro"
+  authorName: "Francesco Ungaro"
+  alt: "Imagen de unsplash de Francesco Ungaro"
 ---
 
 ## Introducción

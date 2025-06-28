@@ -9,6 +9,8 @@ export type Post = {
   cover?: {
     src: string;
     alt?: string;
+    author?: string;
+    authorName?: string;
   };
 };
 export type PostCollection = Post[];

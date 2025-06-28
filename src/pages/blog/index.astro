@@ -56,10 +56,12 @@ const jsonLd = {
 
 <Root>
   {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
+
   <div class="w-full pt-10 sm:pt-20 pb-20">
-    <section class="w-full max-w-6xl mx-auto px-10" id="blog">
+    <section class="w-full max-w-6xl mx-auto px-10" id="blog" aria-labelledby="blog-title">
       <header class="w-full grid gap-6">
         <h1
+          id="blog-title"
           class="font-medium text-xl motion-safe:animate-text-reveal"
           style={{
             "--hero-text-reveal-opacity-step-0": 1,
@@ -78,8 +80,9 @@ const jsonLd = {
         >
           Blog
         </h1>
+
         <p
-          class="text-left w-full leading-10 text-3xl sm:leading-12 sm:text-4xl font-normal motion-safe:animate-text-reveal"
+          class="text-left w-full leading-10 text-3xl font-normal motion-safe:animate-text-reveal"
           style={{
             "--hero-text-reveal-opacity-step-0": 0,
             "--hero-text-reveal-x-step-0": 0,
@@ -97,6 +100,7 @@ const jsonLd = {
         >
           Mis artículos
         </p>
+
         <p
           class="text-xl motion-safe:animate-text-reveal"
           style={{
@@ -114,23 +118,25 @@ const jsonLd = {
             "--hero-text-reveal-y-step-3": "0px",
           }}
         >
-          Dale un vistazo a mis últimos artículos y reflexiones sobre desarrollo web, diseño y tecnología. Comparto lo que voy aprendiendo en el camino, con la idea de que también
-          pueda servirte a ti.
+          Reflexiones sobre desarrollo web, diseño y tecnología. Comparto aprendizajes para que también te sean útiles.
         </p>
       </header>
-      <section class="py-10">
-        {
-          tags.length > 0 && (
+
+      <!-- Selector de tags -->
+      {
+        tags.length > 0 && (
+          <section class="py-10" aria-label="Filtrar artículos por etiquetas">
             <div class="flex flex-wrap gap-2 mb-4">
               {tags.map(({ name, slug }) => (
                 <PostTag name={name as string} slug={slug as string} />
               ))}
             </div>
-          )
-        }
-      </section>
+          </section>
+        )
+      }
 
-      <section class="grid sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <!-- Lista de artículos -->
+      <section class="w-full relative grid grid-cols-4 gap-x-4 md:grid-cols-8 lg:grid-cols-12 lg:gap-x-6 mx-auto max-w-6xl mb-64" aria-label="Listado de artículos del blog">
         {posts.map((post: Post) => <PostCard post={post} />)}
       </section>
     </section>

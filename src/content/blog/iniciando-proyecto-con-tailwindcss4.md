@@ -9,8 +9,10 @@ tags:
   - "react"
   - "vite"
 cover:
-  src: "/posts/iniciando-proyecto-con-tailwindcss4.webp"
-  alt: "Imagen de un ordenador antiguo para mostrar un código de Tailwind CSS 4 en Vanilla JavaScript"
+  src: "https://images.unsplash.com/photo-1575362247640-3c7f5079818d?w=768&h=512&auto=format&fit=crop&crop=center&fm=webp&q=90"
+  author: "https://unsplash.com/es/@francesco_ungaro"
+  authorName: "Francesco Ungaro"
+  alt: "Imagen de unsplash de Francesco Ungaro"
 ---
 
 ## Iniciando un proyecto con Tailwind CSS 4 y Vanilla JavaScript
