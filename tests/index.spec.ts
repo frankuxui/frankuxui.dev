@@ -135,3 +135,4 @@ test('El footer muestra el año actual actualizado', async ({ page }) => {
   const footerText = await page.locator('[data-test-id="web-date"]').innerText();
   expect(footerText).toContain(year);
 });
+

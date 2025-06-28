@@ -5,6 +5,7 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  keywords?: string;
 }
 
 // Normalizar Astro.url.pathname para quitar trailing slash (menos para "/")
@@ -12,7 +13,7 @@ const pathname = Astro.url.pathname === "/" ? "/" : Astro.url.pathname.replace(/
 
 // Crear la URL canónica normalizada
 const canonicalURL = new URL(pathname, Astro.site).toString();
-const { title, description, image = siteConfig.openGraph.image } = Astro.props as Props;
+const { title, description, image = siteConfig.openGraph.image, keywords = siteConfig.keywords } = Astro.props as Props;
 const ogImage = new URL(image, Astro.site?.href || "https://frankuxui.dev").href;
 
 const JsonLd = {
@@ -70,7 +71,7 @@ const JsonLd = {
 <meta name="generator" content={Astro.generator} />
 
 <!-- SEO Metadata -->
-<meta name="keywords" content={siteConfig.keywords} />
+<meta name="keywords" content={keywords} />
 <meta name="author" content="Frankuxui" />
 <meta name="application-name" content={siteConfig.title} />
 <meta name="theme-color" content="#ffffff" />

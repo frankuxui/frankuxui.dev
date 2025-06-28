@@ -1,19 +1,150 @@
-{
-  "type": "web",
-  "title": "Widgets components v2.1",
-  "subtitle": "Más de 500 widgets minimalistas para tus proyectos web.",
-  "slug": "widgets-components-v2-1",
-  "description": "Desarrollado con Astro.js y Tailwind CSS, este proyecto presenta componentes reutilizables adaptados a diversas necesidades de usuario, organizados en categorías específicas. Con atractivas interfaces de usuario y soporte para temas claros y oscuros, ofrece una experiencia de usuario moderna y fluida, facilitando la personalización y escalabilidad",
-  "url": "https://widgets-components-v2-1.vercel.app/",
-  "topics": [
-    "javascript", "css", "html", "social", "finance", "widget", "ui", "interface", "ux", "uikit", "card", "widgets", "astro", "tailwindcss"
-  ],
-  "languages": [
-    "Astro", "JavaScript"
-  ],
-  "cover": "https://widgets-components-v2-1.vercel.app/og-image.jpg",
-  "content": {
-    "title": "Widgets components v2.1",
-    "content": "Widgets components v2.1 es un proyecto que ofrece más de 500 widgets minimalistas diseñados para ser utilizados en una amplia variedad de proyectos web. Desarrollado con Astro.js y Tailwind CSS, este conjunto de componentes reutilizables está organizado en categorías específicas, lo que facilita su integración y uso."
+[
+  {
+    "id": "widgets-components-tailwind-v4",
+    "type": "web",
+    "slug": "widgets-components-tailwind-v4",
+    "title": "Widgets Componentes Tailwind CSS 4",
+    "subtitle": "Más de 500 widgets minimalistas para aumentar la creatividad y mejorar la experiencia de usuario.",
+    "description": "Desarrollado con Astro.js y Tailwind CSS, este proyecto presenta componentes reutilizables adaptados a diversas necesidades de usuario, organizados en categorías específicas. Con atractivas interfaces de usuario y soporte para temas claros y oscuros, ofrece una experiencia de usuario moderna y fluida, facilitando la personalización y escalabilidad, su principal objetivo es mejorar la creatividad.",
+    "url": "https://widgets-components-tailwind-v4.vercel.app",
+    "repository": "https://github.com/frankuxui/widgets-components-tailwind-v4",
+    "topics": [
+      "javascript",
+      "css",
+      "html",
+      "social",
+      "finance",
+      "widget",
+      "ui",
+      "interface",
+      "ux",
+      "uikit",
+      "card",
+      "widgets",
+      "astro",
+      "tailwindcss"
+    ],
+    "languages": [
+      "Astro",
+      "JavaScript"
+    ],
+    "technologies": [
+      "Astro",
+      "Tailwind CSS",
+      "JavaScript",
+      "HTML",
+      "CSS"
+    ],
+    "cover": "https://widgets-components-tailwind-v4.vercel.app/og.jpg",
+    "content": {
+      "title": "Widgets components v2.1",
+      "description": "Colección de widgets, componentes y diseños minimalistas creados con Tailwind CSS 4 y Astro. Recursos modernos y personalizables para fomentar ideas y mejorar la creatividad."
+    },
+    "keywords": [
+      "frankuxui",
+      "rankuxui",
+      "frankuxui portfolio",
+      "frankuxui developer",
+      "componentes",
+      "astro",
+      "tailwindcss",
+      "astro",
+      "ui",
+      "ux",
+      "minimalist",
+      "widgets para dashboards",
+      "plantillas tailwind css",
+      "widgets adaptativos",
+      "componentes para desarrolladores",
+      "interfaz limpia",
+      "widgets para aplicaciones web",
+      "recursos tailwind css 4",
+      "javascript",
+      "css",
+      "html",
+      "social",
+      "finance",
+      "widget",
+      "travel",
+      "shopping",
+      "weather",
+      "food"
+    ]
+  },
+  {
+    "id": "music-widgets-components-v2-1.vercel.app",
+    "type": "web",
+    "slug": "music-widgets-components-v2-1.vercel.app",
+    "title": "Music Widgets Components v2.1",
+    "subtitle": "Colección de widgets minimalistas pensados para el diseño de interfaces musicales.",
+    "description": "Colección de widgets minimalistas pensados para el diseño de interfaces musicales. Ofrece recursos reutilizables con soporte para temas claro y oscuro, ideales para crear experiencias modernas y accesibles.",
+    "url": "https://music-widgets-components-v2-1.vercel.app/widgets",
+    "repository": "https://github.com/frankuxui/music-widgets-components-v2.1",
+    "topics": [
+      "javascript",
+      "css",
+      "html",
+      "social",
+      "finance",
+      "widget",
+      "ui",
+      "interface",
+      "ux",
+      "uikit",
+      "card",
+      "widgets",
+      "astro",
+      "tailwindcss"
+    ],
+    "languages": [
+      "Astro",
+      "JavaScript"
+    ],
+    "technologies": [
+      "Astro",
+      "Tailwind CSS",
+      "JavaScript",
+      "HTML",
+      "CSS"
+    ],
+    "cover": "https://music-widgets-components-v2-1.vercel.app/og.jpg",
+    "content": {
+      "title": "Music Widgets Components v2.1",
+      "description": [
+        "En muchas ocasiones queremos implementar widgets, tarjetas o componentes, pero nos falta la inspiración o simplemente ese día la creatividad no está en su mejor momento. Con estos widgets puedes encontrar ideas, referencias y soluciones de diseño minimalista que te ayuden a crear interfaces modernas, accesibles y visualmente atractivas. La idea es inspirar y fomentar la creatividad en el diseño de widgets, tarjetas y componentes reutilizables.",
+        "Desarrollado con Astro.js y Tailwind CSS, este proyecto presenta componentes reutilizables adaptados a diversas necesidades de usuario, organizados en categorías específicas. Con atractivas interfaces de usuario y soporte para temas claros y oscuros, ofrece una experiencia de usuario moderna y fluida, facilitando la personalización y escalabilidad, su principal objetivo es mejorar la creatividad."
+      ]
+    },
+    "keywords": [
+      "widgets",
+      "components",
+      "astro",
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "tailwind",
+      "web development",
+      "UI components",
+      "reusable components",
+      "minimalist design",
+      "dark mode",
+      "light mode",
+      "responsive design",
+      "frontend development",
+      "web design",
+      "user interface",
+      "web components",
+      "frankuxui",
+      "music",
+      "music app",
+      "music player",
+      "audio player",
+      "UI",
+      "UX",
+      "user experience",
+      "web widgets",
+      "web components library",
+      "modern design"
+    ]
   }
-}
+]

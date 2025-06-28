@@ -1,0 +1,157 @@
+---
+import Root from "@/layouts/Root.astro";
+import type { Project } from "@/types/Project";
+import { getProjects } from "@/utils/getProjects";
+
+export async function getStaticPaths() {
+  const data: Project[] = await getProjects();
+
+  return data.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props as { project: Project };
+const keywords = project.keywords.join(", ");
+const title = `${project.title} - Proyectos | Frankuxui`;
+const ogImage = project.cover;
+---
+
+<Root transition:name="page-projects" transition:animate="fade" keywords={keywords} title={title} description={project.description} image={ogImage}>
+  <div class="w-full max-w-7xl mx-auto sm:px-10" aria-labelledby="project-title">
+    <article class="w-full grid gap-6 sm:pt-20 pb-40" itemscope itemtype="https://schema.org/CreativeWork">
+      <header class="flex items-start justify-between flex-col lg:flex-row lg:items-center gap-8 xl:gap-10 2xl:gap-16">
+        <figure class="w-full min-w-0 max-w-full lg:max-w-2xl xl:max-w-3xl" role="group" aria-label={`Imagen de portada del proyecto ${project.title}`}>
+          <picture transition:name={`animate-project-${project.slug}`}>
+            <source srcset={project.cover} type="image/jpeg" />
+            <img
+              src={project.cover}
+              alt={`Portada del proyecto ${project.title}`}
+              class="w-full min-h-72 h-full sm:rounded-xl max-w-full object-cover"
+              loading="lazy"
+              width="800"
+              height="600"
+              itemprop="image"
+            />
+          </picture>
+        </figure>
+
+        <div class="px-10 sm:px-0 min-w-xs flex-1 flex flex-col items-start justify-center h-full gap-2 md:gap-4">
+          <p class="text-sm inline-flex items-center gap-2 uppercase font-medium text-foreground/70" aria-label="Tipo de proyecto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48"
+              ><path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M24.04 42.5c10.215 0 18.46-8.285 18.46-18.54c0-10.215-8.245-18.46-18.46-18.46C13.785 5.5 5.5 13.745 5.5 23.96c0 10.255 8.285 18.54 18.54 18.54m16.012-27.75H7.96m32.195 18.275H7.857M5.6 24h36.8M24.04 5.5v37"
+                stroke-width="2"></path><path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M24.02 42.5c5.108 0 9.23-8.285 9.23-18.54c0-10.215-4.122-18.46-9.23-18.46c-5.128 0-9.27 8.245-9.27 18.46c0 10.255 4.142 18.54 9.27 18.54"
+                stroke-width="2"></path></svg
+            >
+            <span>{project.type}</span>
+          </p>
+          <h1 id="project-title" class="leading-11 text-3xl font-bold" itemprop="name">
+            {project.title}
+          </h1>
+          <p class="xl:text-xl" itemprop="headline">{project.subtitle}</p>
+          <div class="inline-flex items-center justify-start gap-2 mt-3">
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer external"
+              class="font-semibold text-sm px-4 h-10 inline-flex items-center justify-center bg-foreground text-background rounded-full motion-safe:transition-colors motion-safe:duration-300 hover:bg-foreground/95"
+              itemprop="url"
+              aria-label={`Visitar el sitio del proyecto: ${project.title}`}
+            >
+              Ver proyecto
+            </a>
+            <a
+              class="font-semibold text-sm px-4 h-10 inline-flex items-center justify-center bg-foreground/10 text-foreground rounded-full hover:bg-foreground/12 motion-safe:transition-colors motion-safe:duration-300"
+              href={project.repository}
+              target="_blank"
+              rel="noopener noreferrer external"
+              aria-label={`Ver el código fuente del proyecto: ${project.title}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                ><path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M6.517 17.113c.395.578 1.592 1.81 3.225 2.12M9.864 22C8.836 21.83 2 19.606 2 12.093C2 5.063 8.002 2 12 2c4 0 10 3.063 10 10.093c0 7.513-6.836 9.738-7.864 9.907c0 0-.21-3.417-.087-4.003c.122-.586-.294-1.528-.294-1.528c.971-.364 2.45-.884 2.945-2.282c.385-1.084.627-2.658-.45-4.138c0 0 .282-2.39-.25-2.484c-.533-.092-2.1.947-2.1.947c-.457-.13-1.476-.377-1.898-.333c-.423-.044-1.445.203-1.902.333c0 0-1.568-1.04-2.1-.947s-.25 2.484-.25 2.484c-1.077 1.48-.835 3.054-.45 4.138c.496 1.398 1.974 1.918 2.945 2.282c0 0-.416.942-.294 1.528S9.864 22 9.864 22"
+                  color="currentColor"></path></svg
+              >
+              <span class="ml-2">Github</span>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <section class="mt-10 w-full max-w-6xl mx-auto px-10 space-y-6" aria-labelledby="description-heading">
+        <h2 id="description-heading" class="text-2xl sm:text-3xl font-semibold mb-8">Descripción</h2>
+        {
+          Array.isArray(project.content.description) ? (
+            project.content.description.map((paragraph) => (
+              <p class="leading-8 sm:text-xl" itemprop="description">
+                {paragraph}
+              </p>
+            ))
+          ) : (
+            <p class="leading-8 sm:text-xl" itemprop="description">
+              {project.content.description}
+            </p>
+          )
+        }
+      </section>
+
+      <section class="mt-10 w-full max-w-6xl mx-auto px-10" aria-labelledby="technologies-heading">
+        <h2 id="technologies-heading" class="text-2xl sm:text-3xl font-semibold mb-8">Tecnologías utilizadas</h2>
+        <ul class="flex flex-wrap gap-2">
+          {
+            project.technologies.map((tech) => (
+              <li
+                class="font-semibold text-sm px-4 h-8 inline-flex items-center justify-center rounded-full bg-foreground/5 text-foreground hover:bg-foreground/12 motion-safe:transition-colors motion-safe:duration-300"
+                itemprop="technology"
+              >
+                {tech}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="mt-10 w-full max-w-6xl mx-auto px-10" aria-labelledby="project-tags">
+        <h2 id="project-tags" class="text-2xl sm:text-3xl font-semibold mb-8">Etiquetas</h2>
+        <ul class="flex flex-wrap gap-2">
+          {
+            project.topics.map((tag) => (
+              <li
+                class="font-semibold text-sm px-4 h-8 inline-flex items-center justify-center rounded-full bg-foreground/5 text-foreground hover:bg-foreground/12 motion-safe:transition-colors motion-safe:duration-300"
+                itemprop="tags"
+              >
+                {tag}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </article>
+  </div>
+
+  <!-- <a
+    href={project.url}
+    target="_blank"
+    rel="noopener noreferrer external"
+    class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-primary text-white px-6 py-3 rounded-full shadow-lg hover:bg-primary/90 transition-colors"
+    aria-label={`Visitar el sitio del proyecto: ${project.title}`}
+  >
+    Ver proyecto
+  </a> -->
+</Root>
