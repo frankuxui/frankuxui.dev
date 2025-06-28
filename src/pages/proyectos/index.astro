@@ -6,12 +6,13 @@ import { getProjects } from "@/utils/getProjects";
 export const prerender = true;
 
 const data: Project[] = await getProjects();
+const title = "Proyectos personales | Frankuxui - Desarrollador Front-End y Diseñador UX/UI";
 ---
 
 <Root
   transition:name="page-projects"
   transition:animate="fade"
-  title="Proyectos | Frankuxui"
+  title={title}
   description="Explora los proyectos personales de Frankuxui centrados en desarrollo web, diseño UI/UX y componentes reutilizables."
 >
   <header class="w-full max-w-6xl mx-auto px-10 grid gap-6 pt-10 sm:pt-20 text-balance" aria-labelledby="projects-heading">
