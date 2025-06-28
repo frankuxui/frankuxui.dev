@@ -27,7 +27,7 @@ const jsonLd = {
 };
 ---
 
-<Root transition:name="page-contact" transition:animate="fade">
+<Root>
   {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
   <div class="w-full max-w-6xl mx-auto px-10">
     <header class="flex flex-col items-start gap-6 pt-10 sm:pt-20">
@@ -161,7 +161,7 @@ const jsonLd = {
                 class="overflow-hidden relative inline-flex items-center justify-center w-14 h-14 rounded-full text-foreground"
               >
                 <span class="sr-only">{item.name}</span>
-                <span class="relative z-[1] cursor-pointer text-4xl dark:text-white dark:group-hover:text-white" transition:name={`social-${item.name}`} set:html={item.icon} />
+                <span class="relative z-[1] cursor-pointer text-4xl dark:text-white dark:group-hover:text-white" set:html={item.icon} />
               </a>
             </li>
           ))
