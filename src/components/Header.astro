@@ -7,7 +7,6 @@ const pathname = Astro.url.pathname;
 <header
   class="sticky top-0 left-0 w-full h-20 sm:h-24 flex items-center justify-center z-50 duration-300 border-b border-border bg-background/70 backdrop-blur-2xl"
   data-toggle="header"
-  transition:animate="none"
 >
   <div class="w-full max-w-6xl mx-auto px-10">
     <div class="w-full relative flex items-center">
@@ -37,7 +36,6 @@ const pathname = Astro.url.pathname;
                     ]}
                     data-state={pathname.includes(href) ? "active" : ""}
                     aria-current={pathname.includes(href) ? "page" : undefined}
-                    transition:animate="none"
                     data-astro-reload
                   >
                     {label}
@@ -117,9 +115,7 @@ const pathname = Astro.url.pathname;
       setup();
     }
 
-    // Re-setup tras navegación cliente de Astro
-    document.addEventListener("astro:after-swap", setup);
-    document.addEventListener("astro:page-load", setup);
+    document.addEventListener("DOMContentLoaded", setup);
   })();
 
   // Header links
@@ -142,8 +138,7 @@ const pathname = Astro.url.pathname;
 
   function setupActiveLinkHandler() {
     updateActiveLinks();
-    document.addEventListener("astro:after-swap", updateActiveLinks);
-    document.addEventListener("astro:page-load", updateActiveLinks);
+    document.addEventListener("DOMContentLoaded", updateActiveLinks);
   }
 
   // Ejecutamos cuando el DOM esté listo

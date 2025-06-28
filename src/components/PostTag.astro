@@ -46,7 +46,6 @@ const { name, slug } = Astro.props;
       input.addEventListener("change", (e) => {
         const target = e.target as HTMLInputElement;
         const checked = target.checked;
-        // window.location.href = `?q=${checked ? selectedSlugs.concat(slug).join(" ") : selectedSlugs.filter((s) => s !== slug).join(" ")}`;
 
         const currentParams = new URLSearchParams(window.location.search);
         let current = (currentParams.get("q") || "").split(" ").filter(Boolean);
@@ -73,6 +72,4 @@ const { name, slug } = Astro.props;
   };
 
   document.addEventListener("DOMContentLoaded", initCategoryFilter);
-  document.addEventListener("astro:page-load", initCategoryFilter);
-  document.addEventListener("astro:after-swap", initCategoryFilter);
 </script>

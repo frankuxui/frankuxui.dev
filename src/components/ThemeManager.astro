@@ -26,7 +26,7 @@ const { defaultTheme = "system" } = Astro.props;
       document.dispatchEvent(
         new CustomEvent("theme-changed", {
           detail: { theme, systemTheme, defaultTheme },
-        })
+        }),
       );
     }
 
@@ -52,7 +52,5 @@ const { defaultTheme = "system" } = Astro.props;
   theme.setTheme(theme.getTheme());
 </script>
 <script>
-  document.addEventListener("astro:after-swap", () => window.theme.setTheme(window.theme.getTheme()));
-  document.addEventListener("astro:page-load", () => window.theme.setTheme(window.theme.getTheme()));
-  document.addEventListener("astro:before-swap", () => window.theme.setTheme(window.theme.getTheme()));
+  document.addEventListener("DOMContentLoaded", () => window.theme.setTheme(window.theme.getTheme()));
 </script>

@@ -54,7 +54,7 @@ const jsonLd = {
 };
 ---
 
-<Root transition:name="page-blog" transition:animate="fade">
+<Root>
   {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
   <div class="w-full pt-10 sm:pt-20 pb-20">
     <section class="w-full max-w-6xl mx-auto px-10" id="blog">

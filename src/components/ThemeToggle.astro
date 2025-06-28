@@ -105,7 +105,7 @@
 
     toggleBtn.addEventListener("click", cycleTheme);
 
-    document.addEventListener("astro:page-load", () => {
+    document.addEventListener("DOMContentLoaded", () => {
       applyIconState(theme.getTheme());
     });
 
@@ -114,7 +114,4 @@
   }
 
   document.addEventListener("DOMContentLoaded", initTheme);
-  document.addEventListener("astro:after-swap", initTheme);
-  document.addEventListener("astro:before-swap", initTheme);
-  document.addEventListener("astro:page-load", initTheme);
 </script>
