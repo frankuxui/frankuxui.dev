@@ -75,18 +75,14 @@ const title = "Proyectos personales | Frankuxui - Desarrollador Front-End y Dise
     <div class="grid md:grid-cols-2 gap-6 items-start">
       {
         data.map((project) => (
-          <article class="w-full" itemscope itemtype="https://schema.org/CreativeWork" aria-labelledby={`project-title-${project.slug}`}>
-            <a
-              href={`/proyectos/${project.slug}`}
-              class="flex flex-col gap-4 border rounded-2xl p-6 transition-all duration-300 border-border hover:ring-2 hover:ring-foreground"
-              aria-label={`Ver detalles del proyecto ${project.title}`}
-            >
+          <article class="w-full group" itemscope itemtype="https://schema.org/CreativeWork" aria-labelledby={`project-title-${project.slug}`}>
+            <a href={`/proyectos/${project.slug}`} class="w-full max-w-full h-full flex flex-col gap-4" aria-label={`Ver detalles del proyecto ${project.title}`}>
               <picture>
                 <source srcset={project.cover} type="image/jpeg" />
                 <img
                   src={project.cover}
                   alt={`Imagen de portada del proyecto ${project.title}`}
-                  class="w-full h-full max-w-full object-contain rounded-lg mb-4"
+                  class="w-full min-w-0 max-w-full object-cover border rounded-xl ring-offset-4 border-border motion-safe:transition-all motion-safe:duration-300 group-hover:ring-2 group-hover:ring-foreground/50 ring-offset-background"
                   loading="lazy"
                   decoding="async"
                   width="600"
