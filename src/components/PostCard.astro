@@ -11,8 +11,8 @@ const formattedDate = post?.date
   : "";
 ---
 
-<article itemscope itemtype="https://schema.org/BlogPosting" aria-labelledby={`post-title-${post.slug}`} class="w-full h-full col-span-4 group">
-  <a href={`/blog/${post.slug}`} class="w-full max-w-full h-full flex flex-col gap-4" itemprop="url">
+<article itemscope itemtype="https://schema.org/BlogPosting" aria-labelledby={`post-title-${post.slug}`} class="w-full h-full col-span-4 group mb-10">
+  <a href={`/blog/${post.slug}`} class="w-full max-w-full h-full flex flex-col gap-3" itemprop="url">
     {
       post?.cover?.src ? (
         <picture>
@@ -43,7 +43,6 @@ const formattedDate = post?.date
         {post.title}
       </h2>
     </div>
-
     <p class="text-base" itemprop="description">
       {post.subtitle}
     </p>

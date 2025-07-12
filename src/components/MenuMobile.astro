@@ -1,8 +1,12 @@
+---
+const pathname = Astro.url.pathname;
+---
+
 <div class="fixed top-0 left-0 w-full h-full hidden z-50" id="drawer-menu-wrapper">
   <div data-toggle="drawer-menu" class="absolute top-0 left-0 w-full h-full bg-black/80"></div>
-  <div class="absolute bottom-0 w-full left-0 rounded-t-4xl p-8 overflow-hidden bg-background" id="drawer-menu-content">
-    <div class="flex items-start flex-col w-full gap-8 overflow-hidden h-[26rem]">
-      <header class="flex-none flex items-center justify-between w-full">
+  <div class="absolute bottom-0 w-full left-0 rounded-t-4xl overflow-hidden bg-background" id="drawer-menu-content">
+    <div class="flex items-start flex-col w-full gap-4 overflow-hidden h-[28rem]">
+      <header class="flex-none flex items-center justify-between w-full pt-8 px-10">
         <h2 class="text-xl font-semibold">Menu principal</h2>
         <button
           data-toggle="drawer-menu"
@@ -20,19 +24,94 @@
       <section class="overflow-auto w-full">
         <ul>
           <li class="w-full block">
-            <a data-toggle="drawer-menu" href="/" class="block text-left text-lg font-semibold py-4">Inicio</a>
+            <a
+              data-toggle="drawer-menu"
+              href="/"
+              class="text-left text-lg font-semibold py-4 px-10 flex items-center justify-between"
+              class:list={[pathname === "/" ? "bg-foreground/5" : ""]}
+              data-active={pathname === "/"}
+            >
+              <span>Inicio</span>
+              {
+                pathname === "/" ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 12l4.243 4.243l8.484-8.486" />
+                  </svg>
+                ) : null
+              }
+            </a>
           </li>
           <li class="w-full block">
-            <a data-toggle="drawer-menu" href="/sobre-mi" class="block text-left text-lg font-semibold py-4">Sobre mi</a>
+            <a
+              data-toggle="drawer-menu"
+              href="/sobre-mi"
+              class="text-left text-lg font-semibold py-4 px-10 flex items-center justify-between"
+              class:list={[pathname === "/sobre-mi" ? "bg-foreground/5" : ""]}
+              data-active={pathname === "/sobre-mi"}
+            >
+              <span>Sobre mi</span>
+              {
+                pathname === "/sobre-mi" ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 12l4.243 4.243l8.484-8.486" />
+                  </svg>
+                ) : null
+              }
+            </a>
           </li>
           <li class="w-full block">
-            <a data-toggle="drawer-menu" href="/proyectos" class="block text-left text-lg font-semibold py-4">Proyectos</a>
+            <a
+              data-toggle="drawer-menu"
+              href="/proyectos"
+              class="text-left text-lg font-semibold py-4 px-10 flex items-center justify-between"
+              class:list={[pathname === "/proyectos" ? "bg-foreground/5" : ""]}
+              data-active={pathname === "/proyectos" ? "true" : "false"}
+            >
+              <span>Proyectos</span>
+              {
+                pathname === "/proyectos" ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 12l4.243 4.243l8.484-8.486" />
+                  </svg>
+                ) : null
+              }
+            </a>
           </li>
           <li class="w-full block">
-            <a data-toggle="drawer-menu" href="/blog" class="block text-left text-lg font-semibold py-4">Blog</a>
+            <a
+              data-toggle="drawer-menu"
+              href="/blog"
+              class="text-left text-lg font-semibold py-4 px-10 flex items-center justify-between"
+              class:list={[pathname === "/blog" ? "bg-foreground/5" : ""]}
+              data-active={pathname === "/blog"}
+            >
+              <span>Blog</span>
+              {
+                pathname === "/blog" ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 12l4.243 4.243l8.484-8.486" />
+                  </svg>
+                ) : null
+              }
+            </a>
           </li>
           <li class="w-full block">
-            <a data-toggle="drawer-menu" href="/mision" class="block text-left text-lg font-semibold py-4">Misión</a>
+            <a
+              data-toggle="drawer-menu"
+              href="/mision"
+              class="text-left text-lg font-semibold py-4 px-10 flex items-center justify-between"
+              class:list={[pathname === "/mision" ? "bg-foreground/5" : ""]}
+              data-active={pathname === "/mision"}
+            >
+              <span>Misión</span>
+              {
+                pathname === "/mision" ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 12l4.243 4.243l8.484-8.486" />
+                  </svg>
+                ) : null
+              }
+            </a>
           </li>
         </ul>
       </section>

@@ -95,11 +95,14 @@ const jsonLd = {
   </div>
   <section class="py-20">
     <div class="w-full max-w-6xl mx-auto px-10">
-      <div class="grid md:grid-cols-12 gap-8 lg:gap-12 xl:gap-20">
-        <picture class="w-full md:col-span-4">
-          <source src-set="./frankuxui_logo_poster.webp" type="image/webp" />
-          <img src="./frankuxui_logo_poster.webp" alt="Contacto con Frankuxui" class="w-full object-contain rounded-2xl sm:animate-hero-reveal" />
-        </picture>
+      <div class="grid md:grid-cols-12 items-start gap-8 lg:gap-12 xl:gap-20">
+        <figure class="w-full md:col-span-4">
+          <picture>
+            <source src-set="./frankuxui_logo_poster.webp" type="image/webp" />
+            <img src="./frankuxui_logo_poster.webp" alt="Contacto con Frankuxui" class="w-full object-contain rounded-2xl sm:animate-hero-reveal" />
+          </picture>
+          <figcaption class="text-sm text-foreground/50 mt-2">Imagen del logotipo en tercera dimensión de Frankuxui.</figcaption>
+        </figure>
         <div class="md:col-span-8 relative overflow-hidden w-full rounded-2xl bg-black">
           <div class="w-full p-10 sm:p-14 flex relative text-white">
             <blockquote class="z-10 text-lg font-medium text-white">
@@ -135,10 +138,13 @@ const jsonLd = {
   <section class="py-40 sm:px-6 bg-foreground/2 border-t border-border">
     <div class="w-full max-w-6xl mx-auto px-10">
       <header class="flex flex-col items-start gap-6 w-full max-w-5xl">
-        <picture class="w-full lg:max-w-xs">
-          <source src-set="./frankuxui_logo_poster.webp" type="image/webp" />
-          <img src="./frankuxui_logo_poster.webp" alt="Imagen del logotipo en tercera dimensión de Frankuxui" class="w-full object-contain rounded-2xl sm:animate-hero-reveal" />
-        </picture>
+        <figure class="w-full lg:max-w-xs">
+          <picture>
+            <source src-set="./frankuxui_logo_poster.webp" type="image/webp" />
+            <img src="./frankuxui_logo_poster.webp" alt="Imagen del logotipo en tercera dimensión de Frankuxui" class="w-full object-contain rounded-2xl sm:animate-hero-reveal" />
+          </picture>
+          <figcaption class="text-sm text-foreground/50 mt-2">Imagen del logotipo en tercera dimensión de Frankuxui.</figcaption>
+        </figure>
         <h2 class="mt-10 text-left w-full leading-10 text-3xl sm:leading-12 sm:text-4xl font-normal">Descubre más sobre mis proyectos</h2>
         <p>
           Conoce más sobre mis proyectos a través de las diferentes plataformas donde comparto mi trabajo. Haz clic en los enlaces a continuación para ver más detalles y conocer de
@@ -149,7 +155,7 @@ const jsonLd = {
         {
           social.map((item, index) => (
             <li class="group relative inline-block">
-              <div class="absolute z-[2] bottom-full left-1/2 -translate-x-1/2 inline-flex items-center justify-center h-8 px-3 text-xs rounded font-roboto-mono uppercase font-medium translate-y-6 motion-safe:transition-all motion-safe:duration-200 group-hover:-translate-y-1 opacity-0 group-hover:opacity-100 text-white bg-black dark:text-black dark:bg-white">
+              <div class="pointer-events-none absolute z-[2] bottom-full left-1/2 -translate-x-1/2 inline-flex items-center justify-center h-8 px-3 text-xs rounded font-roboto-mono uppercase font-medium translate-y-6 motion-safe:transition-all motion-safe:duration-200 group-hover:-translate-y-1 opacity-0 group-hover:opacity-100 text-white bg-black dark:text-black dark:bg-white">
                 {item.name}
               </div>
               <a

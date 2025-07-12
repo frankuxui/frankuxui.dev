@@ -9,7 +9,7 @@
         <header class="flex flex-col items-start justify-start gap-2 md:gap-4">
           <h1
             itemprop="name"
-            class="relative text-left leading-9 text-2xl motion-safe:animate-text-reveal"
+            class="relative text-left leading-9 text-xl motion-safe:animate-text-reveal"
             style={{
               "--hero-text-reveal-opacity-step-0": 1,
               "--hero-text-reveal-x-step-0": 0,
@@ -25,7 +25,7 @@
               "--hero-text-reveal-y-step-3": "0px",
             }}
           >
-            Frankuxui
+            @frankuxui
           </h1>
           <h2
             itemprop="jobTitle"
@@ -126,7 +126,7 @@
         </ul>
         <section class="grid place-items-start gap-4 mt-10">
           <a
-            href="#proyectos"
+            href="/proyectos"
             class="inline-flex items-center justify-center rounded-full uppercase font-roboto-mono font-medium border-2 cursor-pointer disabled:pointer-events-none motion-safe:transition-colors motion-safe:duration-500 border-foreground/15 hover:border-foreground/25 h-14 px-8 sm:px-10 text-sm sm:text-base motion-safe:animate-text-reveal"
             style={{
               "--hero-text-reveal-opacity-step-0": 0,
@@ -146,7 +146,7 @@
             Mis proyectos
           </a>
           <a
-            href="#blog"
+            href="/blog"
             data-toggle="navigate-client"
             class="inline-flex items-center justify-center rounded-full uppercase font-roboto-mono font-medium border-2 border-transparent cursor-pointer disabled:pointer-events-none motion-safe:transition-colors motion-safe:duration-500 bg-primary text-primary-foreground hover:bg-primary-hover h-14 px-8 sm:px-10 text-sm sm:text-base motion-safe:animate-text-reveal"
             style={{
@@ -169,7 +169,7 @@
         </section>
       </section>
 
-      <figure class="flex justify-center md:justify-end w-full max-w-full md:max-w-sm 3xl:max-w-md">
+      <figure class="relative flex justify-center md:justify-end w-full max-w-full md:max-w-sm 3xl:max-w-md">
         <div
           class="relative w-full flex-1 md:rounded-full overflow-hidden flex items-end justify-end md:border-12 border-background ring-1 ring-foreground/5 motion-safe:animate-img-reveal"
         >
@@ -194,6 +194,15 @@
             </picture>
             <figcaption class="sr-only">Foto de Frank Esteban, Frontend Developer y UX/UI Designer.</figcaption>
           </div>
+        </div>
+        <div
+          class="absolute top-full bottom-1/2 -translate-y-1/2 right-10 md:top-auto md:translate-none md:bottom-10 md:right-0 px-6 h-8 inline-flex items-center gap-3 justify-center rounded-full font-medium text-xs bg-background/90 text-foreground border border-border backdrop-blur-md shadow-xl"
+        >
+          <div class="relative w-2 h-2">
+            <span class="rounded-full bg-emerald-400 absolute inset-0"></span>
+            <span class="absolute w-2.5 h-2.5 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 rounded-full bg-emerald-400 animate-ping"></span>
+          </div>
+          <span>Open to work</span>
         </div>
       </figure>
     </div>
