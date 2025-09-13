@@ -141,14 +141,32 @@ const JsonLd = {
 
 <!-- Google tag (gtag.js) -->
 <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-0G619YVEY7"></script>
-<script is:inline type="text/javascript">
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
+<script>
+  // We need a global definition to avoid type warnings
+  declare global {
+    interface Window {
+      dataLayer: Record<string, any>[];
+      gtag: (...args: any[]) => void;
+    }
   }
-  gtag("js", new Date());
 
-  gtag("config", "G-0G619YVEY7");
+  // Initialize dataLayer
+  window.dataLayer = window.dataLayer || [];
+
+  // Define gtag function
+  window.gtag = function gtag(...args: any[]) {
+    window.dataLayer.push(arguments);
+  };
+
+  // Load GA4 with denied default consents
+  window.gtag("js", new Date());
+  window.gtag("consent", "default", {
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    analytics_storage: "denied",
+  });
+  window.gtag("config", "G-0G619YVEY7");
 </script>
 
 <!-- Google Tag Manager -->

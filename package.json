@@ -13,6 +13,7 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.0",
     "@astrojs/node": "^9.2.2",
+    "@astrojs/partytown": "^2.1.4",
     "@astrojs/react": "^4.3.0",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.4.1",
@@ -24,11 +25,13 @@
     "@types/react-dom": "^19.1.5",
     "astro": "^5.10.0",
     "moment": "^2.30.1",
+    "partytown": "^0.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "rehype-pretty-code": "^0.14.1",
     "resend": "^4.5.1",
-    "tailwindcss": "^4.1.8"
+    "tailwindcss": "^4.1.8",
+    "vanilla-cookieconsent": "^3.1.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.53.1",
