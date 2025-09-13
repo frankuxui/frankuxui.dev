@@ -7,7 +7,7 @@ import { rehypePrettyCode } from 'rehype-pretty-code';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
 import react from '@astrojs/react';
 import vercel from '@astrojs/vercel';
-
+import partytown from '@astrojs/partytown';
 
 // https://astro.build/config
 export default defineConfig({
@@ -29,7 +29,12 @@ export default defineConfig({
 			changefreq: 'weekly',
 			priority: 0.7,
 			lastmod: new Date(),
-		})
+		}),
+		partytown({
+			config: {
+				forward: ['dataLayer.push'],
+			},
+		}),
 	],
 	vite: {
 		plugins: [tailwindcss()],
