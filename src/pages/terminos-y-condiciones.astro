@@ -1,4 +1,5 @@
 ---
+import { siteConfig } from "@/config";
 import Root from "@/layouts/Root.astro";
 ---
 
@@ -67,7 +68,7 @@ import Root from "@/layouts/Root.astro";
       <h2 id="contacto">7. Contacto</h2>
       <p>Para cualquier consulta relacionada con estos Términos y Condiciones, puedes ponerte en contacto a través del correo:</p>
       <address class="not-italic">
-        ✉️ <a href="mailto:fisdray@gmail.com" class="underline hover:text-foreground">fisdray@gmail.com</a><br />
+        ✉️ <a href={`mailto:${siteConfig.contact.email}`} class="underline hover:text-foreground">{siteConfig.contact.email}</a><br />
         📍 Salou, Tarragona, España
       </address>
     </section>

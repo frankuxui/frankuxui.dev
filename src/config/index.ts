@@ -14,7 +14,11 @@ export const SITE_DESCRIPTION = 'Explora el portafolio de Frank Esteban Isdray J
 export const KEYWORDS = 'frankuxui, frankuxui portfolio, frankuxui developer, frankuxui designer, frankuxui front-end developer, frankuxui ux/ui designer, frankuxui tarragona, frankuxui españa, frank esteban, frank, developer, figma, ux/ui, ux, ui'
 
 // URL del sitio
+export const PRODUCTION_URL = 'https://frankuxui.dev'
 export const SITE_URL = isDev ? 'http://localhost:4312' : 'https://frankuxui.dev'
+
+// DOMAIN
+export const DOMAIN = 'frankuxui.dev'
 
 // Address
 export const ADDRESS_LOCALITY = 'Salou'
@@ -38,7 +42,7 @@ export const siteConfig = {
   contact: {
     phone: '+34 641932611',
     telephone: '+34 641932611',
-    email: 'fisdray@gmail.com',
+    email: 'frankuxui.dev@gmail.com',
   },
   address: {
     locality: ADDRESS_LOCALITY,
@@ -79,7 +83,9 @@ export const siteConfig = {
       },
     ],
   },
+  productionURL: PRODUCTION_URL,
   siteUrl: SITE_URL,
+  domain: DOMAIN,
   url: {
     base: SITE_URL,
     canonical: `${SITE_URL}/`,

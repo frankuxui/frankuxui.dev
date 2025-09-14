@@ -9,6 +9,7 @@ interface Props {
 }
 
 export default function EmailTemplate({ name, email, message }: Props) {
+  
   return (
     <Tailwind
       config={{
@@ -80,7 +81,7 @@ export default function EmailTemplate({ name, email, message }: Props) {
               </Row>
               <Row>
                 <Column>
-                  <Text className="mt-1 text-sm">{email ?? "fisdray@gmail.com"}</Text>
+                  <Text className="mt-1 text-sm">{email ?? siteConfig.contact.email}</Text>
                 </Column>
               </Row>
               <Row>
@@ -101,8 +102,8 @@ export default function EmailTemplate({ name, email, message }: Props) {
           <Container className="max-w-[40rem]">
             <Text className="text-gray-700 text-sm mt-8 p-4 rounded bg-gray-100 dark:bg-gray-900 dark:text-gray-400">
               Este mensaje ha sido generado automáticamente por la web de{" "}
-              <Link target="_blank" href={siteConfig.siteUrl} className="text-brand font-semibold text-black dark:text-white">
-                frankuxui.com
+              <Link target="_blank" href={siteConfig.productionURL} className="text-brand font-semibold text-black dark:text-white">
+                {siteConfig.domain}
               </Link>
               . Por favor, no respondas a este correo.
             </Text>
@@ -111,8 +112,8 @@ export default function EmailTemplate({ name, email, message }: Props) {
           <Container className="max-w-[40rem]">
             <Text className="text-gray-700 text-sm mt-8 dark:text-gray-500">
               © {new Date().getFullYear()}{" "}
-              <Link target="_blank" href={siteConfig.siteUrl} className="text-brand font-semibold text-black dark:text-white">
-                frankuxui
+              <Link target="_blank" href={siteConfig.productionURL} className="lowercase text-brand font-semibold text-black dark:text-white">
+                {siteConfig.alternateName}
               </Link>{" "}
               Todos los derechos reservados
             </Text>

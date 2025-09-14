@@ -2,12 +2,13 @@ import type { APIRoute } from "astro";
 import { Resend } from "resend";
 import EmailTemplate from "@/mail/email-template";
 import { render } from "@react-email/render";
+import { siteConfig } from "@/config";
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const GET: APIRoute = async () => {
   // create the email
-  const emailContent = EmailTemplate({ name: "Frank", email: "fisdray@gmail.com", message: "Hello, this is a test message!" });
+  const emailContent = EmailTemplate({ name: "Frank", email: siteConfig.contact.email, message: "Hello, this is a test message!" });
   const html = await render(emailContent);
   const text = await render(emailContent, {
     plainText: true,

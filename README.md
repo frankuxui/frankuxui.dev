@@ -83,7 +83,7 @@ Mi enfoque se centra en la creación de experiencias de usuario intuitivas y acc
 
 ## Contacto
 
-- 📬 Email: fisdray@gmail.com
+- 📬 Email: frankuxui.dev@gmail.com
 - 📞 Teléfono: +34 641 932 611
 - 🌐 Sitio web: [frankuxui.dev](https://frankuxui.dev)
 - 🌐 Sitio web: [frankuxui.com](https://frankuxui.com)
