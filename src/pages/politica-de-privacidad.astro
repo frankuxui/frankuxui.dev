@@ -1,4 +1,5 @@
 ---
+import { siteConfig } from "@/config";
 import Root from "@/layouts/Root.astro";
 ---
 
@@ -67,7 +68,7 @@ import Root from "@/layouts/Root.astro";
       </p>
       <p>
         Para ejercer estos derechos, escríbenos a:
-        <a href="mailto:fisdray@gmail.com" class="underline hover:text-foreground"> fisdray@gmail.com </a>.
+        <a href={`mailto:${siteConfig.contact.email}`} class="underline hover:text-foreground"> {siteConfig.contact.email}</a>.
       </p>
     </section>
 
@@ -75,7 +76,7 @@ import Root from "@/layouts/Root.astro";
       <h2 id="contacto">7. Contacto</h2>
       <p>Si tienes dudas sobre esta política de privacidad o sobre cómo tratamos tus datos personales, puedes ponerte en contacto con nosotros:</p>
       <address class="not-italic">
-        ✉️ <a href="mailto:fisdray@gmail.com" class="underline hover:text-foreground">fisdray@gmail.com</a><br />
+        ✉️ <a href={`mailto:${siteConfig.contact.email}`} class="underline hover:text-foreground">{siteConfig.contact.email}</a><br />
         📍 Salou, Tarragona, España
       </address>
     </section>

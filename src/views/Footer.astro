@@ -64,8 +64,8 @@ import { siteConfig } from "@/config";
           <section class="w-full">
             <address class="flex flex-col gap-4 not-italic text-base text-foreground/70">
               <span>📍 &nbsp; Salou, Tarragona, España</span>
-              <span> ✉️ &nbsp; <a href="mailto:fisdray@gmail.com" class="hover:text-foreground">fisdray@gmail.com</a> </span>
-              <span> 📞 &nbsp; <a href="tel:+34641932611" class="hover:text-foreground">+34 641 93 26 11</a> </span>
+              <span> ✉️ &nbsp; <a href={`mailto:${siteConfig.contact.email}`} class="hover:text-foreground">{siteConfig.contact.email}</a> </span>
+              <span> 📞 &nbsp; <a href={`tel:${siteConfig.contact.phone}`} class="hover:text-foreground">{siteConfig.contact.phone}</a> </span>
             </address>
           </section>
         </article>
