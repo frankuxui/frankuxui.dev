@@ -69,7 +69,7 @@ export const config: CookieConsentConfig = {
           acceptAllBtn: "Aceptar todo",
           acceptNecessaryBtn: "Rechazar todo",
           showPreferencesBtn: "Gestionar preferencias",
-          footer: "<a href=\"#link\">Política de privacidad</a>\n<a href=\"#link\">Términos y condiciones</a>"
+          footer: "<a href=\"/politica-de-privacidad\">Política de privacidad</a>\n<a href=\"/terminos-y-condiciones\">Términos y condiciones</a>"
         },
         preferencesModal: {
           title: "Preferencias de Consentimiento",
@@ -105,7 +105,7 @@ export const config: CookieConsentConfig = {
             },
             {
               title: "Más información",
-              description: "Si quieres saber más sobre cómo tratamos tus datos y cookies, visita nuestra <a class=\"cc__link\" href=\"/privacidad\">política de privacidad</a> o <a class=\"cc__link\" href=\"/contacto\">contacta con nosotros</a>."
+              description: "Si quieres saber más sobre cómo tratamos tus datos y cookies, visita nuestra <a class=\"cc__link\" href=\"/politica-de-privacidad\">política de privacidad</a> o <a class=\"cc__link\" href=\"/contacto\">contacta con nosotros</a>."
             }
           ]
         }
