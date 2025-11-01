@@ -47,6 +47,16 @@ export default defineConfig({
 	],
 	vite: {
 		plugins: [tailwindcss()],
+		server: {
+			host: true,
+			allowedHosts: ['frankuxui.dev', 'www.frankuxui.dev'],
+			port: 4312,
+		},
+		preview: {
+			host: true,
+			allowedHosts: ['frankuxui.dev', 'www.frankuxui.dev'],
+			port: 4312,
+		},
 	},
 	markdown: {
 		syntaxHighlight: false,
