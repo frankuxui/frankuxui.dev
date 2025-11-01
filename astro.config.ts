@@ -17,6 +17,11 @@ export default defineConfig({
 	adapter: node({
 		mode: 'standalone',
 	}),
+	server: {
+		host: true,
+		allowedHosts: ['frankuxui.dev', 'www.frankuxui.dev'],
+		port: 4312,
+	},
 	// adapter: vercel(),
 	env: {
 		schema: {
