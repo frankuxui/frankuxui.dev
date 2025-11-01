@@ -7,16 +7,14 @@ import { rehypePrettyCode } from 'rehype-pretty-code';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
 import react from '@astrojs/react';
 //import vercel from '@astrojs/vercel';
+// import node from '@astrojs/node';
 import partytown from '@astrojs/partytown';
-import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
 	output: 'static',
 	site: 'https://frankuxui.dev',
-	adapter: node({
-		mode: 'standalone',
-	}),
+
 	server: {
 		host: true,
 		allowedHosts: ['frankuxui.dev', 'www.frankuxui.dev'],
