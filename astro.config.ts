@@ -15,6 +15,11 @@ export default defineConfig({
 	adapter: node({
 		mode: 'standalone',
 	}),
+	server: {
+		host: true,
+		allowedHosts: ['frankuxui.dev', 'www.frankuxui.dev'],
+		port: process.env.PORT ? Number(process.env.PORT) : 4312,
+	},
 	env: {
 		schema: {
 			RESEND_API: envField.string({ context: "server", access: "secret" }),
