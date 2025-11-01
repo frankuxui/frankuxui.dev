@@ -6,14 +6,18 @@ import tailwindcss from '@tailwindcss/vite';
 import { rehypePrettyCode } from 'rehype-pretty-code';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
 import react from '@astrojs/react';
-import vercel from '@astrojs/vercel';
+//import vercel from '@astrojs/vercel';
 import partytown from '@astrojs/partytown';
+import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
 	output: 'static',
 	site: 'https://frankuxui.dev',
-	adapter: vercel(),
+	adapter: node({
+		mode: 'standalone',
+	}),
+	// adapter: vercel(),
 	env: {
 		schema: {
 			RESEND_API: envField.string({ context: "server", access: "secret" }),
