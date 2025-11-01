@@ -6,11 +6,9 @@ import tailwindcss from '@tailwindcss/vite';
 import { rehypePrettyCode } from 'rehype-pretty-code';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
 import react from '@astrojs/react';
-//import vercel from '@astrojs/vercel';
 import partytown from '@astrojs/partytown';
 import node from '@astrojs/node';
 
-// https://astro.build/config
 export default defineConfig({
 	output: 'server',
 	site: 'https://frankuxui.dev',
@@ -20,9 +18,8 @@ export default defineConfig({
 	server: {
 		host: true,
 		allowedHosts: ['frankuxui.dev', 'www.frankuxui.dev'],
-		port: 4312,
+		port: process.env.PORT ? Number(process.env.PORT) : 4312,
 	},
-	// adapter: vercel(),
 	env: {
 		schema: {
 			RESEND_API: envField.string({ context: "server", access: "secret" }),
@@ -50,12 +47,12 @@ export default defineConfig({
 		server: {
 			host: true,
 			allowedHosts: ['frankuxui.dev', 'www.frankuxui.dev'],
-			port: 4312,
+			port: process.env.PORT ? Number(process.env.PORT) : 4312,
 		},
 		preview: {
 			host: true,
 			allowedHosts: ['frankuxui.dev', 'www.frankuxui.dev'],
-			port: 4312,
+			port: process.env.PORT ? Number(process.env.PORT) : 4312,
 		},
 	},
 	markdown: {
@@ -69,28 +66,24 @@ export default defineConfig({
 		rehypePlugins: [
 			[
 				rehypePrettyCode,
-
 				{
 					theme: "vitesse-light",
 					showLineNumbers: true,
 					keepBackground: true,
 					bypassInlineCode: true,
 					tokensMap: {
-						'comment': 'astro-shiki-comment',
-						'keyword': 'astro-shiki-keyword',
-						'string': 'astro-shiki-string',
-						'number': 'astro-shiki-number',
+						comment: 'astro-shiki-comment',
+						keyword: 'astro-shiki-keyword',
+						string: 'astro-shiki-string',
+						number: 'astro-shiki-number',
 					},
-					// Use the `transformers` option to add a copy button
 					transformers: [
 						transformerCopyButton({
 							visibility: 'hover',
-							feedbackDuration: 2_500,
+							feedbackDuration: 2500,
 						}),
-
 						{
 							code(node: any) {
-								// Add a class to the code element for styling
 								node.properties.className = (node.properties.className || []).concat('astro-shiki-code enabledLineNumbers');
 								return node;
 							},
