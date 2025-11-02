@@ -1,15 +1,18 @@
-version: "3.9"
-
 services:
-  astro-dev:
-    image: node:22-alpine
-    container_name: astro-dev
-    working_dir: /app
-    volumes:
-      - .:/app                # Monta tu proyecto local dentro del contenedor
-      - /app/node_modules     # Evita conflictos con node_modules local
-    command: sh -c "npm install && npm run dev"
-    ports:
-      - "4312:4312"
+  strapi:
+    image: strapi/strapi
+    container_name: cms-frankuxui
     environment:
-      - NODE_ENV=development
+      - DATABASE_CLIENT=sqlite
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cms.rule=Host(`cms.frankuxui.dev`)"
+      - "traefik.http.routers.cms.entrypoints=websecure"
+      - "traefik.http.routers.cms.tls.certresolver=myresolver"
+      - "traefik.http.services.cms.loadbalancer.server.port=1337"
+
+networks:
+  traefik:
+    external: true
