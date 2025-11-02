@@ -1,17 +1,18 @@
 services:
-  strapi:
-    image: strapi/strapi
-    container_name: cms-frankuxui
-    environment:
-      - DATABASE_CLIENT=sqlite
+  astro:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ./frankuxui.dev:/app
+    command: sh -c "npm install && npm run preview"
     networks:
       - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.cms.rule=Host(`cms.frankuxui.dev`)"
-      - "traefik.http.routers.cms.entrypoints=websecure"
-      - "traefik.http.routers.cms.tls.certresolver=myresolver"
-      - "traefik.http.services.cms.loadbalancer.server.port=1337"
+      - "traefik.http.routers.astro.rule=Host(`frankuxui.dev`)"
+      - "traefik.http.routers.astro.entrypoints=websecure"
+      - "traefik.http.routers.astro.tls.certresolver=myresolver"
+      - "traefik.http.services.astro.loadbalancer.server.port=4321"
 
 networks:
   traefik:
