@@ -1,23 +1,25 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import Post from "../../layouts/Post.astro";
-import { render } from "astro:content";
+import PostLayout from "@/layouts/PostLayout.astro";
+import { getStrapiClient } from "@/services/strapiClientService";
+import { renderStrapiMarkdown } from "@/utils/markdownParser";
 
-export const prerender = true;
+export const prerender = false;
 
-export async function getStaticPaths() {
-  const posts = await getCollection("blog");
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: post,
-  }));
-}
-type Props = CollectionEntry<"blog">;
+const { slug } = Astro.params;
+const client = getStrapiClient();
+const response = await client.collection("articles").find({
+  populate: "*",
+  filters: {
+    slug: {
+      $eq: slug,
+    },
+  },
+});
 
-const post = Astro.props;
-const { Content } = await render(post);
+const article = response.data[0];
+const html = await renderStrapiMarkdown(article.content || "");
 ---
 
-<Post {...post.data} {...post.rendered?.metadata}>
-  <Content />
-</Post>
+<PostLayout strapiCollection={article}>
+  {html && <div class="w-full" data-render="post" set:html={html} />}
+</PostLayout>

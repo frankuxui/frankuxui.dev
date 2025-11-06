@@ -1,0 +1,96 @@
+---
+import Root from "@/layouts/Root.astro";
+import { getStrapiClient } from "@/services/strapiClientService";
+
+const client = getStrapiClient();
+const response = await client.collection("articles").find({
+  populate: "*",
+});
+const articulos = response.data;
+---
+
+<Root>
+  <div class="w-full pt-10 sm:pt-20 pb-20">
+    <section class="w-full max-w-6xl mx-auto px-10" id="blog" aria-labelledby="blog-title">
+      <header class="w-full grid gap-6">
+        <h1
+          id="blog-title"
+          class="font-medium text-xl motion-safe:animate-text-reveal"
+          style={{
+            "--hero-text-reveal-opacity-step-0": 1,
+            "--hero-text-reveal-x-step-0": 0,
+            "--hero-text-reveal-y-step-0": "0px",
+            "--hero-text-reveal-opacity-step-1": 1,
+            "--hero-text-reveal-x-step-1": 0,
+            "--hero-text-reveal-y-step-1": "0px",
+            "--hero-text-reveal-opacity-step-2": 1,
+            "--hero-text-reveal-x-step-2": 0,
+            "--hero-text-reveal-y-step-2": "0px",
+            "--hero-text-reveal-opacity-step-3": 1,
+            "--hero-text-reveal-x-step-3": 0,
+            "--hero-text-reveal-y-step-3": "0px",
+          }}
+        >
+          Blog
+        </h1>
+
+        <p
+          class="text-left w-full leading-10 text-3xl font-normal motion-safe:animate-text-reveal"
+          style={{
+            "--hero-text-reveal-opacity-step-0": 0,
+            "--hero-text-reveal-x-step-0": 0,
+            "--hero-text-reveal-y-step-0": "25px",
+            "--hero-text-reveal-opacity-step-1": 1,
+            "--hero-text-reveal-x-step-1": 0,
+            "--hero-text-reveal-y-step-1": "0px",
+            "--hero-text-reveal-opacity-step-2": 1,
+            "--hero-text-reveal-x-step-2": 0,
+            "--hero-text-reveal-y-step-2": "0px",
+            "--hero-text-reveal-opacity-step-3": 1,
+            "--hero-text-reveal-x-step-3": 0,
+            "--hero-text-reveal-y-step-3": "0px",
+          }}
+        >
+          Mis artículos
+        </p>
+
+        <p
+          class="text-xl motion-safe:animate-text-reveal"
+          style={{
+            "--hero-text-reveal-opacity-step-0": 0,
+            "--hero-text-reveal-x-step-0": 0,
+            "--hero-text-reveal-y-step-0": "25px",
+            "--hero-text-reveal-opacity-step-1": 0,
+            "--hero-text-reveal-x-step-1": 0,
+            "--hero-text-reveal-y-step-1": "25px",
+            "--hero-text-reveal-opacity-step-2": 1,
+            "--hero-text-reveal-x-step-2": 0,
+            "--hero-text-reveal-y-step-2": "0px",
+            "--hero-text-reveal-opacity-step-3": 1,
+            "--hero-text-reveal-x-step-3": 0,
+            "--hero-text-reveal-y-step-3": "0px",
+          }}
+        >
+          Reflexiones sobre desarrollo web, diseño y tecnología. Comparto aprendizajes para que también te sean útiles.
+        </p>
+      </header>
+
+      <!-- Selector de tags -->
+      <h2>Etiquetas</h2>
+
+      <!-- Lista de artículos -->
+      <section class="w-full relative grid grid-cols-4 gap-x-4 md:grid-cols-8 lg:grid-cols-12 lg:gap-x-6 mx-auto max-w-6xl mb-64" aria-label="Listado de artículos del blog">
+        {
+          articulos.map((articulo) => (
+            <article class="border w-full h-full col-span-4 group mb-10 p-10">
+              <h2>{articulo.title}</h2>
+              <a href={`/articulos/${articulo.slug}`} class="font-bold text-blue-500">
+                Leer más
+              </a>
+            </article>
+          ))
+        }
+      </section>
+    </section>
+  </div>
+</Root>
