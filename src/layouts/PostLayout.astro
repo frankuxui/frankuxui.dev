@@ -1,5 +1,4 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import Root from "./Root.astro";
 import { getPostTags } from "@/utils/getPosts";
 import moment from "moment";
@@ -51,12 +50,13 @@ const allTags = await getPostTags().then((tags) => {
 <Root title={title} description={description}>
   <!-- {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />} -->
 
-  <main class="w-full py-20" itemtype="https://schema.org/BlogPosting" itemscope>
+
+  
+  <main class="w-full py-10" itemtype="https://schema.org/BlogPosting" itemscope>
     <header class="mx-auto px-10 sm:px-14 md:max-w-5xl" itemprop="headline">
       <div>
         <a href="/blog" class="text-sm font-medium text-foreground" aria-label="Volver al blog">← Volver a la lista de posts</a>
-        <div class="grid gap-2 mt-10">
-          <p class="text-sm text-foreground/70">Post</p>
+        <div class="grid gap-2 mt-2">
           <h1 class="text-3xl leading-12 md:text-4xl font-medium" itemprop="name">
             {title}
           </h1>

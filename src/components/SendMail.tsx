@@ -20,7 +20,7 @@ export default function ContactForm() {
       setSuccess(true);
       // console.log("Email sent successfully:", result.data);
     } else if (result.error) {
-      setError("Por favor completa todos los campos correctamente.");
+      setError("Ocurrió un error al enviar el mensaje.");
     } else {
       // console.error("Error sending email:", result);
       setError("Ocurrió un error al enviar el mensaje.");
@@ -64,7 +64,7 @@ export default function ContactForm() {
           id="name"
           name="name"
           placeholder="Nombre"
-          className="h-16 xl:h-20 px-6 rounded-lg text-base font-roboto-mono placeholder:text-sm font-normal font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
+          className="h-16 xl:h-20 px-6 rounded-lg text-base font-roboto-mono placeholder:text-sm font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
           required
         />
       </div>
@@ -78,7 +78,7 @@ export default function ContactForm() {
           id="email"
           name="email"
           placeholder="Correo electrónico"
-          className="h-16 xl:h-20 px-6 rounded-lg text-base font-roboto-mono placeholder:text-sm font-normal font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
+          className="h-16 xl:h-20 px-6 rounded-lg text-base font-roboto-mono placeholder:text-sm font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
           required
         />
       </div>
@@ -93,7 +93,7 @@ export default function ContactForm() {
           placeholder="Deja tu mensaje"
           rows={4}
           cols={30}
-          className="resize-none px-6 py-4 rounded-lg text-base font-roboto-mono placeholder:text-sm font-normal font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
+          className="resize-none px-6 py-4 rounded-lg text-base font-roboto-mono placeholder:text-sm font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
           required
         />
       </div>

@@ -1,0 +1,32 @@
+---
+import type { StrapiProject } from "@/types/StrapiProject";
+
+const { strapiCollection } = Astro.props as { strapiCollection: StrapiProject };
+const { title, cover, slug, subtitle } = strapiCollection;
+---
+
+<article class="w-full group" itemscope itemtype="https://schema.org/CreativeWork" aria-labelledby={`project-title-${slug}`}>
+  <a href={`/proyectos/${slug}`} class="w-full max-w-full h-full flex flex-col gap-4" aria-label={`Ver detalles del proyecto ${title}`}>
+    <picture>
+      <source srcset={cover?.url} type="image/jpeg" />
+      <img
+        src={cover?.url}
+        alt={`Imagen de portada del proyecto ${title}`}
+        class="w-full min-w-0 max-w-full object-cover border rounded-2xl ring-offset-4 border-border motion-safe:transition-all motion-safe:duration-300 group-hover:ring-2 group-hover:ring-foreground/50 ring-offset-background"
+        loading="lazy"
+        decoding="async"
+        width="600"
+        height="400"
+        itemprop="image"
+      />
+    </picture>
+    <div class="flex flex-col items-start gap-2">
+      <h2 id={`project-title-${slug}`} class="text-2xl font-semibold" itemprop="name">
+        {title}
+      </h2>
+      <p class="text-lg mb-4" itemprop="description">
+        {subtitle}
+      </p>
+    </div>
+  </a>
+</article>

@@ -1,25 +1,25 @@
 ---
-import SendMail from "@/components/SendMail";
-import Root from "@/layouts/Root.astro";
-import { social } from "@/data/social";
-import { siteConfig } from "@/config";
+import SendMail from '@/components/SendMail'
+import Root from '@/layouts/Root.astro'
+import { social } from '@/data/social'
+import { siteConfig } from '@/config'
 
 // JSON-LD for SEO
 
 const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ContactPage",
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
   mainEntityOfPage: {
-    "@type": "WebPage",
-    name: "Contacto",
-    description: "Página de contacto de Frankuxui, desarrollador front-end y diseñador UX/UI en Tarragona.",
+    '@type': 'WebPage',
+    name: 'Contacto',
+    description: 'Página de contacto de Frankuxui, desarrollador front-end y diseñador UX/UI en Tarragona.',
     url: new URL(Astro.url.pathname, Astro.site).toString(),
     image: siteConfig.openGraph.image,
     publisher: {
-      "@type": "Organization",
+      '@type': 'Organization',
       name: siteConfig.alternateName,
       logo: {
-        "@type": "ImageObject",
+        '@type': 'ImageObject',
         url: siteConfig.logo,
       },
     },
@@ -34,18 +34,18 @@ const jsonLd = {
       <h1
         class="font-medium text-xl motion-safe:animate-text-reveal"
         style={{
-          "--hero-text-reveal-opacity-step-0": 1,
-          "--hero-text-reveal-x-step-0": 0,
-          "--hero-text-reveal-y-step-0": "0px",
-          "--hero-text-reveal-opacity-step-1": 1,
-          "--hero-text-reveal-x-step-1": 0,
-          "--hero-text-reveal-y-step-1": "0px",
-          "--hero-text-reveal-opacity-step-2": 1,
-          "--hero-text-reveal-x-step-2": 0,
-          "--hero-text-reveal-y-step-2": "0px",
-          "--hero-text-reveal-opacity-step-3": 1,
-          "--hero-text-reveal-x-step-3": 0,
-          "--hero-text-reveal-y-step-3": "0px",
+          '--hero-text-reveal-opacity-step-0': 1,
+          '--hero-text-reveal-x-step-0': 0,
+          '--hero-text-reveal-y-step-0': '0px',
+          '--hero-text-reveal-opacity-step-1': 1,
+          '--hero-text-reveal-x-step-1': 0,
+          '--hero-text-reveal-y-step-1': '0px',
+          '--hero-text-reveal-opacity-step-2': 1,
+          '--hero-text-reveal-x-step-2': 0,
+          '--hero-text-reveal-y-step-2': '0px',
+          '--hero-text-reveal-opacity-step-3': 1,
+          '--hero-text-reveal-x-step-3': 0,
+          '--hero-text-reveal-y-step-3': '0px',
         }}
       >
         Contácto
@@ -53,18 +53,18 @@ const jsonLd = {
       <p
         class="text-left w-full leading-10 text-3xl font-normal motion-safe:animate-text-reveal"
         style={{
-          "--hero-text-reveal-opacity-step-0": 0,
-          "--hero-text-reveal-x-step-0": 0,
-          "--hero-text-reveal-y-step-0": "25px",
-          "--hero-text-reveal-opacity-step-1": 1,
-          "--hero-text-reveal-x-step-1": 0,
-          "--hero-text-reveal-y-step-1": "0px",
-          "--hero-text-reveal-opacity-step-2": 1,
-          "--hero-text-reveal-x-step-2": 0,
-          "--hero-text-reveal-y-step-2": "0px",
-          "--hero-text-reveal-opacity-step-3": 1,
-          "--hero-text-reveal-x-step-3": 0,
-          "--hero-text-reveal-y-step-3": "0px",
+          '--hero-text-reveal-opacity-step-0': 0,
+          '--hero-text-reveal-x-step-0': 0,
+          '--hero-text-reveal-y-step-0': '25px',
+          '--hero-text-reveal-opacity-step-1': 1,
+          '--hero-text-reveal-x-step-1': 0,
+          '--hero-text-reveal-y-step-1': '0px',
+          '--hero-text-reveal-opacity-step-2': 1,
+          '--hero-text-reveal-x-step-2': 0,
+          '--hero-text-reveal-y-step-2': '0px',
+          '--hero-text-reveal-opacity-step-3': 1,
+          '--hero-text-reveal-x-step-3': 0,
+          '--hero-text-reveal-y-step-3': '0px',
         }}
       >
         Si tienes alguna pregunta, proyecto en mente o simplemente deseas conectar, no dudes en enviarme un mensaje.
@@ -75,18 +75,18 @@ const jsonLd = {
         data-action="contact-send-mail"
         aria-label="Enviar mensaje"
         style={{
-          "--hero-text-reveal-opacity-step-0": 0,
-          "--hero-text-reveal-x-step-0": 0,
-          "--hero-text-reveal-y-step-0": "25px",
-          "--hero-text-reveal-opacity-step-1": 0,
-          "--hero-text-reveal-x-step-1": 0,
-          "--hero-text-reveal-y-step-1": "25px",
-          "--hero-text-reveal-opacity-step-2": 1,
-          "--hero-text-reveal-x-step-2": 0,
-          "--hero-text-reveal-y-step-2": "0px",
-          "--hero-text-reveal-opacity-step-3": 1,
-          "--hero-text-reveal-x-step-3": 0,
-          "--hero-text-reveal-y-step-3": "0px",
+          '--hero-text-reveal-opacity-step-0': 0,
+          '--hero-text-reveal-x-step-0': 0,
+          '--hero-text-reveal-y-step-0': '25px',
+          '--hero-text-reveal-opacity-step-1': 0,
+          '--hero-text-reveal-x-step-1': 0,
+          '--hero-text-reveal-y-step-1': '25px',
+          '--hero-text-reveal-opacity-step-2': 1,
+          '--hero-text-reveal-x-step-2': 0,
+          '--hero-text-reveal-y-step-2': '0px',
+          '--hero-text-reveal-opacity-step-3': 1,
+          '--hero-text-reveal-x-step-3': 0,
+          '--hero-text-reveal-y-step-3': '0px',
         }}
       >
         Enviar mensaje
@@ -122,8 +122,8 @@ const jsonLd = {
       <div class="grid md:grid-cols-12 items-start gap-10 lg:gap-16">
         <header class="md:col-span-5 grid gap-6">
           <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24"
-            ><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"
-              ><path stroke-linecap="round" d="m7 8.5l2.942 1.74c1.715 1.014 2.4 1.014 4.116 0L17 8.5"></path><path
+          ><g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"
+            ><path stroke-linecap="round" d="m7 8.5l2.942 1.74c1.715 1.014 2.4 1.014 4.116 0L17 8.5"></path><path
                 d="M2.016 13.476c.065 3.065.098 4.598 1.229 5.733c1.131 1.136 2.705 1.175 5.854 1.254c1.94.05 3.862.05 5.802 0c3.149-.079 4.723-.118 5.854-1.254c1.131-1.135 1.164-2.668 1.23-5.733c.02-.986.02-1.966 0-2.952c-.066-3.065-.099-4.598-1.23-5.733c-1.131-1.136-2.705-1.175-5.854-1.254a115 115 0 0 0-5.802 0c-3.149.079-4.723.118-5.854 1.254c-1.131 1.135-1.164 2.668-1.23 5.733a69 69 0 0 0 0 2.952Z"
               ></path></g
             ></svg
@@ -164,7 +164,7 @@ const jsonLd = {
       </header>
       <ul class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-2 mt-10 place-items-start">
         {
-          social.map((item, index) => (
+          social.map((item, _index) => (
             <li class="group relative inline-block">
               <div class="pointer-events-none absolute z-[2] bottom-full left-1/2 -translate-x-1/2 inline-flex items-center justify-center h-8 px-3 text-xs rounded font-roboto-mono uppercase font-medium translate-y-6 motion-safe:transition-all motion-safe:duration-200 group-hover:-translate-y-1 opacity-0 group-hover:opacity-100 text-white bg-black dark:text-black dark:bg-white">
                 {item.name}
