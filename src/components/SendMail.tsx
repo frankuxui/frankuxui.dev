@@ -20,7 +20,8 @@ export default function ContactForm() {
       setSuccess(true);
       // console.log("Email sent successfully:", result.data);
     } else if (result.error) {
-      setError("Ocurrió un error al enviar el mensaje.");
+      console.error("Error sending email:", result.error);
+      setError("Ocurrió un error al enviar el mensaje." + result.error.message);
     } else {
       // console.error("Error sending email:", result);
       setError("Ocurrió un error al enviar el mensaje.");
