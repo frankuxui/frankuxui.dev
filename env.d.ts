@@ -2,7 +2,6 @@
 /// <reference types="astro/client" />
 
 interface ImportMetaEnv {
-  readonly RESEND_API: string;
   readonly RESEND_API_KEY: string;
   readonly EMAIL_FROM: string;
 }
