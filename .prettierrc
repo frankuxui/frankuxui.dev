@@ -9,11 +9,5 @@
         "parser": "astro"
       }
     }
-  ],
-  "arrowParens": "always",
-  "semi": true,
-  "singleQuote": false,
-  "quoteProps": "as-needed",
-  "jsxSingleQuote": false,
-  "printWidth": 180
+  ]
 }

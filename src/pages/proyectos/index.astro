@@ -1,11 +1,23 @@
 ---
+import ProjectCard from "@/components/project/ProjectCard.astro";
 import Root from "@/layouts/Root.astro";
+import { getStrapiClient } from "@/services/strapiClientService";
 import type { Project } from "@/types/Project";
 import { getProjects } from "@/utils/getProjects";
+import ProjectFallbackCard from "@/components/fallbacks/ProjectFallbackCard.astro";
 
 export const prerender = true;
 
-const data: Project[] = await getProjects();
+//
+// Strapi client
+const client = getStrapiClient();
+const response = await client.collection("projects").find({
+  populate: "*",
+  sort: ["createdAt:desc"],
+});
+
+const data = response?.data || [];
+
 const title = "Proyectos personales | Frankuxui - Desarrollador Front-End y Diseñador UX/UI";
 ---
 
@@ -76,31 +88,9 @@ const title = "Proyectos personales | Frankuxui - Desarrollador Front-End y Dise
     <div class="grid md:grid-cols-2 gap-6 items-start">
       {
         data.map((project) => (
-          <article class="w-full group" itemscope itemtype="https://schema.org/CreativeWork" aria-labelledby={`project-title-${project.slug}`}>
-            <a href={`/proyectos/${project.slug}`} class="w-full max-w-full h-full flex flex-col gap-4" aria-label={`Ver detalles del proyecto ${project.title}`}>
-              <picture>
-                <source srcset={project.cover} type="image/jpeg" />
-                <img
-                  src={project.cover}
-                  alt={`Imagen de portada del proyecto ${project.title}`}
-                  class="w-full min-w-0 max-w-full object-cover border rounded-xl ring-offset-4 border-border motion-safe:transition-all motion-safe:duration-300 group-hover:ring-2 group-hover:ring-foreground/50 ring-offset-background"
-                  loading="lazy"
-                  decoding="async"
-                  width="600"
-                  height="400"
-                  itemprop="image"
-                />
-              </picture>
-              <div class="flex flex-col items-start gap-2">
-                <h2 id={`project-title-${project.slug}`} class="text-2xl font-semibold" itemprop="name">
-                  {project.title}
-                </h2>
-                <p class="text-lg mb-4" itemprop="description">
-                  {project.subtitle}
-                </p>
-              </div>
-            </a>
-          </article>
+          <ProjectCard strapiCollection={project} server:defer>
+            <ProjectFallbackCard slot="fallback" />
+          </ProjectCard>
         ))
       }
     </div>

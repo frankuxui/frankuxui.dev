@@ -9,6 +9,7 @@ import { transformerCopyButton } from "@rehype-pretty/transformers";
  * Renderiza Markdown (de Strapi) a HTML, aplicando syntax highlight con Shiki
  * y las mismas opciones que usas en astro.config.ts
  */
+
 export async function renderStrapiMarkdown(markdown: string) {
   const processor = unified()
     .use(remarkParse)

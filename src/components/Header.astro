@@ -10,15 +10,27 @@ const pathname = Astro.url.pathname;
 >
   <div class="w-full max-w-6xl mx-auto px-10">
     <div class="w-full relative flex items-center">
-      <div class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 right-0 -top-20 w-44 h-44 bg-green-500/10 blur-2xl"></div>
-      <div class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 right-36 -top-20 w-44 h-44 bg-cyan-500/10 blur-2xl"></div>
-      <div class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 left-0 -top-20 w-44 h-44 bg-pink-500/5 blur-2xl"></div>
+      <div
+        class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 right-0 -top-20 w-44 h-44 bg-green-500/10 blur-2xl"
+      >
+      </div>
+      <div
+        class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 right-36 -top-20 w-44 h-44 bg-cyan-500/10 blur-2xl"
+      >
+      </div>
+      <div
+        class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 left-0 -top-20 w-44 h-44 bg-pink-500/5 blur-2xl"
+      >
+      </div>
       <div class="header-inner flex items-center w-full h-12 md:h-16">
         <nav class="flex items-center justify-between w-full gap-8">
           <div class="mr-auto flex-1">
             <Logo />
           </div>
-          <ul class="hidden md:flex flex-none items-center justify-center mx-auto gap-2" role="list">
+          <ul
+            class="hidden md:flex flex-none items-center justify-center mx-auto gap-2"
+            role="list"
+          >
             {
               [
                 { href: "/sobre-mi", label: "Sobre mi" },
@@ -32,7 +44,10 @@ const pathname = Astro.url.pathname;
                     data-toggle="header-link"
                     class:list={[
                       "inline-flex items-center uppercase justify-center font-medium px-6 h-10 rounded-full text-sm transition-colors duration-200 hover:bg-foreground/5 data-[state='active']:bg-foreground data-[state='active']:text-background",
-                      { "bg-foreground text-background": pathname.includes(href) },
+                      {
+                        "bg-foreground text-background":
+                          pathname.includes(href),
+                      },
                     ]}
                     data-state={pathname.includes(href) ? "active" : ""}
                     aria-current={pathname.includes(href) ? "page" : undefined}
@@ -50,8 +65,17 @@ const pathname = Astro.url.pathname;
               data-toggle="drawer-menu"
               class="inline-flex flex-none md:hidden rounded-full w-12 h-12 items-center justify-center cursor-pointer hover:bg-foreground/6 motion-safe:transition-all duration-200"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" viewBox="0 0 24 24"
-                ><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.6" d="M9.41 9.66H9.4m5.2 0h-.01m-5.28 4.7H9.3m5.3 0h-.01"></path></svg
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-14 h-14"
+                viewBox="0 0 24 24"
+                ><path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-width="2.6"
+                  d="M9.41 9.66H9.4m5.2 0h-.01m-5.28 4.7H9.3m5.3 0h-.01"
+                ></path></svg
               >
             </button>
             <ThemeToggle />
@@ -96,7 +120,9 @@ const pathname = Astro.url.pathname;
     }
 
     function setup() {
-      header = document.querySelector("[data-toggle='header']") as HTMLDivElement;
+      header = document.querySelector(
+        "[data-toggle='header']"
+      ) as HTMLDivElement;
       if (!header) return;
 
       // Reiniciamos posición
@@ -121,14 +147,19 @@ const pathname = Astro.url.pathname;
   // Header links
 
   function updateActiveLinks() {
-    const headerLinks = document.querySelectorAll("[data-toggle='header-link']") as NodeListOf<HTMLAnchorElement>;
+    const headerLinks = document.querySelectorAll(
+      "[data-toggle='header-link']"
+    ) as NodeListOf<HTMLAnchorElement>;
     const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
 
     headerLinks.forEach((link) => {
       const href = (link.getAttribute("href") ?? "").replace(/\/+$/, "") || "/";
       if (href === "/" && currentPath === "/") {
         link.setAttribute("data-state", "active");
-      } else if (href !== "/" && (currentPath === href || currentPath.startsWith(href + "/"))) {
+      } else if (
+        href !== "/" &&
+        (currentPath === href || currentPath.startsWith(href + "/"))
+      ) {
         link.setAttribute("data-state", "active");
       } else {
         link.removeAttribute("data-state");

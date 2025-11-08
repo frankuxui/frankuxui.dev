@@ -27,7 +27,7 @@ export const POSTAL_CODE = '43840'
 export const ADDRESS_COUNTRY = 'España'
 
 export const FRANKUXUI_IMAGE = `${SITE_URL}/frankuxui_frontend_developer_ux_ui_designer.png`
-export const OG_IMAGE = `${SITE_URL}/Opengraph_imagen_de_Frankuxui_desarrollador_frontend_en_Tarragona_Salou.png`
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/Opengraph_imagen_de_Frankuxui_desarrollador_frontend_en_Tarragona_Salou.png`
 export const LOGO = `${SITE_URL}/frankuxui_frontend_developer_ux_ui_designer_logo.png`
 
 
@@ -73,7 +73,7 @@ export const siteConfig = {
     siteName: SITE_NAME,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    image: OG_IMAGE,
+    image: DEFAULT_OG_IMAGE,
     images: [
       {
         url: `${SITE_URL}/og-image.png`,
