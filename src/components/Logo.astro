@@ -1,10 +1,14 @@
 ---
+interface Props {
+  class?: string;
+}
 
+const { class: className = "text-foreground" } = Astro.props;
 ---
 
 <a
   href="/"
-  class="text-foreground"
+  class={className}
   aria-label="Logo de Frankuxui"
   title="Frankuxui"
   data-testid="header-logo"

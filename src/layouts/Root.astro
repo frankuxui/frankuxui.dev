@@ -7,6 +7,7 @@ import Footer from "@/components/Footer.astro";
 import CookieConsent from "@/components/CookieConsent.astro";
 import PaletteModal from "@/components/PaletteModal.astro";
 import SiteFeedbackModal from "@/components/SiteFeedbackModal.astro";
+import MobileMenuPanel from "@/components/MobileMenuPanel.astro";
 
 interface Props {
   title?: string;
@@ -45,6 +46,7 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
       <PaletteModal />
     </div>
     <SiteFeedbackModal />
+    <MobileMenuPanel />
   </body>
 </html>
 
