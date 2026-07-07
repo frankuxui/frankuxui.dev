@@ -4,9 +4,9 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import { siteConfig } from "@/config";
 import Footer from "@/views/Footer.astro";
-import MenuMobile from "@/components/MenuMobile.astro";
 import CookieConsent from "@/components/CookieConsent.astro";
 import PaletteModal from "@/components/PaletteModal.astro";
+import SiteFeedbackModal from "@/components/SiteFeedbackModal.astro";
 
 interface Props {
   title?: string;
@@ -34,9 +34,9 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
     </main>
     <Footer />
     <div id="portal" class="z-[999]">
-      <MenuMobile />
       <PaletteModal />
     </div>
+    <SiteFeedbackModal />
   </body>
 </html>
 

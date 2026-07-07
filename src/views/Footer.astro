@@ -63,7 +63,7 @@ import { siteConfig } from "@/config";
           </ul>
           <section class="w-full">
             <address class="flex flex-col gap-4 not-italic text-base text-foreground/70">
-              <span>📍 &nbsp; Salou, Tarragona, España</span>
+              <span>📍 &nbsp; {siteConfig.address.locality}, {siteConfig.address.region}, España</span>
               <span> ✉️ &nbsp; <a href={`mailto:${siteConfig.contact.email}`} class="hover:text-foreground">{siteConfig.contact.email}</a> </span>
               <span> 📞 &nbsp; <a href={`tel:${siteConfig.contact.phone}`} class="hover:text-foreground">{siteConfig.contact.phone}</a> </span>
             </address>
@@ -77,16 +77,10 @@ import { siteConfig } from "@/config";
                 <a href="/" class="text-lg text-foreground/70 hover:text-foreground">Inicio</a>
               </li>
               <li>
-                <a href="/blog" class="text-lg text-foreground/70 hover:text-foreground">Blog</a>
-              </li>
-              <li>
-                <a href="/proyectos" class="text-lg text-foreground/70 hover:text-foreground">Proyectos</a>
-              </li>
-              <li>
                 <a href="/sobre-mi" class="text-lg text-foreground/70 hover:text-foreground">Sobre mi</a>
               </li>
               <li>
-                <a href="/mision" class="text-lg text-foreground/70 hover:text-foreground">Mi misión</a>
+                <a href="/contacto" class="text-lg text-foreground/70 hover:text-foreground">Contacto</a>
               </li>
               <li>
                 <a href="/sitemap-0.xml" class="text-lg text-foreground/70 hover:text-foreground">Sitemap</a>

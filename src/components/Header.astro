@@ -1,5 +1,6 @@
 ---
 import Logo from "@/components/Logo.astro";
+import MobileMenuPanel from "@/components/MobileMenuPanel.astro";
 const pathname = Astro.url.pathname;
 ---
 
@@ -15,9 +16,7 @@ const pathname = Astro.url.pathname;
             {
               [
                 { href: "/sobre-mi", label: "Sobre mi" },
-                { href: "/proyectos", label: "Proyectos" },
-                { href: "/contacto", label: "Contacto" },
-                { href: "/blog", label: "Blog" }
+                { href: "/contacto", label: "Contacto" }
               ].map(({ href, label }) => (
                 <li role="listitem">
                   <a
@@ -57,14 +56,7 @@ const pathname = Astro.url.pathname;
                 ></path>
               </svg>
             </button>
-            <button
-              data-toggle="drawer-menu"
-              class="inline-flex flex-none md:hidden rounded-full w-12 h-12 items-center justify-center cursor-pointer hover:bg-foreground/6 motion-safe:transition-all duration-200"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" viewBox="0 0 24 24"
-                ><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.6" d="M9.41 9.66H9.4m5.2 0h-.01m-5.28 4.7H9.3m5.3 0h-.01"></path></svg
-              >
-            </button>
+            <MobileMenuPanel />
           </div>
         </nav>
       </div>

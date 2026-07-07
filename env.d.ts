@@ -2,8 +2,8 @@
 /// <reference types="astro/client" />
 
 interface ImportMetaEnv {
-  readonly RESEND_API_KEY: string;
-  readonly EMAIL_FROM: string;
+  readonly N8N_CONTACT_WEBHOOK_URL: string;
+  readonly N8N_FEEDBACK_WEBHOOK_URL: string;
 }
 
 interface ImportMeta {

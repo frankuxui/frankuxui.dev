@@ -23,36 +23,128 @@ const {
 const ogImage = new URL(image, Astro.site?.href || "https://frankuxui.dev")
   .href;
 
-const JsonLd = {
+const siteUrl = (Astro.site?.href || siteConfig.siteUrl).replace(/\/$/, "");
+const sameAs = [
+  siteConfig.social.github,
+  siteConfig.social.linkedin,
+  siteConfig.social.figma,
+  siteConfig.social.codepen,
+  siteConfig.social.codesandbox,
+  siteConfig.social.devto,
+  siteConfig.social.instagram,
+  siteConfig.social.dribbble,
+  siteConfig.social.facebook,
+  "https://frankuxui.com",
+];
+const authorImage = new URL(siteConfig.openGraph.image, Astro.site).toString();
+const logoUrl = new URL(siteConfig.logo, Astro.site).toString();
+
+const personSchema = {
   "@context": "https://schema.org",
-  "@type": "ProfilePage",
-  dateCreated: "2024-12-23T12:34:00-05:00",
-  dateModified: "2024-12-26T14:53:00-05:00",
-  mainEntity: {
-    "@type": "Person",
-    name: siteConfig.authorName,
-    alternateName: siteConfig.alternateName,
-    identifier: siteConfig.alternateName,
-    description: siteConfig.description,
-    image: new URL(siteConfig.openGraph.image, Astro.site).toString(),
-    sameAs: [
-      siteConfig.social.github,
-      siteConfig.social.linkedin,
-      siteConfig.social.figma,
-      siteConfig.social.codepen,
-      siteConfig.social.codesandbox,
-      siteConfig.social.devto,
-      siteConfig.social.instagram,
-    ],
-    publisher: {
-      "@type": "Organization",
-      name: siteConfig.alternateName,
-      logo: {
-        "@type": "ImageObject",
-        url: new URL(siteConfig.logo, Astro.site).toString(),
-      },
+  "@type": "Person",
+  "@id": `${siteUrl}#person`,
+  name: siteConfig.authorName,
+  alternateName: siteConfig.alternateNames,
+  url: siteUrl,
+  image: authorImage,
+  jobTitle: siteConfig.jobTitle,
+  description: siteConfig.description,
+  sameAs,
+  knowsAbout: siteConfig.knowsAbout,
+  worksFor: { "@id": `${siteUrl}#studio` },
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      email: `mailto:${siteConfig.contact.email}`,
+      telephone: siteConfig.contact.phone,
+      contactType: "customer service",
+      areaServed: "ES",
+      availableLanguage: ["es", "en", "ca"],
     },
+  ],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: siteConfig.address.street,
+    addressLocality: siteConfig.address.locality,
+    addressRegion: siteConfig.address.region,
+    postalCode: siteConfig.address.postalCode,
+    addressCountry: siteConfig.address.country,
   },
+};
+
+const professionalServiceSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": `${siteUrl}#studio`,
+  name: `${siteConfig.authorName} · ${siteConfig.siteName}`,
+  url: siteUrl,
+  image: authorImage,
+  logo: logoUrl,
+  description: siteConfig.description,
+  areaServed: [
+    { "@type": "City", name: siteConfig.address.locality },
+    { "@type": "Country", name: "España", identifier: "ES" },
+  ],
+  founder: { "@id": `${siteUrl}#person` },
+  sameAs,
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      email: `mailto:${siteConfig.contact.email}`,
+      telephone: siteConfig.contact.phone,
+      contactType: "sales",
+      areaServed: "ES",
+      availableLanguage: ["es", "en", "ca"],
+    },
+  ],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: siteConfig.address.street,
+    addressLocality: siteConfig.address.locality,
+    addressRegion: siteConfig.address.region,
+    postalCode: siteConfig.address.postalCode,
+    addressCountry: siteConfig.address.country,
+  },
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": `${siteUrl}#organization`,
+  name: siteConfig.siteName,
+  legalName: siteConfig.authorName,
+  url: siteUrl,
+  logo: logoUrl,
+  slogan: "Experiencias digitales enfocadas en UX, frontend y SEO técnico.",
+  sameAs,
+  founder: { "@id": `${siteUrl}#person` },
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      email: `mailto:${siteConfig.contact.email}`,
+      telephone: siteConfig.contact.phone,
+      contactType: "press",
+    },
+  ],
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: siteConfig.address.street,
+    addressLocality: siteConfig.address.locality,
+    addressRegion: siteConfig.address.region,
+    postalCode: siteConfig.address.postalCode,
+    addressCountry: siteConfig.address.country,
+  },
+};
+
+const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${siteUrl}#website`,
+  url: siteUrl,
+  name: siteConfig.siteName,
+  inLanguage: siteConfig.locale,
+  publisher: { "@id": `${siteUrl}#studio` },
+  sameAs,
 };
 ---
 
@@ -131,6 +223,14 @@ const JsonLd = {
 <meta name="color-scheme" content="light" />
 <meta name="robots" content="index, follow" />
 
+<!-- GEO: política para crawlers y asistentes de IA -->
+<meta name="AI-crawling" content="allowed" />
+<meta name="AI-training" content="allowed" />
+<meta name="AI-understanding" content="allowed" />
+<meta name="AI-answer-generation" content="allowed" />
+<meta name="AI-citation" content="encouraged" />
+<link rel="llms-txt" href={new URL("llms.txt", Astro.site)} />
+
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
@@ -171,36 +271,10 @@ const JsonLd = {
 <meta property="twitter:image" content={ogImage} />
 <meta property="twitter:image:alt" content={title} />
 
-{
-  JsonLd && (
-    <script
-      type="application/ld+json"
-      is:inline
-      set:html={JSON.stringify(JsonLd)}
-    />
-  )
-}
-
-<script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Frank Esteban",
-    "jobTitle": "Frontend Developer & UX/UI Designer",
-    "url": "https://frankuxui.dev",
-    "email": "frankuxui.dev@gmail.com",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Salou",
-      "addressRegion": "Tarragona",
-      "addressCountry": "España"
-    },
-    "sameAs": [
-      "https://github.com/frankuxui",
-      "https://www.linkedin.com/in/frankuxui"
-    ]
-  }
-</script>
+<script type="application/ld+json" is:inline set:html={JSON.stringify(personSchema)} />
+<script type="application/ld+json" is:inline set:html={JSON.stringify(professionalServiceSchema)} />
+<script type="application/ld+json" is:inline set:html={JSON.stringify(organizationSchema)} />
+<script type="application/ld+json" is:inline set:html={JSON.stringify(webSiteSchema)} />
 
 <!-- Google tag (gtag.js) -->
 <script

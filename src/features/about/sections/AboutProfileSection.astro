@@ -1,0 +1,38 @@
+---
+const professionalDisciplines = ["Diseño UX", "Diseño UI", "Desarrollo Frontend", "SEO técnico", "Optimización web", "Arquitectura de contenido", "Conversión digital"];
+---
+
+<section class="scroll-mt-32 border-b-2 border-border relative" aria-labelledby="about-profile-title">
+  <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto lg:px-10">
+    <div class="mx-auto grid lg:grid-cols-2 items-stretch isolate relative">
+      <div class="bg-primary text-background">
+        <div class="lg:sticky lg:top-28 lg:self-start lg:py-32">
+          <div class="px-10 py-20 lg:p-20">
+            <p class="text-sm font-medium uppercase tracking-[0.22em] text-background">Perfil profesional</p>
+            <h2 id="about-profile-title" class="mt-4 leading-11 text-3xl 2xl:text-4xl 3xl:text-5xl 3xl:leading-14 font-semibold tracking-tight">
+              Un perfil entre dos disciplinas.
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="w-full py-20 px-10 lg:pr-0 lg:pl-10">
+        <p class="text-2xl font-medium leading-normal sm:text-3xl">
+          Combino el pensamiento estratégico del diseño con la precisión técnica del desarrollo para llevar una misma visión desde el concepto hasta producción.
+        </p>
+        <p class="mt-8 max-w-3xl text-lg leading-relaxed">
+          Esto me permite diseñar teniendo en cuenta las restricciones y posibilidades reales de implementación, y desarrollar sin perder de vista a las personas, el propósito
+          del producto ni sus objetivos de negocio.
+        </p>
+        <ul class="mt-10 flex flex-wrap gap-4" aria-label="Disciplinas profesionales">
+          {
+            professionalDisciplines.map((discipline) => (
+              <li class="inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm transition-all duration-300 border-2 border-foreground shadow-[4px_4px_0px_var(--color-foreground)] transform-[translate(2px,_2px)]">
+                {discipline}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

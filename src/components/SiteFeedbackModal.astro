@@ -1,0 +1,404 @@
+---
+const STAR_VALUES = [1, 2, 3, 4, 5] as const;
+---
+
+<div id="site-feedback-prompt" class="hidden">
+  <button
+    type="button"
+    id="feedback-fab"
+    class="fixed bottom-5 left-4 z-50 inline-flex size-14 items-center justify-center rounded-full border-2 border-foreground bg-foreground text-background shadow-2xl transition-transform hover:scale-105 sm:hidden"
+    aria-label="Votar sobre el sitio web"
+  >
+    <span class="absolute inset-0 rounded-full bg-foreground/35 motion-safe:animate-ping" aria-hidden="true"></span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="relative size-6 motion-safe:animate-pulse" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m12 2l3.09 6.26L22 9.27l-5 4.87l1.18 6.88L12 17.77l-6.18 3.25L7 14.14L2 9.27l6.91-1.01z"></path>
+    </svg>
+  </button>
+
+  <aside
+    id="feedback-card"
+    class="fixed bottom-5 left-4 right-4 z-50 hidden rounded-lg border-2 border-foreground bg-background/95 p-4 text-foreground shadow-2xl backdrop-blur sm:left-6 sm:right-auto sm:block sm:max-w-sm"
+    aria-label="Votación del sitio web"
+  >
+    <div class="flex items-start gap-3">
+      <span class="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-foreground text-background" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m12 2l3.09 6.26L22 9.27l-5 4.87l1.18 6.88L12 17.77l-6.18 3.25L7 14.14L2 9.27l6.91-1.01z"></path>
+        </svg>
+      </span>
+      <div class="min-w-0">
+        <p class="text-sm font-semibold leading-5">¿Qué opinas del sitio?</p>
+        <p class="mt-1 text-xs leading-5 text-foreground/70">Tu voto me ayuda a mejorar el diseño y la experiencia de usuario.</p>
+        <button
+          type="button"
+          id="feedback-card-open"
+          class="mt-3 inline-flex h-10 items-center justify-center rounded-full bg-foreground px-4 text-sm font-semibold text-background transition-opacity hover:opacity-85"
+        >
+          Votar ahora
+        </button>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div id="feedback-modal-root" class="feedback-modal-root fixed inset-0 z-[60] hidden grid place-items-center p-4" role="presentation">
+  <button type="button" id="feedback-modal-overlay" aria-label="Cerrar" class="feedback-modal-overlay absolute inset-0 h-full w-full bg-black/50 backdrop-blur-xs"></button>
+
+  <div
+    id="feedback-modal-panel"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Feedback del sitio"
+    class="feedback-modal-panel relative w-full max-w-md overflow-hidden rounded-2xl border-2 border-foreground bg-background"
+  >
+    <button
+      type="button"
+      id="feedback-modal-close"
+      class="absolute right-4 top-4 inline-flex size-9 items-center justify-center rounded-full bg-foreground/5 transition-colors hover:bg-foreground/10"
+      aria-label="Cerrar"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <div id="feedback-form-view">
+      <form id="feedback-form">
+        <div class="px-6 pt-6">
+          <p class="text-xs font-medium uppercase text-foreground/55">Feedback rápido</p>
+          <h2 class="mt-2 text-xl font-semibold tracking-tight">Nuevo diseño de mi sitio web</h2>
+          <p class="mt-1 text-xs leading-6 text-foreground/75">Porfa dime qué te parece el nuevo diseño y experiencia de usuario de mi sitio web.</p>
+        </div>
+        <div class="px-6 py-5">
+          <label for="feedback-name" class="text-sm font-medium text-foreground">Nombre</label>
+          <input
+            id="feedback-name"
+            name="name"
+            type="text"
+            autocomplete="name"
+            class="mt-2 h-12 w-full rounded-lg border-2 border-transparent bg-foreground/10 px-4 text-sm outline-none transition-colors placeholder:text-foreground/40 focus:border-foreground focus:bg-background disabled:opacity-70"
+            placeholder="Tu nombre"
+            minlength="2"
+            maxlength="100"
+            required
+          />
+          <p id="feedback-name-error" class="mt-2 hidden text-sm font-medium text-red-600" role="alert"></p>
+
+          <fieldset class="mt-5">
+            <legend class="text-sm font-medium text-foreground">¿Qué te parece el nuevo diseño?</legend>
+            <div class="mt-3 flex items-center gap-2" role="radiogroup" id="feedback-rating-group" aria-label="Valoración del nuevo diseño">
+              {
+                STAR_VALUES.map((star) => (
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked="false"
+                    aria-label={`${star} ${star === 1 ? "estrella" : "estrellas"}`}
+                    data-star={star}
+                    class="feedback-star inline-flex size-11 items-center justify-center rounded-full border-2 border-foreground/20 bg-foreground/5 text-foreground/35 transition-colors focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background disabled:pointer-events-none disabled:opacity-70"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m12 2l3.09 6.26L22 9.27l-5 4.87l1.18 6.88L12 17.77l-6.18 3.25L7 14.14L2 9.27l6.91-1.01z" />
+                    </svg>
+                  </button>
+                ))
+              }
+            </div>
+            <p class="mt-2 text-sm text-foreground/60" id="feedback-rating-label" aria-live="polite">Sin valoración</p>
+          </fieldset>
+
+          <p id="feedback-error" class="mt-4 hidden rounded-lg bg-red-500/10 px-4 py-3 text-sm font-medium text-red-600" role="alert">No se pudo enviar tu valoración. Inténtalo nuevamente.</p>
+        </div>
+        <div class="flex flex-col-reverse gap-3 px-6 pb-6 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            id="feedback-dismiss"
+            class="inline-flex h-11 items-center justify-center rounded-full border-2 border-foreground px-5 text-sm font-semibold text-foreground transition-colors hover:bg-foreground/5"
+          >
+            Ahora no
+          </button>
+          <button
+            type="submit"
+            id="feedback-submit"
+            disabled
+            class="inline-flex h-11 items-center justify-center rounded-full bg-foreground px-5 text-sm font-semibold text-background transition-opacity hover:opacity-85 disabled:pointer-events-none disabled:opacity-45"
+          >
+            Enviar comentario
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div id="feedback-success-view" class="hidden">
+      <div class="px-6 pt-6">
+        <h2 class="text-xl font-semibold tracking-tight">Votación recibida</h2>
+      </div>
+      <div class="px-6 py-5">
+        <p class="text-sm leading-6 text-foreground/75">Gracias por tu votación, esto me ayuda a mejorar la experiencia de usuario y diseño</p>
+      </div>
+      <div class="flex justify-end px-6 pb-6">
+        <button
+          type="button"
+          id="feedback-success-close"
+          class="inline-flex h-11 items-center justify-center rounded-full bg-foreground px-5 text-sm font-semibold text-background transition-opacity hover:opacity-85"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { trackAnalyticsEvent } from "@/lib/analytics";
+  import { FEEDBACK_NAME_MAX_LENGTH, getFeedbackNameValidationMessage, sanitizeFeedbackNameInput } from "@/schemas/designFeedback.schema";
+
+  const FEEDBACK_COOKIE_NAME = "frankuxui_design_feedback_sent";
+
+  function hasFeedbackCookie() {
+    return document.cookie.split(";").some((cookie) => cookie.trim().startsWith(`${FEEDBACK_COOKIE_NAME}=`));
+  }
+
+  function setup() {
+    const prompt = document.getElementById("site-feedback-prompt");
+    const fab = document.getElementById("feedback-fab");
+    const card = document.getElementById("feedback-card");
+    const cardOpenBtn = document.getElementById("feedback-card-open");
+    const modalRoot = document.getElementById("feedback-modal-root");
+    const overlay = document.getElementById("feedback-modal-overlay") as HTMLDivElement | null;
+    const panel = document.getElementById("feedback-modal-panel");
+    const closeBtn = document.getElementById("feedback-modal-close") as HTMLButtonElement | null;
+    const dismissBtn = document.getElementById("feedback-dismiss");
+    const successCloseBtn = document.getElementById("feedback-success-close");
+    const form = document.getElementById("feedback-form") as HTMLFormElement | null;
+    const nameInput = document.getElementById("feedback-name") as HTMLInputElement | null;
+    const nameError = document.getElementById("feedback-name-error");
+    const ratingGroup = document.getElementById("feedback-rating-group");
+    const ratingLabel = document.getElementById("feedback-rating-label");
+    const stars = document.querySelectorAll<HTMLButtonElement>(".feedback-star");
+    const submitBtn = document.getElementById("feedback-submit") as HTMLButtonElement | null;
+    const errorMessage = document.getElementById("feedback-error");
+    const formView = document.getElementById("feedback-form-view");
+    const successView = document.getElementById("feedback-success-view");
+
+    if (!prompt || !fab || !card || !modalRoot || !overlay || !panel || !closeBtn || !form || !nameInput || !ratingGroup || !submitBtn) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let rating = 0;
+    let isSubmitting = false;
+    let hasTouchedName = false;
+    let hasAttemptedSubmit = false;
+
+    if (!hasFeedbackCookie()) {
+      prompt.classList.remove("hidden");
+    }
+
+    function updateNameValidation() {
+      const message = getFeedbackNameValidationMessage(nameInput!.value);
+      const shouldShow = (hasTouchedName || hasAttemptedSubmit || nameInput!.value.trim().length > 0) && message.length > 0;
+
+      if (nameError) {
+        nameError.textContent = message;
+        nameError.classList.toggle("hidden", !shouldShow);
+      }
+      nameInput!.classList.toggle("border-red-500/70", shouldShow);
+      updateSubmitState();
+      return message.length === 0;
+    }
+
+    function updateSubmitState() {
+      const nameOk = getFeedbackNameValidationMessage(nameInput!.value).length === 0;
+      submitBtn!.disabled = !(nameOk && rating > 0) || isSubmitting;
+    }
+
+    function setRating(value: number) {
+      rating = value;
+      stars.forEach((star) => {
+        const starValue = Number(star.dataset.star);
+        const isActive = starValue <= value;
+        star.setAttribute("aria-checked", String(starValue === value));
+        star.classList.toggle("border-yellow-500", isActive);
+        star.classList.toggle("bg-yellow-400/10", isActive);
+        star.classList.toggle("text-yellow-500", isActive);
+        star.classList.toggle("border-foreground/20", !isActive);
+        star.classList.toggle("bg-foreground/5", !isActive);
+        star.classList.toggle("text-foreground/35", !isActive);
+      });
+      if (ratingLabel) ratingLabel.textContent = value ? `${value} de 5 estrellas` : "Sin valoración";
+      updateSubmitState();
+    }
+
+    stars.forEach((star) => {
+      star.addEventListener("click", () => {
+        const value = Number(star.dataset.star);
+        setRating(value);
+        trackAnalyticsEvent("feedback_rating_select", { location: "site_feedback_modal", rating: value });
+      });
+    });
+
+    nameInput.addEventListener("blur", () => {
+      hasTouchedName = true;
+      updateNameValidation();
+    });
+
+    nameInput.addEventListener("input", () => {
+      hasTouchedName = true;
+      nameInput.value = sanitizeFeedbackNameInput(nameInput.value);
+      updateNameValidation();
+    });
+
+    function resetForm() {
+      form!.reset();
+      setRating(0);
+      hasTouchedName = false;
+      hasAttemptedSubmit = false;
+      isSubmitting = false;
+      nameInput!.classList.remove("border-red-500/70");
+      nameError?.classList.add("hidden");
+      errorMessage?.classList.add("hidden");
+      submitBtn!.textContent = "Enviar comentario";
+      updateSubmitState();
+      formView?.classList.remove("hidden");
+      successView?.classList.add("hidden");
+    }
+
+    function onKeydown(event: KeyboardEvent) {
+      if (event.key === "Escape") closeModal();
+    }
+
+    function openModal(source: "mobile_fab" | "desktop_card") {
+      trackAnalyticsEvent("feedback_prompt_click", { source });
+      trackAnalyticsEvent("feedback_modal_open", { location: "site_feedback_prompt" });
+      modalRoot!.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          overlay?.classList.add("feedback-modal-overlay-visible");
+          panel?.classList.add("feedback-modal-panel-visible");
+        });
+      });
+
+      window.setTimeout(() => closeBtn!.focus(), prefersReducedMotion ? 0 : 220);
+      document.addEventListener("keydown", onKeydown);
+    }
+
+    function closeModal() {
+      overlay?.classList.remove("feedback-modal-overlay-visible");
+      panel?.classList.remove("feedback-modal-panel-visible");
+      document.removeEventListener("keydown", onKeydown);
+      document.body.style.overflow = "";
+
+      window.setTimeout(
+        () => {
+          modalRoot!.classList.add("hidden");
+          resetForm();
+        },
+        prefersReducedMotion ? 0 : 220
+      );
+    }
+
+    fab.addEventListener("click", () => openModal("mobile_fab"));
+    cardOpenBtn?.addEventListener("click", () => openModal("desktop_card"));
+    overlay.addEventListener("click", closeModal);
+    closeBtn.addEventListener("click", closeModal);
+    dismissBtn?.addEventListener("click", closeModal);
+    successCloseBtn?.addEventListener("click", closeModal);
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      hasAttemptedSubmit = true;
+      const nameOk = updateNameValidation();
+
+      if (!nameOk || rating === 0) {
+        trackAnalyticsEvent("feedback_validation_error", {
+          location: "site_feedback_modal",
+          has_name_error: !nameOk,
+          has_rating: rating > 0
+        });
+        return;
+      }
+
+      isSubmitting = true;
+      submitBtn!.disabled = true;
+      submitBtn!.textContent = "Enviando...";
+      errorMessage?.classList.add("hidden");
+      trackAnalyticsEvent("feedback_submit", { location: "site_feedback_modal", rating });
+
+      try {
+        const response = await fetch("/api/design-feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: nameInput!.value.trim(), rating })
+        });
+
+        if (!response.ok) throw new Error("No se pudo enviar la valoración.");
+
+        trackAnalyticsEvent("feedback_success", { location: "site_feedback_modal", rating });
+        formView?.classList.add("hidden");
+        successView?.classList.remove("hidden");
+        prompt.classList.add("hidden");
+      } catch {
+        isSubmitting = false;
+        submitBtn!.textContent = "Enviar comentario";
+        updateSubmitState();
+        errorMessage?.classList.remove("hidden");
+        trackAnalyticsEvent("feedback_error", { location: "site_feedback_modal", rating });
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setup);
+  } else {
+    setup();
+  }
+</script>
+
+<style>
+  .feedback-modal-overlay {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .feedback-modal-overlay-visible {
+    opacity: 1;
+  }
+
+  .feedback-modal-panel {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 0.22s ease,
+      transform 0.22s ease;
+  }
+
+  .feedback-modal-panel-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .feedback-star {
+    transition:
+      transform 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .feedback-star:hover:not(:disabled) {
+    transform: translateY(-2px) scale(1.04);
+  }
+
+  .feedback-star:active:not(:disabled) {
+    transform: scale(0.92);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feedback-modal-overlay,
+    .feedback-modal-panel,
+    .feedback-star {
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
