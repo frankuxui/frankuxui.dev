@@ -36,12 +36,16 @@ export default function ContactForm() {
         <Success size={80} color="#4709e0" />
         <div className="flex flex-col items-center justify-start text-center mx-auto w-full max-w-xs gap-2">
           <h2 className="text-2xl font-medium mt-3">Mensaje enviado</h2>
-          <p className="text-gray-600 dark:text-gray-300">Gracias por tu mensaje, te responderé lo más pronto posible.</p>
+          <p className="text-gray-600">
+            Gracias por tu mensaje, te responderé lo más pronto posible.
+          </p>
           <button
             onClick={() => {
               setSuccess(false);
               if (typeof window !== "undefined") {
-                const form = document?.getElementById("fmhx438f934xj43dd__") as HTMLFormElement;
+                const form = document?.getElementById(
+                  "fmhx438f934xj43dd__",
+                ) as HTMLFormElement;
                 form.reset();
               }
             }}
@@ -55,7 +59,11 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="relative grid gap-6" id="fmhx438f934xj43dd__">
+    <form
+      onSubmit={handleSubmit}
+      className="relative grid gap-6"
+      id="fmhx438f934xj43dd__"
+    >
       <div className="grid gap-4">
         <label htmlFor="name" className="font-medium text-lg">
           Nombre
@@ -65,7 +73,7 @@ export default function ContactForm() {
           id="name"
           name="name"
           placeholder="Nombre"
-          className="h-16 xl:h-20 px-6 rounded-lg text-base font-roboto-mono placeholder:text-sm font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
+          className="h-16 xl:h-20 px-6 rounded-lg text-base font-roboto-mono placeholder:text-sm font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white"
           required
         />
       </div>
@@ -79,7 +87,7 @@ export default function ContactForm() {
           id="email"
           name="email"
           placeholder="Correo electrónico"
-          className="h-16 xl:h-20 px-6 rounded-lg text-base font-roboto-mono placeholder:text-sm font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
+          className="h-16 xl:h-20 px-6 rounded-lg text-base font-roboto-mono placeholder:text-sm font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white"
           required
         />
       </div>
@@ -94,7 +102,7 @@ export default function ContactForm() {
           placeholder="Deja tu mensaje"
           rows={4}
           cols={30}
-          className="resize-none px-6 py-4 rounded-lg text-base font-roboto-mono placeholder:text-sm font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white dark:focus:placeholder:text-background/50 dark:focus:text-black"
+          className="resize-none px-6 py-4 rounded-lg text-base font-roboto-mono placeholder:text-sm font-medium outline-none ring-0 ring-transparent motion-safe:transition-colors motion-safe:duration-300 border-3 border-transparent focus:border-foreground bg-foreground/5 hover:bg-foreground/8 focus:bg-white"
           required
         />
       </div>
@@ -109,7 +117,9 @@ export default function ContactForm() {
         </button>
       </div>
 
-      {error && <div className={`text-base font-medium text-red-500`}>{error}</div>}
+      {error && (
+        <div className={`text-base font-medium text-red-500`}>{error}</div>
+      )}
     </form>
   );
 }

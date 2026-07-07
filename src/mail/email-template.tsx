@@ -22,7 +22,7 @@ export default function EmailTemplate({ name, email, message }: Props) {
         },
       }}
     >
-      <Html lang="es" dir="ltr" style={{ backgroundColor: "#f9fafb" }} className="bg-gray-50 dark:bg-gray-950 dark:text-white">
+      <Html lang="es" dir="ltr" style={{ backgroundColor: "#f9fafb" }} className="bg-gray-50 text-black">
         <Head>
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width" />
@@ -45,7 +45,7 @@ export default function EmailTemplate({ name, email, message }: Props) {
         </Head>
 
         <Body
-          className="px-4 pt-6 bg-gray-50 dark:bg-gray-950 dark:text-white"
+          className="px-4 pt-6 bg-gray-50 text-black"
           style={{
             backgroundColor: "#f9fafb",
             background: "#f9fafb",
@@ -56,8 +56,8 @@ export default function EmailTemplate({ name, email, message }: Props) {
             <Link href={siteConfig.siteUrl} className="inline-block">
               <Img src={siteConfig.logo} width="56px" height="56px" className="w-14 rounded overflow-hidden max-w-full" />
             </Link>
-            <Text className="text-black text-[20px] sm:text-[24px] font-bold mx-0 my-0 mt-8 dark:text-white">Hola, {name ?? "Person"}</Text>
-            <Text className="w-full max-w-lg text-base text-gray-700 dark:text-gray-200">
+            <Text className="text-black text-[20px] sm:text-[24px] font-bold mx-0 my-0 mt-8">Hola, {name ?? "Person"}</Text>
+            <Text className="w-full max-w-lg text-base text-gray-700">
               Es un placer recibir tu mensaje. En breve me pondré en contacto contigo para resolver tus dudas o atender tus necesidades.
             </Text>
           </Container>
@@ -100,9 +100,9 @@ export default function EmailTemplate({ name, email, message }: Props) {
           </Container>
 
           <Container className="max-w-[40rem]">
-            <Text className="text-gray-700 text-sm mt-8 p-4 rounded bg-gray-100 dark:bg-gray-900 dark:text-gray-400">
+            <Text className="text-gray-700 text-sm mt-8 p-4 rounded bg-gray-100">
               Este mensaje ha sido generado automáticamente por la web de{" "}
-              <Link target="_blank" href={siteConfig.productionURL} className="text-brand font-semibold text-black dark:text-white">
+              <Link target="_blank" href={siteConfig.productionURL} className="text-brand font-semibold text-black">
                 {siteConfig.domain}
               </Link>
               . Por favor, no respondas a este correo.
@@ -110,9 +110,9 @@ export default function EmailTemplate({ name, email, message }: Props) {
           </Container>
 
           <Container className="max-w-[40rem]">
-            <Text className="text-gray-700 text-sm mt-8 dark:text-gray-500">
+            <Text className="text-gray-700 text-sm mt-8">
               © {new Date().getFullYear()}{" "}
-              <Link target="_blank" href={siteConfig.productionURL} className="lowercase text-brand font-semibold text-black dark:text-white">
+              <Link target="_blank" href={siteConfig.productionURL} className="lowercase text-brand font-semibold text-black">
                 {siteConfig.alternateName}
               </Link>{" "}
               Todos los derechos reservados

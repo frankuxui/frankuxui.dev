@@ -1,53 +1,33 @@
 ---
 import Logo from "@/components/Logo.astro";
-import ThemeToggle from "@/components/ThemeToggle.astro";
 const pathname = Astro.url.pathname;
 ---
 
-<header
-  class="sticky top-0 left-0 w-full h-20 sm:h-24 flex items-center justify-center z-50 duration-300 border-b border-border bg-background/70 backdrop-blur-2xl"
-  data-toggle="header"
->
-  <div class="w-full max-w-6xl mx-auto px-10">
+<header class="sticky top-0 left-0 w-full h-20 sm:h-24 flex items-center justify-center z-50 duration-300 border-b-2 border-border bg-background/70 backdrop-blur-2xl" data-toggle="header">
+  <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto px-10">
     <div class="w-full relative flex items-center">
-      <div
-        class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 right-0 -top-20 w-44 h-44 bg-green-500/10 blur-2xl"
-      >
-      </div>
-      <div
-        class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 right-36 -top-20 w-44 h-44 bg-cyan-500/10 blur-2xl"
-      >
-      </div>
-      <div
-        class="opacity-0 transition-all duration-300 dark:opacity-100 absolute pointer-events-none z-0 left-0 -top-20 w-44 h-44 bg-pink-500/5 blur-2xl"
-      >
-      </div>
       <div class="header-inner flex items-center w-full h-12 md:h-16">
         <nav class="flex items-center justify-between w-full gap-8">
           <div class="mr-auto flex-1">
             <Logo />
           </div>
-          <ul
-            class="hidden md:flex flex-none items-center justify-center mx-auto gap-2"
-            role="list"
-          >
+          <ul class="hidden md:flex flex-none items-center justify-center mx-auto gap-2" role="list">
             {
               [
                 { href: "/sobre-mi", label: "Sobre mi" },
                 { href: "/proyectos", label: "Proyectos" },
                 { href: "/contacto", label: "Contacto" },
-                { href: "/blog", label: "Blog" },
+                { href: "/blog", label: "Blog" }
               ].map(({ href, label }) => (
                 <li role="listitem">
                   <a
                     href={href}
                     data-toggle="header-link"
                     class:list={[
-                      "inline-flex items-center uppercase justify-center font-medium px-6 h-10 rounded-full text-sm transition-colors duration-200 hover:bg-foreground/5 data-[state='active']:bg-foreground data-[state='active']:text-background",
+                      "inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm transition-all duration-300 hover:bg-foreground/5 data-[state='active']:bg-foreground data-[state='active']:text-background border-2 border-foreground shadow-[4px_4px_0px_var(--color-foreground)] hover:shadow-[2px_2px_0px_var(--color-foreground)] transform-[translate(2px,_2px)]",
                       {
-                        "bg-foreground text-background":
-                          pathname.includes(href),
-                      },
+                        "bg-foreground text-background": pathname.includes(href)
+                      }
                     ]}
                     data-state={pathname.includes(href) ? "active" : ""}
                     aria-current={pathname.includes(href) ? "page" : undefined}
@@ -62,23 +42,29 @@ const pathname = Astro.url.pathname;
 
           <div class="ml-auto flex flex-1 items-center justify-end gap-4">
             <button
+              class="inline-flex flex-none size-12 items-center justify-center cursor-pointer hover:bg-foreground/6 motion-safe:transition-all duration-200"
+              type="button"
+              data-toggle="palette-modal"
+              aria-label="Cambiar tema de la web"
+              aria-haspopup="dialog"
+              aria-controls="palette-modal"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24">
+                <path d="M0 0h24v24H0z" fill="none"></path>
+                <path
+                  fill="currentColor"
+                  d="M12 22q-2.05 0-3.875-.788t-3.187-2.15t-2.15-3.187T2 12q0-2.075.813-3.9t2.2-3.175T8.25 2.788T12.2 2q2 0 3.775.688t3.113 1.9t2.125 2.875T22 11.05q0 2.875-1.75 4.413T16 17h-1.85q-.225 0-.312.125t-.088.275q0 .3.375.863t.375 1.287q0 1.25-.687 1.85T12 22m-4.425-9.425Q8 12.15 8 11.5t-.425-1.075T6.5 10t-1.075.425T5 11.5t.425 1.075T6.5 13t1.075-.425m3-4Q11 8.15 11 7.5t-.425-1.075T9.5 6t-1.075.425T8 7.5t.425 1.075T9.5 9t1.075-.425m5 0Q16 8.15 16 7.5t-.425-1.075T14.5 6t-1.075.425T13 7.5t.425 1.075T14.5 9t1.075-.425m3 4Q19 12.15 19 11.5t-.425-1.075T17.5 10t-1.075.425T16 11.5t.425 1.075T17.5 13t1.075-.425M12 20q.225 0 .363-.125t.137-.325q0-.35-.375-.825T11.75 17.3q0-1.05.725-1.675T14.25 15H16q1.65 0 2.825-.962T20 11.05q0-3.025-2.312-5.038T12.2 4Q8.8 4 6.4 6.325T4 12q0 3.325 2.338 5.663T12 20"
+                ></path>
+              </svg>
+            </button>
+            <button
               data-toggle="drawer-menu"
               class="inline-flex flex-none md:hidden rounded-full w-12 h-12 items-center justify-center cursor-pointer hover:bg-foreground/6 motion-safe:transition-all duration-200"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-14 h-14"
-                viewBox="0 0 24 24"
-                ><path
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-width="2.6"
-                  d="M9.41 9.66H9.4m5.2 0h-.01m-5.28 4.7H9.3m5.3 0h-.01"
-                ></path></svg
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14" viewBox="0 0 24 24"
+                ><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.6" d="M9.41 9.66H9.4m5.2 0h-.01m-5.28 4.7H9.3m5.3 0h-.01"></path></svg
               >
             </button>
-            <ThemeToggle />
           </div>
         </nav>
       </div>
@@ -120,9 +106,7 @@ const pathname = Astro.url.pathname;
     }
 
     function setup() {
-      header = document.querySelector(
-        "[data-toggle='header']"
-      ) as HTMLDivElement;
+      header = document.querySelector("[data-toggle='header']") as HTMLDivElement;
       if (!header) return;
 
       // Reiniciamos posición
@@ -147,19 +131,14 @@ const pathname = Astro.url.pathname;
   // Header links
 
   function updateActiveLinks() {
-    const headerLinks = document.querySelectorAll(
-      "[data-toggle='header-link']"
-    ) as NodeListOf<HTMLAnchorElement>;
+    const headerLinks = document.querySelectorAll("[data-toggle='header-link']") as NodeListOf<HTMLAnchorElement>;
     const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
 
     headerLinks.forEach((link) => {
       const href = (link.getAttribute("href") ?? "").replace(/\/+$/, "") || "/";
       if (href === "/" && currentPath === "/") {
         link.setAttribute("data-state", "active");
-      } else if (
-        href !== "/" &&
-        (currentPath === href || currentPath.startsWith(href + "/"))
-      ) {
+      } else if (href !== "/" && (currentPath === href || currentPath.startsWith(href + "/"))) {
         link.setAttribute("data-state", "active");
       } else {
         link.removeAttribute("data-state");

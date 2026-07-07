@@ -1,0 +1,49 @@
+---
+const disciplines = ["Diseño UX", "Diseño UI", "Frontend", "SEO técnico", "Optimización web", "Conversión digital"];
+---
+
+<section id="sobre-mi" class="scroll-mt-32 border-b-2 border-border relative" aria-labelledby="home-about-title">
+  <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto lg:px-10">
+    <div class="mx-auto grid lg:grid-cols-2 items-stretch isolate relative">
+      <div class="w-full py-20 px-10 lg:pl-0 lg:pr-10">
+        <p class="text-2xl font-medium leading-normal sm:text-3xl">
+          Una web no debe ser solamente bonita: debe resolver problemas reales, ser rápida, posicionar en buscadores y generar resultados de negocio.
+        </p>
+        <p class="mt-8 max-w-3xl text-lg leading-relaxed">
+          Mi enfoque parte de entender las necesidades reales de las personas y traducirlas en interfaces claras, accesibles y funcionales. Combino criterio visual, pensamiento estratégico y buenas
+          prácticas de desarrollo para construir experiencias digitales sólidas.
+        </p>
+
+        <p class="mt-8 max-w-3xl text-lg leading-relaxed">
+          Trabajo cuidando tanto la experiencia de usuario como la calidad técnica del producto. Desde la arquitectura de componentes hasta los detalles de interacción, busco crear soluciones
+          coherentes, mantenibles y preparadas para evolucionar.
+        </p>
+
+        <p class="mt-8 max-w-3xl text-lg leading-relaxed">
+          Me interesa desarrollar productos que no solo se vean bien, sino que también sean rápidos, escalables y fáciles de usar. Para lograrlo, integro diseño, accesibilidad y código limpio en cada
+          etapa del proceso.
+        </p>
+        <ul class="mt-10 flex flex-wrap gap-4" aria-label="Áreas profesionales">
+          {
+            disciplines.map((discipline) => (
+              <li class="inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm transition-all duration-300 border-2 border-foreground shadow-[4px_4px_0px_var(--color-foreground)] transform-[translate(2px,_2px)]">
+                {discipline}
+              </li>
+            ))
+          }
+        </ul>
+        <a href="/sobre-mi" class="mt-10 inline-flex items-center gap-2 font-semibold underline decoration-foreground/30 underline-offset-8 transition-colors hover:decoration-foreground">
+          Leer más sobre mi trayectoria <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <div class="bg-primary text-background">
+        <div class="lg:sticky lg:top-28 lg:self-start lg:py-32">
+          <div class="px-10 py-20 lg:p-20">
+            <p class="text-sm font-medium uppercase tracking-[0.22em] text-background">Perfil híbrido</p>
+            <h2 id="home-about-title" class="mt-4 leading-11 text-3xl font-semibold tracking-tight">Diseño pensando en el código. Desarrollo pensando en las personas.</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

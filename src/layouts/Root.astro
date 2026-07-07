@@ -5,8 +5,8 @@ import Header from "../components/Header.astro";
 import { siteConfig } from "@/config";
 import Footer from "@/views/Footer.astro";
 import MenuMobile from "@/components/MenuMobile.astro";
-import ThemeManager from "@/components/ThemeManager.astro";
 import CookieConsent from "@/components/CookieConsent.astro";
+import PaletteModal from "@/components/PaletteModal.astro";
 
 interface Props {
   title?: string;
@@ -19,10 +19,9 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-palette="ocean-sunset" style="color-scheme: light;">
   <head class="motion-safe:scroll-smooth">
     <BaseHead title={title} description={description} image={image} keywords={keywords} />
-    <ThemeManager defaultTheme="light" />
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -36,6 +35,7 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
     <Footer />
     <div id="portal" class="z-[999]">
       <MenuMobile />
+      <PaletteModal />
     </div>
   </body>
 </html>

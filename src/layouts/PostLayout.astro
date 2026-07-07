@@ -8,7 +8,8 @@ moment.locale("es");
 
 const { strapiCollection } = Astro.props as { strapiCollection: StrapiPost };
 
-const { title, subtitle, description, slug, cover, content } = strapiCollection as StrapiPost;
+const { title, subtitle, description, slug, cover, content } =
+  strapiCollection as StrapiPost;
 
 const allTags = await getPostTags().then((tags) => {
   return tags.map((tag) => ({
@@ -50,17 +51,31 @@ const allTags = await getPostTags().then((tags) => {
 <Root title={title} description={description}>
   <!-- {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />} -->
 
-
-  
-  <main class="w-full py-10" itemtype="https://schema.org/BlogPosting" itemscope>
+  <main
+    class="w-full py-10"
+    itemtype="https://schema.org/BlogPosting"
+    itemscope
+  >
     <header class="mx-auto px-10 sm:px-14 md:max-w-5xl" itemprop="headline">
       <div>
-        <a href="/blog" class="text-sm font-medium text-foreground" aria-label="Volver al blog">← Volver a la lista de posts</a>
+        <a
+          href="/blog"
+          class="text-sm font-medium text-foreground"
+          aria-label="Volver al blog">← Volver a la lista de posts</a
+        >
         <div class="grid gap-2 mt-2">
-          <h1 class="text-3xl leading-12 md:text-4xl font-medium" itemprop="name">
+          <h1
+            class="text-3xl leading-12 md:text-4xl font-medium"
+            itemprop="name"
+          >
             {title}
           </h1>
-          <p class="mt-4 leading-9 text-2xl w-full max-w-4xl" itemprop="description">{description}</p>
+          <p
+            class="mt-4 leading-9 text-2xl w-full max-w-4xl"
+            itemprop="description"
+          >
+            {description}
+          </p>
           <!-- <p class="text-sm text-foreground/50" itemprop="datePublished">
             Artículo creado el {moment(date).format("DD [de] MMMM [de] YYYY")}
           </p> -->
@@ -69,7 +84,11 @@ const allTags = await getPostTags().then((tags) => {
     </header>
 
     <section class="w-full max-w-5xl mx-auto mt-10">
-      <figure itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+      <figure
+        itemprop="image"
+        itemscope
+        itemtype="https://schema.org/ImageObject"
+      >
         <img
           src={cover?.url}
           alt={cover?.alternativeText || `Imagen destacada del post: ${title}`}
@@ -84,7 +103,11 @@ const allTags = await getPostTags().then((tags) => {
           cover?.authorName && (
             <figcaption class="text-sm text-foreground/50 mt-2">
               Imagen por{" "}
-              <a href={cover.authorName} target="_blank" rel="noopener noreferrer">
+              <a
+                href={cover.authorName}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {cover.authorName}
               </a>
             </figcaption>
@@ -113,7 +136,10 @@ const allTags = await getPostTags().then((tags) => {
     </nav> -->
 
     <section class="w-full">
-      <article class="w-full max-w-5xl px-10 mx-auto mt-10 pb-20 prose lg:prose-lg dark:prose-invert" itemprop="articleBody">
+      <article
+        class="w-full max-w-5xl px-10 mx-auto mt-10 pb-20 prose lg:prose-lg"
+        itemprop="articleBody"
+      >
         <slot />
       </article>
     </section>
