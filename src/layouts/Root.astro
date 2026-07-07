@@ -3,7 +3,7 @@ import "../styles/global.css";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import { siteConfig } from "@/config";
-import Footer from "@/views/Footer.astro";
+import Footer from "@/components/Footer.astro";
 import CookieConsent from "@/components/CookieConsent.astro";
 import PaletteModal from "@/components/PaletteModal.astro";
 import SiteFeedbackModal from "@/components/SiteFeedbackModal.astro";
@@ -21,6 +21,14 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
 <!doctype html>
 <html lang="en" data-palette="ocean-sunset" style="color-scheme: light;">
   <head class="motion-safe:scroll-smooth">
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem("frankuxui-palette");
+          if (stored) document.documentElement.dataset.palette = stored;
+        } catch (e) {}
+      })();
+    </script>
     <BaseHead title={title} description={description} image={image} keywords={keywords} />
   </head>
   <body>

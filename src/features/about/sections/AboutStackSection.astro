@@ -3,24 +3,24 @@ const technologyGroups = [
   { title: "Frontend", items: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS", "Shadcn UI"] },
   { title: "Contenido", items: ["Markdown", "MDX", "Frontmatter"] },
   { title: "Infraestructura", items: ["Ubuntu Server", "PM2", "Nginx", "Traefik", "Docker"] },
-  { title: "Automatización", items: ["n8n", "Integraciones API", "Automatización de contenidos", "Flujos de publicación"] },
+  { title: "Automatización", items: ["n8n", "Integraciones API", "Automatización de contenidos", "Flujos de publicación"] }
 ];
 ---
 
-<section class="scroll-mt-32 border-b-2 border-border" aria-labelledby="about-stack-title">
+<section class="scroll-mt-32 bg-foreground/10" aria-labelledby="about-stack-title">
   <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto px-10 py-20 lg:py-32">
     <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground/60">Stack técnico</p>
     <h2 id="about-stack-title" class="mt-4 leading-11 text-3xl 2xl:text-4xl 3xl:text-5xl 3xl:leading-14 font-semibold tracking-tight max-w-3xl">
       Herramientas elegidas para construir, publicar y escalar.
     </h2>
-    <div class="mt-16 grid gap-12 sm:grid-cols-2">
+    <div class="mt-16 grid gap-12">
       {
         technologyGroups.map((group) => (
           <div>
             <h3 class="text-lg font-semibold tracking-tight">{group.title}</h3>
             <ul class="mt-5 flex flex-wrap gap-3" aria-label={`Tecnologías de ${group.title}`}>
               {group.items.map((item) => (
-                <li class="inline-flex items-center uppercase justify-center font-medium px-5 h-9 text-xs transition-all duration-300 border-2 border-foreground shadow-[3px_3px_0px_var(--color-foreground)] transform-[translate(1.5px,_1.5px)]">
+                <li class="inline-flex items-center uppercase justify-center font-medium px-5 h-9 text-xs transition-all duration-300 border-2 bg-background border-foreground shadow-[3px_3px_0px_var(--color-foreground)] transform-[translate(1.5px,_1.5px)]">
                   {item}
                 </li>
               ))}

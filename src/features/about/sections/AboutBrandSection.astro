@@ -3,18 +3,18 @@ const brandMeanings = [
   {
     key: "Frank",
     title: "La persona detrás de la marca",
-    description: "Mi nombre convierte cada proyecto en un compromiso personal con la calidad, la claridad y el detalle.",
+    description: "Mi nombre convierte cada proyecto en un compromiso personal con la calidad, la claridad y el detalle."
   },
   {
     key: "UX",
     title: "Experiencia de usuario",
-    description: "Representa entender a las personas, ordenar la complejidad y diseñar recorridos que se sientan naturales.",
+    description: "Representa entender a las personas, ordenar la complejidad y diseñar recorridos que se sientan naturales."
   },
   {
     key: "UI",
     title: "Interfaz de usuario",
-    description: "Expresa la parte visual y tangible: sistemas coherentes, interacción precisa y una identidad reconocible.",
-  },
+    description: "Expresa la parte visual y tangible: sistemas coherentes, interacción precisa y una identidad reconocible."
+  }
 ];
 
 const socialProfiles = [
@@ -22,12 +22,12 @@ const socialProfiles = [
   { name: "LinkedIn", href: "https://www.linkedin.com/in/frankuxui/" },
   { name: "Figma", href: "https://www.figma.com/@frankuxui" },
   { name: "CodePen", href: "https://codepen.io/frankuxui" },
-  { name: "Instagram", href: "https://www.instagram.com/frankuxui/" },
+  { name: "Instagram", href: "https://www.instagram.com/frankuxui/" }
 ];
 ---
 
-<section class="border-b-2 border-border" aria-labelledby="about-brand-title">
-  <div class="w-full max-w-4xl mx-auto px-10 py-20 lg:py-32 text-center">
+<section class="w-full py-32" aria-labelledby="about-brand-title">
+  <div class="w-full max-w-full mx-auto px-10 text-center">
     <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground/60">Marca personal</p>
     <h2 id="about-brand-title" class="mt-6 text-4xl sm:text-6xl font-semibold tracking-tight leading-tight">
       El significado de <br />
@@ -38,10 +38,10 @@ const socialProfiles = [
     </p>
   </div>
 
-  <div class="w-full max-w-4xl mx-auto border-t-2 border-border grid sm:grid-cols-3 divide-y-2 sm:divide-y-0 sm:divide-x-2 divide-border">
+  <div class="w-full mt-10 max-w-7xl px-10 3xl:max-w-8xl mx-auto grid sm:grid-cols-3 divide-y-2 sm:divide-y-0 sm:divide-x-2">
     {
       brandMeanings.map((item) => (
-        <article class="p-10">
+        <article class="p-10 flex flex-col justify-center gap-4 text-center border-border border-y-2 first:border-l-2 last:border-r-2 ">
           <span class="text-sm font-semibold uppercase tracking-[0.22em] text-foreground/60">{item.key}</span>
           <h3 class="mt-4 text-xl font-semibold tracking-tight">{item.title}</h3>
           <p class="mt-3 leading-relaxed text-foreground/70">{item.description}</p>
@@ -50,30 +50,27 @@ const socialProfiles = [
     }
   </div>
 
-  <div class="w-full bg-foreground text-background">
-    <div class="w-full max-w-4xl mx-auto px-10 py-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
-      <ul class="flex flex-wrap gap-x-6 gap-y-3" aria-label="Perfiles sociales">
-        {
-          socialProfiles.map((profile) => (
-            <li>
-              <a
-                href={profile.href}
-                target="_blank"
-                rel="me noopener noreferrer"
-                class="text-sm text-background/70 underline decoration-background/30 underline-offset-8 hover:text-background"
-              >
-                {profile.name}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-      <a
-        href="/contacto"
-        class="inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm flex-none transition-all duration-300 bg-background text-foreground border-2 border-background hover:opacity-90"
-      >
-        Contactar
-      </a>
+  <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto px-10 mt-10">
+    <div class="w-full bg-foreground text-background p-20">
+      <div class="w-full flex flex-col justify-between gap-6 md:flex-row md:items-center">
+        <ul class="flex flex-wrap gap-x-6 gap-y-3" aria-label="Perfiles sociales">
+          {
+            socialProfiles.map((profile) => (
+              <li>
+                <a href={profile.href} target="_blank" rel="me noopener noreferrer" class="text-sm text-background/70 underline decoration-background/30 underline-offset-8 hover:text-background">
+                  {profile.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a
+          href="/contacto"
+          class="inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm flex-none transition-all duration-300 bg-background text-foreground border-2 border-background hover:opacity-90"
+        >
+          Contactar
+        </a>
+      </div>
     </div>
   </div>
 </section>

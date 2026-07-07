@@ -60,6 +60,15 @@ html[data-palette="sunset-beach-escape"] {
   --color-tertiary: #deba6f;
 }
 
+:root,
+html[data-palette="warm-autumn-glow"] {
+  --color-background: #003049;
+  --color-foregound: #eae2b7;
+  --color-primary: #fcbf49;
+  --color-secondary: #f77f00;
+  --color-tertiary: #d62828;
+}
+
 :root {
   --background: var(--color-background);
   --foreground: var(--color-foregound);
@@ -451,7 +460,7 @@ figure[data-rehype-pretty-code-figure] pre button.rehype-pretty-copy .success {
 @keyframes check {
   from {
     stroke-dasharray: 0, 75px;
-  }
+   }
   to {
     stroke-dasharray: 75px, 75px;
   }
