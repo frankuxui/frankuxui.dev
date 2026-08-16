@@ -95,7 +95,7 @@ export const designFeedbackSchema = z.object({
         .regex(FEEDBACK_NAME_PATTERN)
         .refine((value) => getFeedbackNameValidationMessage(value).length === 0, "Nombre inválido")
     ),
-  rating: z.number().int().min(1).max(5),
+  rating: z.number().int().min(1).max(5)
 });
 
 export type DesignFeedbackInput = z.input<typeof designFeedbackSchema>;

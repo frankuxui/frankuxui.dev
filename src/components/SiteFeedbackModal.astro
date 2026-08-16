@@ -328,7 +328,7 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
         const response = await fetch("/api/design-feedback", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: nameInput!.value.trim(), rating })
+          body: JSON.stringify({ name: nameInput!.value.trim(), rating, siteUrl: window.location.origin, pathname: window.location.pathname, receivedAt: new Date().toISOString() })
         });
 
         if (!response.ok) throw new Error("No se pudo enviar la valoración.");
