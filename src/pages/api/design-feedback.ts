@@ -18,8 +18,12 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     });
   }
 
+  const origin = new URL(request.url).origin;
+
   const feedback = {
     ...result.data,
+    siteUrl: origin,
+    pathname: payload?.pathname ?? "/",
     receivedAt: new Date().toISOString(),
   };
 
