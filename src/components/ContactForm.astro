@@ -1,0 +1,351 @@
+---
+import { actions } from "astro:actions";
+import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
+import {
+  CONTACT_EMAIL_MAX_LENGTH,
+  CONTACT_MESSAGE_MAX_LENGTH,
+  CONTACT_MESSAGE_MIN_LENGTH,
+  CONTACT_NAME_MAX_LENGTH,
+  CONTACT_NAME_MIN_LENGTH,
+  CONTACT_SUBJECT_MAX_LENGTH,
+  CONTACT_SUBJECT_MIN_LENGTH
+} from "@/forms/contact/schema";
+
+const inputClassName =
+  "h-16 px-6 text-base font-medium placeholder:text-sm placeholder:text-foreground-muted/60 outline-none rounded-full motion-safe:transition-all motion-safe:duration-200 bg-secondary/50 text-foreground focus:bg-secondary aria-invalid:ring-2 aria-invalid:ring-red-400";
+---
+
+<div id="contact-form-root" class="w-full max-w-full">
+  <form id="contact-form" method="POST" action={actions.contact} data-astro-reload class="w-full max-w-full relative grid gap-6" novalidate>
+    <input type="text" name="company" id="contact-company" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true" />
+    <input type="hidden" name="formStartedAt" id="contact-form-started-at" />
+
+    <p id="contact-server-error" class="hidden text-sm text-red-500 font-medium" role="alert" aria-live="polite"></p>
+
+    <div class="grid gap-3">
+      <label for="name" class="font-medium text-foreground" style={{ "font-size": "var(--font-link)" }}>Nombre</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="Nombre"
+        class={inputClassName}
+        aria-invalid="false"
+        aria-describedby="name-error"
+        autocomplete="name"
+        minlength={CONTACT_NAME_MIN_LENGTH}
+        maxlength={CONTACT_NAME_MAX_LENGTH}
+        required
+      />
+      <p id="name-error" class="hidden px-1 text-sm text-red-500 font-medium" role="alert"></p>
+    </div>
+
+    <div class="grid gap-3">
+      <label for="email" class="font-medium text-foreground" style={{ "font-size": "var(--font-link)" }}>Correo</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Correo electrónico"
+        class={inputClassName}
+        aria-invalid="false"
+        aria-describedby="email-error"
+        autocomplete="email"
+        maxlength={CONTACT_EMAIL_MAX_LENGTH}
+        required
+      />
+      <p id="email-error" class="hidden px-1 text-sm text-red-500 font-medium" role="alert"></p>
+    </div>
+
+    <div class="grid gap-3">
+      <label for="subject" class="font-medium text-foreground" style={{ "font-size": "var(--font-link)" }}>Asunto</label>
+      <input
+        type="text"
+        id="subject"
+        name="subject"
+        placeholder="Asunto"
+        class={inputClassName}
+        aria-invalid="false"
+        aria-describedby="subject-error"
+        minlength={CONTACT_SUBJECT_MIN_LENGTH}
+        maxlength={CONTACT_SUBJECT_MAX_LENGTH}
+        required
+      />
+      <p id="subject-error" class="hidden px-1 text-sm text-red-500 font-medium" role="alert"></p>
+    </div>
+
+    <div class="grid gap-3">
+      <label for="message" class="font-medium text-foreground" style={{ "font-size": "var(--font-link)" }}>Mensaje</label>
+      <textarea
+        id="message"
+        name="message"
+        placeholder="Deja tu mensaje"
+        rows="4"
+        cols="30"
+        class={`resize-none rounded-3xl py-4 ${inputClassName}`}
+        aria-invalid="false"
+        aria-describedby="message-error message-counter"
+        minlength={CONTACT_MESSAGE_MIN_LENGTH}
+        maxlength={CONTACT_MESSAGE_MAX_LENGTH}
+        required></textarea>
+      <p id="message-counter" class="px-1 text-sm text-foreground-muted font-medium" aria-live="polite">
+        0/{CONTACT_MESSAGE_MAX_LENGTH} caracteres usados. {CONTACT_MESSAGE_MAX_LENGTH} restantes.
+      </p>
+      <p id="message-error" class="hidden px-1 text-sm text-red-500 font-medium" role="alert"></p>
+    </div>
+
+    <div class="grid gap-3 mt-2">
+      <button
+        type="submit"
+        id="contact-submit"
+        disabled
+        class="inline-flex items-center justify-center font-semibold cursor-pointer rounded-full disabled:pointer-events-none disabled:opacity-40 motion-safe:transition-opacity motion-safe:duration-200 bg-primary text-primary-foreground hover:opacity-90 h-16 px-8 sm:px-10 text-sm"
+      >
+        Envíame un mensaje
+      </button>
+    </div>
+  </form>
+
+  <div id="contact-success-view" class="hidden w-full max-w-full grid text-center place-items-center sm:p-16">
+    <SvgSuccessAnimation size={90} background="var(--color-primary)" foreground="var(--color-primary-foreground)" duration={900} />
+    <div class="flex flex-col items-center justify-start text-center mx-auto w-full max-w-xs gap-2 mt-2">
+      <h2 class="font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h4)" }}>Mensaje enviado</h2>
+      <p class="text-foreground-muted">Gracias por tu mensaje, te responderé lo más pronto posible.</p>
+      <button
+        type="button"
+        id="contact-restart"
+        class="mt-4 inline-flex items-center justify-center font-semibold cursor-pointer rounded-full motion-safe:transition-opacity motion-safe:duration-200 bg-primary text-primary-foreground hover:opacity-90 h-14 px-8 text-sm"
+      >
+        Enviar otro mensaje
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { actions, isInputError } from "astro:actions";
+  import { trackAnalyticsEvent } from "@/lib/analytics";
+  import { CONTACT_MESSAGE_MAX_LENGTH, contactFormSchema } from "@/forms/contact/schema";
+
+  const FIELD_NAMES = ["name", "email", "subject", "message"] as const;
+  type FieldName = (typeof FIELD_NAMES)[number];
+
+  function setup() {
+    const root = document.getElementById("contact-form-root");
+    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    const successView = document.getElementById("contact-success-view");
+    const serverError = document.getElementById("contact-server-error");
+    const submitBtn = document.getElementById("contact-submit") as HTMLButtonElement | null;
+    const restartBtn = document.getElementById("contact-restart");
+    const formStartedAtInput = document.getElementById("contact-form-started-at") as HTMLInputElement | null;
+    const companyInput = document.getElementById("contact-company") as HTMLInputElement | null;
+    const nameInput = document.getElementById("name") as HTMLInputElement | null;
+    const emailInput = document.getElementById("email") as HTMLInputElement | null;
+    const subjectInput = document.getElementById("subject") as HTMLInputElement | null;
+    const messageInput = document.getElementById("message") as HTMLTextAreaElement | null;
+    const messageCounter = document.getElementById("message-counter");
+
+    if (!root || !form || !successView || !submitBtn || !formStartedAtInput || !nameInput || !emailInput || !subjectInput || !messageInput) return;
+
+    const fieldInputs: Record<FieldName, HTMLInputElement | HTMLTextAreaElement> = {
+      name: nameInput,
+      email: emailInput,
+      subject: subjectInput,
+      message: messageInput
+    };
+
+    let hasTrackedFormStart = false;
+    let isSubmitting = false;
+
+    function setFormStartedAt() {
+      formStartedAtInput!.value = String(Date.now());
+    }
+
+    setFormStartedAt();
+
+    function getFormValues() {
+      return {
+        name: nameInput!.value,
+        email: emailInput!.value,
+        subject: subjectInput!.value,
+        message: messageInput!.value,
+        company: companyInput?.value ?? "",
+        formStartedAt: formStartedAtInput!.value
+      };
+    }
+
+    function clearFieldError(field: FieldName) {
+      const errorEl = document.getElementById(`${field}-error`);
+      const input = fieldInputs[field];
+      if (errorEl) {
+        errorEl.textContent = "";
+        errorEl.classList.add("hidden");
+      }
+      input.setAttribute("aria-invalid", "false");
+    }
+
+    function setFieldError(field: FieldName, message: string) {
+      const errorEl = document.getElementById(`${field}-error`);
+      const input = fieldInputs[field];
+      if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.classList.remove("hidden");
+      }
+      input.setAttribute("aria-invalid", "true");
+    }
+
+    function clearAllFieldErrors() {
+      FIELD_NAMES.forEach(clearFieldError);
+    }
+
+    function updateSubmitState() {
+      const result = contactFormSchema.safeParse(getFormValues());
+      submitBtn!.disabled = !result.success || isSubmitting;
+    }
+
+    function updateMessageCounter() {
+      const used = messageInput!.value.length;
+      const remaining = Math.max(CONTACT_MESSAGE_MAX_LENGTH - used, 0);
+      if (messageCounter) {
+        messageCounter.textContent = `${used}/${CONTACT_MESSAGE_MAX_LENGTH} caracteres usados. ${remaining} restantes.`;
+      }
+      messageInput!.style.height = "auto";
+      messageInput!.style.height = `${messageInput!.scrollHeight}px`;
+    }
+
+    function trackFormStart() {
+      if (hasTrackedFormStart) return;
+      hasTrackedFormStart = true;
+      trackAnalyticsEvent("contact_form_start", { location: "contact_page" });
+    }
+
+    FIELD_NAMES.forEach((field) => {
+      fieldInputs[field].addEventListener("focus", trackFormStart, { once: false });
+      fieldInputs[field].addEventListener("input", () => {
+        clearFieldError(field);
+        updateSubmitState();
+      });
+    });
+
+    messageInput.addEventListener("input", updateMessageCounter);
+    updateMessageCounter();
+    updateSubmitState();
+
+    function showServerError(message: string) {
+      if (!serverError) return;
+      serverError.textContent = message;
+      serverError.classList.remove("hidden");
+    }
+
+    function hideServerError() {
+      serverError?.classList.add("hidden");
+      if (serverError) serverError.textContent = "";
+    }
+
+    function resetForm() {
+      form!.reset();
+      setFormStartedAt();
+      clearAllFieldErrors();
+      hideServerError();
+      hasTrackedFormStart = false;
+      updateMessageCounter();
+      updateSubmitState();
+      successView!.classList.add("hidden");
+      form!.classList.remove("hidden");
+    }
+
+    restartBtn?.addEventListener("click", () => {
+      trackAnalyticsEvent("contact_form_restart", { location: "contact_page" });
+      resetForm();
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (isSubmitting) return;
+
+      hideServerError();
+      const values = getFormValues();
+      const localResult = contactFormSchema.safeParse(values);
+
+      if (!localResult.success) {
+        clearAllFieldErrors();
+        const fieldErrors: Partial<Record<FieldName, string>> = {};
+        for (const issue of localResult.error.issues) {
+          const key = String(issue.path[0] ?? "");
+          if ((FIELD_NAMES as readonly string[]).includes(key) && !fieldErrors[key as FieldName]) {
+            fieldErrors[key as FieldName] = issue.message;
+          }
+        }
+        FIELD_NAMES.forEach((field) => {
+          if (fieldErrors[field]) setFieldError(field, fieldErrors[field]!);
+        });
+
+        trackAnalyticsEvent("contact_form_validation_error", {
+          location: "contact_page",
+          has_name_error: Boolean(fieldErrors.name),
+          has_email_error: Boolean(fieldErrors.email),
+          has_subject_error: Boolean(fieldErrors.subject),
+          has_message_error: Boolean(fieldErrors.message)
+        });
+        return;
+      }
+
+      isSubmitting = true;
+      submitBtn!.disabled = true;
+      submitBtn!.textContent = "Enviando...";
+
+      trackAnalyticsEvent("contact_form_submit", {
+        location: "contact_page",
+        subject_length: localResult.data.subject.trim().length,
+        message_length: localResult.data.message.trim().length
+      });
+
+      const { error } = await actions.contact(new FormData(form!));
+
+      if (!error) {
+        trackAnalyticsEvent("contact_form_success", { location: "contact_page" });
+        form!.classList.add("hidden");
+        successView!.classList.remove("hidden");
+        resetFormFieldsOnly();
+        isSubmitting = false;
+        submitBtn!.textContent = "Envíame un mensaje";
+        return;
+      }
+
+      const fieldErrors = isInputError(error) ? error.fields : {};
+
+      trackAnalyticsEvent("contact_form_error", {
+        location: "contact_page",
+        has_field_errors: Object.keys(fieldErrors).length > 0,
+        has_message: Boolean(error.message)
+      });
+
+      clearAllFieldErrors();
+      FIELD_NAMES.forEach((field) => {
+        const messages = fieldErrors[field];
+        if (messages?.[0]) setFieldError(field, messages[0]);
+      });
+
+      showServerError(error.message || "Ocurrió un error al enviar el mensaje. Inténtalo de nuevo.");
+
+      isSubmitting = false;
+      submitBtn!.textContent = "Envíame un mensaje";
+      updateSubmitState();
+    });
+
+    function resetFormFieldsOnly() {
+      form!.reset();
+      setFormStartedAt();
+      clearAllFieldErrors();
+      hasTrackedFormStart = false;
+      updateMessageCounter();
+      updateSubmitState();
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setup);
+  } else {
+    setup();
+  }
+</script>

@@ -1,12 +1,14 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import { siteConfig } from "@/config";
-import Footer from "@/views/Footer.astro";
-import MenuMobile from "@/components/MenuMobile.astro";
-import ThemeManager from "@/components/ThemeManager.astro";
+import Footer from "@/components/Footer.astro";
 import CookieConsent from "@/components/CookieConsent.astro";
+import PaletteModal from "@/components/PaletteModal.astro";
+import SiteFeedbackModal from "@/components/SiteFeedbackModal.astro";
+import MobileMenuPanel from "@/components/MobileMenuPanel.astro";
 
 interface Props {
   title?: string;
@@ -19,175 +21,149 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-palette="ocean-sunset" style="color-scheme: light;">
   <head class="motion-safe:scroll-smooth">
     <BaseHead title={title} description={description} image={image} keywords={keywords} />
-    <ThemeManager defaultTheme="light" />
+    <ClientRouter />
+    <script is:inline>
+      (function () {
+        try {
+          var raw = localStorage.getItem("frankuxui-palette-style");
+          var id = localStorage.getItem("frankuxui-palette");
+          if (raw) {
+            var style = JSON.parse(raw);
+            var root = document.documentElement;
+            if (style.primary) root.style.setProperty("--primary", style.primary);
+            if (style.primaryForeground) root.style.setProperty("--primary-foreground", style.primaryForeground);
+          }
+          if (id) document.documentElement.dataset.palette = id;
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
+    <canvas id="bg-gradient" class="bg-gradient-canvas fixed inset-0 w-full h-full z-0" aria-hidden="true" transition:persist></canvas>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NC3X64JQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <Header />
     <CookieConsent />
-    <main>
+    <main class="relative z-20 w-full flex flex-col items-center justify-center">
       <slot />
     </main>
     <Footer />
     <div id="portal" class="z-[999]">
-      <MenuMobile />
+      <PaletteModal />
     </div>
+    <SiteFeedbackModal />
+    <MobileMenuPanel />
+
+    <script>
+      import { getPaletteById, paletteStorageKey } from "@/lib/palettes";
+
+      let plasmaAnimId: number | null = null;
+
+      function hexToRgb(hex: string): [number, number, number] {
+        const clean = hex.replace("#", "");
+        const value = parseInt(clean.length === 3 ? clean.replace(/./g, (c) => c + c) : clean, 16);
+        return [(value >> 16) & 255, (value >> 8) & 255, value & 255];
+      }
+
+      function initBgGradient() {
+        if (plasmaAnimId !== null) {
+          cancelAnimationFrame(plasmaAnimId);
+          plasmaAnimId = null;
+        }
+
+        const canvas = document.getElementById("bg-gradient") as HTMLCanvasElement;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // Baja resolución interna: el CSS la escala a pantalla completa y el blur la suaviza.
+        const COLS = 72;
+        const ROWS = 46;
+        canvas.width = COLS;
+        canvas.height = ROWS;
+
+        const activePaletteId = document.documentElement.dataset.palette || localStorage.getItem(paletteStorageKey);
+        const activePalette = getPaletteById(activePaletteId);
+        const palette = activePalette.gradient.map(hexToRgb);
+
+        const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+        const smoothstep = (t: number) => t * t * (3 - 2 * t);
+
+        function sampleColor(v: number) {
+          const n = palette.length;
+          const scaled = (((v % 1) + 1) % 1) * n;
+          const i = Math.floor(scaled);
+          const frac = smoothstep(scaled - i);
+          const c0 = palette[i % n];
+          const c1 = palette[(i + 1) % n];
+          return [Math.round(lerp(c0[0], c1[0], frac)), Math.round(lerp(c0[1], c1[1], frac)), Math.round(lerp(c0[2], c1[2], frac))];
+        }
+
+        const imageData = ctx.createImageData(COLS, ROWS);
+        const cx = COLS / 2;
+        const cy = ROWS / 2;
+
+        let time = 0;
+
+        function draw() {
+          const data = imageData.data;
+
+          for (let y = 0; y < ROWS; y++) {
+            for (let x = 0; x < COLS; x++) {
+              const dx = x - cx;
+              const dy = y - cy;
+              const value =
+                (Math.sin(x / 18 + time) +
+                  Math.sin(y / 18 + time * 1.3) +
+                  Math.sin((x + y) / 22 + time * 0.6) +
+                  Math.sin(Math.sqrt(dx * dx + dy * dy) / 14 - time)) /
+                4;
+
+              const v = (value + 1) / 2;
+              const [r, g, b] = sampleColor(v);
+
+              const idx = (y * COLS + x) * 4;
+              data[idx] = r;
+              data[idx + 1] = g;
+              data[idx + 2] = b;
+              data[idx + 3] = 255;
+            }
+          }
+
+          ctx!.putImageData(imageData, 0, 0);
+
+          if (!prefersReducedMotion) {
+            time += 0.012;
+            plasmaAnimId = requestAnimationFrame(draw);
+          }
+        }
+
+        draw();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initBgGradient);
+      } else {
+        initBgGradient();
+      }
+
+      document.addEventListener("astro:page-load", initBgGradient);
+      window.addEventListener("frankuxui:palette-change", initBgGradient);
+    </script>
+
+    <style is:global>
+      .bg-gradient-canvas {
+        image-rendering: auto;
+        filter: blur(28px) saturate(1.05);
+        transform: scale(1.08);
+      }
+    </style>
   </body>
 </html>
-
-<style>
-  :root {
-    --animate-slide-in-top: slide-in-top 0.25s ease-out forwards;
-    --animate-slide-out-top: slide-out-top 0.25s ease-in forwards;
-    --animate-slide-in-bottom: slide-in-bottom 0.25s ease-out forwards;
-    --animate-slide-out-bottom: slide-out-bottom 0.25s ease-in forwards;
-    --animate-slide-in-left: slide-in-left 0.25s ease-out forwards;
-    --animate-slide-out-left: slide-out-left 0.25s ease-in forwards;
-    --animate-slide-in-right: slide-in-right 0.25s ease-out forwards;
-    --animate-slide-out-right: slide-out-right 0.25s ease-in forwards;
-  }
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes fade-out {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-
-  @keyframes slide-up {
-    from {
-      transform: translateY(0);
-    }
-    to {
-      transform: translateY(-50px);
-    }
-  }
-
-  @keyframes slide-down {
-    from {
-      transform: translateY(50px);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-
-  .animate-slide-in-top {
-    animation: var(--animate-slide-in-top);
-  }
-  .animate-slide-out-top {
-    animation: var(--animate-slide-out-top);
-  }
-  .animate-slide-in-bottom {
-    animation: var(--animate-slide-in-bottom);
-  }
-  .animate-slide-out-bottom {
-    animation: var(--animate-slide-out-bottom);
-  }
-  .animate-slide-in-left {
-    animation: var(--animate-slide-in-left);
-  }
-  .animate-slide-out-left {
-    animation: var(--animate-slide-out-left);
-  }
-  .animate-slide-in-right {
-    animation: var(--animate-slide-in-right);
-  }
-  .animate-slide-out-right {
-    animation: var(--animate-slide-out-right);
-  }
-
-  /** Drawer **/
-
-  /* Bottom */
-  @keyframes slide-in-bottom {
-    from {
-      transform: translateY(100%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slide-out-bottom {
-    from {
-      transform: translateY(0);
-    }
-    to {
-      transform: translateY(100%);
-    }
-  }
-
-  /* Top */
-  @keyframes slide-in-top {
-    from {
-      transform: translateY(-100%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slide-out-top {
-    from {
-      transform: translateY(0);
-    }
-    to {
-      transform: translateY(-100%);
-    }
-  }
-
-  /* Left */
-  @keyframes slide-in-left {
-    from {
-      transform: translateX(-100%);
-    }
-    to {
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slide-out-left {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-100%);
-    }
-  }
-
-  /* Right */
-  @keyframes slide-in-right {
-    from {
-      transform: translateX(100%);
-    }
-    to {
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slide-out-right {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(100%);
-    }
-  }
-</style>

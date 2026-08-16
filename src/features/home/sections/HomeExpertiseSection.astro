@@ -1,0 +1,58 @@
+---
+const expertise = [
+  {
+    number: "01",
+    title: "UX/UI y sistemas de diseño",
+    description: "Experiencias claras y accesibles construidas desde la investigación, la jerarquía visual y componentes consistentes."
+  },
+  {
+    number: "02",
+    title: "Frontend moderno",
+    description: "Interfaces con React, Next.js y TypeScript que equilibran calidad técnica, rendimiento y facilidad de mantenimiento."
+  },
+  {
+    number: "03",
+    title: "SEO y rendimiento",
+    description: "Arquitecturas, contenido y optimizaciones técnicas pensadas para buscadores, Core Web Vitals y conversión."
+  },
+  {
+    number: "04",
+    title: "CMS y automatización",
+    description: "Sistemas de contenido con Markdown, MDX y flujos automatizados mediante n8n e integraciones API."
+  }
+];
+---
+
+<section id="expertise" class="scroll-mt-32 py-16 lg:py-24" aria-labelledby="home-expertise-title">
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <div class="bg-background/60 mx-auto max-w-10xl backdrop-blur-2xl rounded-4xl p-8 sm:p-12 lg:p-16 xl:p-20">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24">
+        <div class="lg:sticky lg:top-28 lg:self-start">
+          <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Perfil híbrido</p>
+          <h2 id="home-expertise-title" class="mt-4 font-medium tracking-tight text-foreground text-[clamp(1.5rem,4vw,5rem)] leading-[1.2]">
+            De la estrategia a una experiencia lista para producción.
+          </h2>
+          <a href="/sobre-mi" class="mt-10 inline-flex items-center gap-2 font-medium h-12 bg-primary rounded-full text-primary-foreground px-8">
+            Seguir leyendo <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="flex flex-col gap-8 lg:gap-10">
+          {
+            expertise.map((item) => (
+              <article class="flex flex-col gap-4">
+                <span class="text-sm text-foreground-muted/50 font-medium">{item.number}</span>
+                <h3 class="font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h3)" }}>
+                  {item.title}
+                </h3>
+                <p class="max-w-xl text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+                  {item.description}
+                </p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

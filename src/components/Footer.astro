@@ -1,0 +1,190 @@
+---
+import Logo from "@/components/Logo.astro";
+import { siteConfig } from "@/config";
+---
+
+<footer class="w-full py-16 sm:py-20 lg:py-24 relative z-10">
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <div class="rounded-4xl bg-foreground text-background p-8 sm:p-12 lg:p-16 xl:p-20">
+      <header>
+        <Logo class="text-background" />
+        <p id="footer-info" class="mt-8 w-full max-w-md font-medium sm:mt-10" style={{ "font-size": "var(--font-h5)" }}>Apasionado por el desarrollo web y el diseño de interfaces intuitivas.</p>
+        <p class="mt-4 text-background/70" style={{ "font-size": "var(--font-body)" }}>Cada error es un paso. Cada línea, un aprendizaje.</p>
+      </header>
+
+      <div class="grid mt-12 sm:mt-16">
+        <section class="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-10 2xl:gap-20" aria-labelledby="footer-info">
+          <article class="grid w-full gap-8 sm:gap-12 lg:col-span-6" aria-labelledby="footer-info">
+            <ul class="flex flex-wrap items-center justify-start gap-3" aria-label="Redes sociales">
+              <li>
+                <a
+                  href="https://github.com/frankuxui"
+                  aria-label="Ir al perfil de GitHub"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex size-12 items-center justify-center rounded-full bg-background/10 text-background transition-colors duration-200 hover:bg-background hover:text-foreground"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 24 24"
+                    ><path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width={1.5}
+                      d="M6.517 17.113c.395.578 1.592 1.81 3.225 2.12M9.864 22C8.836 21.83 2 19.606 2 12.093C2 5.063 8.002 2 12 2c4 0 10 3.063 10 10.093c0 7.513-6.836 9.738-7.864 9.907c0 0-.21-3.417-.087-4.003c.122-.586-.294-1.528-.294-1.528c.971-.364 2.45-.884 2.945-2.282c.385-1.084.627-2.658-.45-4.138c0 0 .282-2.39-.25-2.484c-.533-.092-2.1.947-2.1.947c-.457-.13-1.476-.377-1.898-.333c-.423-.044-1.445.203-1.902.333c0 0-1.568-1.04-2.1-.947s-.25 2.484-.25 2.484c-1.077 1.48-.835 3.054-.45 4.138c.496 1.398 1.974 1.918 2.945 2.282c0 0-.416.942-.294 1.528S9.864 22 9.864 22"
+                      color="currentColor"></path></svg
+                  >
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/frankuxui/"
+                  aria-label="Ir al perfil de LinkedIn"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex size-12 items-center justify-center rounded-full bg-background/10 text-background transition-colors duration-200 hover:bg-background hover:text-foreground"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 24 24"
+                    ><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width={1.5} color="currentColor"
+                      ><path d="M7 10v7m4-4v4m0-4a3 3 0 1 1 6 0v4m-6-4v-3M7.008 7h-.009"></path><path
+                        d="M2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12"
+                      ></path></g
+                    ></svg
+                  >
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://codepen.io/frankuxui"
+                  aria-label="Ir al perfil de Codepen"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex size-12 items-center justify-center rounded-full bg-background/10 text-background transition-colors duration-200 hover:bg-background hover:text-foreground"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 16 16"
+                    ><path
+                      fill="currentColor"
+                      d="m14.777 5.751l-7-4.667a.5.5 0 0 0-.555 0l-7 4.667a.5.5 0 0 0-.223.416v4.667c0 .167.084.323.223.416l7 4.667a.5.5 0 0 0 .554 0l7-4.667a.5.5 0 0 0 .223-.416V6.167a.5.5 0 0 0-.223-.416zM7.5 10.232L4.901 8.5L7.5 6.768L10.099 8.5zM8 5.899V2.434l5.599 3.732L11 7.898l-3-2zm-1 0l-3 2l-2.599-1.732L7 2.435V5.9zM3.099 8.5L1 9.899V7.101zM4 9.101l3 2v3.465l-5.599-3.732zm4 2l3-2l2.599 1.732L8 14.565V11.1zM11.901 8.5L14 7.101v2.798z"
+                    ></path></svg
+                  >
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.instagram.com/frankuxui/"
+                  aria-label="Ir al perfil de Instagram"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex size-12 items-center justify-center rounded-full bg-background/10 text-background transition-colors duration-200 hover:bg-background hover:text-foreground"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 24 24"
+                    ><g fill="none" stroke="currentColor" stroke-width="1.5"
+                      ><path stroke-linecap="round" stroke-linejoin="round" d="M12 16a4 4 0 1 0 0-8a4 4 0 0 0 0 8"></path><path
+                        d="M3 16V8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5Z"></path><path stroke-linecap="round" stroke-linejoin="round" d="m17.5 6.51l.01-.011"></path></g
+                    ></svg
+                  >
+                </a>
+              </li>
+            </ul>
+
+            <address class="flex flex-col gap-3 not-italic text-background/70" style={{ "font-size": "var(--font-mini)" }}>
+              <span>📍 &nbsp; {siteConfig.address.locality}, {siteConfig.address.region}, España</span>
+              <span> ✉️ &nbsp; <a href={`mailto:${siteConfig.contact.email}`} class="hover:text-background transition-colors duration-200">{siteConfig.contact.email}</a> </span>
+              <span> 📞 &nbsp; <a href={`tel:${siteConfig.contact.phone}`} class="hover:text-background transition-colors duration-200">{siteConfig.contact.phone}</a> </span>
+            </address>
+          </article>
+
+          <article class="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:col-span-6" aria-labelledby="navegacion-footer">
+            <nav class="grid w-full gap-6 sm:gap-8" aria-labelledby="navegacion-footer">
+              <h2 id="navegacion-footer" class="inline-flex w-fit items-center rounded-full bg-background/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-background">
+                Mapa del sitio
+              </h2>
+              <ul class="flex flex-col gap-3" aria-label="Mapa del sitio">
+                <li>
+                  <a href="/" class="text-background/70 hover:text-background transition-colors duration-200" style={{ "font-size": "var(--font-link)" }}>Inicio</a>
+                </li>
+                <li>
+                  <a href="/sobre-mi" class="text-background/70 hover:text-background transition-colors duration-200" style={{ "font-size": "var(--font-link)" }}>Sobre mi</a>
+                </li>
+                <li>
+                  <a href="/contacto" class="text-background/70 hover:text-background transition-colors duration-200" style={{ "font-size": "var(--font-link)" }}>Contacto</a>
+                </li>
+                <li>
+                  <a
+                    href="https://frankuxui.com/blog"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-background/70 hover:text-background transition-colors duration-200"
+                    style={{ "font-size": "var(--font-link)" }}
+                  >
+                    Blog
+                  </a>
+                </li>
+                <li>
+                  <a href="/sitemap-0.xml" class="text-background/70 hover:text-background transition-colors duration-200" style={{ "font-size": "var(--font-link)" }}>Sitemap</a>
+                </li>
+              </ul>
+            </nav>
+
+            <nav class="grid w-full gap-6 sm:gap-8">
+              <h2 class="inline-flex w-fit items-center rounded-full bg-background/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-background">Contácto</h2>
+              <ul class="flex flex-col gap-3">
+                <li>
+                  <a href="/contacto" class="text-background/70 hover:text-background transition-colors duration-200" style={{ "font-size": "var(--font-link)" }}>Página de contácto</a>
+                </li>
+                <li>
+                  <a
+                    href={siteConfig.social.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-background/70 hover:text-background transition-colors duration-200"
+                    style={{ "font-size": "var(--font-link)" }}
+                  >
+                    LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={siteConfig.social.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-background/70 hover:text-background transition-colors duration-200"
+                    style={{ "font-size": "var(--font-link)" }}
+                  >
+                    GitHub
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </article>
+        </section>
+
+        <section class="mt-16 w-full sm:mt-20" aria-label="Información legal">
+          <div class="flex w-full flex-col items-center gap-6 border-t border-background/15 pt-8 sm:flex-row sm:justify-between sm:gap-4">
+            <p class="inline-flex items-center gap-2 text-center text-background/70" style={{ "font-size": "var(--font-mini)" }} data-test-id="web-date">
+              <svg class="mt-0.5 shrink-0" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                ><g fill="none" stroke="currentColor" stroke-width="1.5"
+                  ><path d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12Z"></path><path
+                    stroke-linecap="round"
+                    d="M14 15.667a4.5 4.5 0 0 1-1.714.333C9.919 16 8 14.21 8 12s1.919-4 4.286-4c.61 0 1.189.119 1.714.333"></path></g
+                ></svg
+              >
+              <span>{new Date().getFullYear()} {siteConfig.alternateName} - Todos los derechos reservados</span>
+            </p>
+            <ul class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2" style={{ "font-size": "var(--font-mini)" }}>
+              <li>
+                <a href="/terminos-y-condiciones" class="text-background/70 hover:text-background transition-colors duration-200">Términos y condiciones</a>
+              </li>
+              <li>
+                <a href="/politica-de-privacidad" class="text-background/70 hover:text-background transition-colors duration-200">Política de privacidad</a>
+              </li>
+              <li>
+                <a href="/politica-de-cookies" class="text-background/70 hover:text-background transition-colors duration-200">Política de cookies</a>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</footer>

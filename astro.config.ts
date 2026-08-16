@@ -5,7 +5,6 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { rehypePrettyCode } from 'rehype-pretty-code';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
-import react from '@astrojs/react';
 import partytown from '@astrojs/partytown';
 import node from '@astrojs/node';
 
@@ -22,13 +21,12 @@ export default defineConfig({
 	},
 	env: {
 		schema: {
-			RESEND_API_KEY: envField.string({ context: "server", access: "secret" }),
-			EMAIL_FROM: envField.string({ context: "server", access: "secret" }),
+			N8N_CONTACT_WEBHOOK_URL: envField.string({ context: "server", access: "secret" }),
+			N8N_FEEDBACK_WEBHOOK_URL: envField.string({ context: "server", access: "secret" }),
 		}
 	},
 	integrations: [
 		mdx(),
-		react(),
 		sitemap({
 			entryLimit: 10000,
 			changefreq: 'weekly',

@@ -1,0 +1,26 @@
+---
+const professionalDisciplines = ["Diseño UX", "Diseño UI", "Desarrollo Frontend", "SEO técnico", "Optimización web", "Arquitectura de contenido", "Conversión digital"];
+---
+
+<section class="scroll-mt-32 py-16 lg:py-24 relative" aria-labelledby="about-profile-title">
+  <div class="w-full max-w-5xl mx-auto text-center px-10">
+    <div class="w-full">
+      <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Perfil profesional</p>
+      <h2 id="about-profile-title" class="mt-4 font-bold tracking-tight text-foreground text-[clamp(3.5rem,6vw,7rem)] leading-[1.2]">Un perfil entre dos disciplinas.</h2>
+      <p class="text-foreground font-medium leading-normal mt-6" style={{ "font-size": "var(--font-h3)" }}>
+        Combino el pensamiento estratégico del diseño con la precisión técnica del desarrollo para llevar una misma visión desde el concepto hasta producción.
+      </p>
+      <p class="mt-8 text-foreground-muted text-center leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+        Esto me permite diseñar teniendo en cuenta las restricciones y posibilidades reales de implementación, y desarrollar sin perder de vista a las personas, el propósito del producto ni sus
+        objetivos de negocio.
+      </p>
+      <ul class="mt-10 flex flex-wrap gap-3 items-center justify-center" aria-label="Disciplinas profesionales">
+        {
+          professionalDisciplines.map((discipline) => (
+            <li class="inline-flex items-center justify-center font-medium px-8 h-12 text-sm rounded-full bg-secondary text-secondary-foreground">{discipline}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

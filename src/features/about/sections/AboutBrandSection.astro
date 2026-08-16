@@ -1,0 +1,87 @@
+---
+const brandMeanings = [
+  {
+    key: "Frank",
+    title: "La persona detrás de la marca",
+    description: "Mi nombre convierte cada proyecto en un compromiso personal con la calidad, la claridad y el detalle."
+  },
+  {
+    key: "UX",
+    title: "Experiencia de usuario",
+    description: "Representa entender a las personas, ordenar la complejidad y diseñar recorridos que se sientan naturales."
+  },
+  {
+    key: "UI",
+    title: "Interfaz de usuario",
+    description: "Expresa la parte visual y tangible: sistemas coherentes, interacción precisa y una identidad reconocible."
+  }
+];
+
+const socialProfiles = [
+  { name: "GitHub", href: "https://github.com/frankuxui" },
+  { name: "LinkedIn", href: "https://www.linkedin.com/in/frankuxui/" },
+  { name: "Figma", href: "https://www.figma.com/@frankuxui" },
+  { name: "CodePen", href: "https://codepen.io/frankuxui" },
+  { name: "Instagram", href: "https://www.instagram.com/frankuxui/" }
+];
+---
+
+<section class="w-full py-16 lg:py-24" aria-labelledby="about-brand-title">
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <div class="text-center max-w-3xl mx-auto">
+      <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Marca personal</p>
+      <h2 id="about-brand-title" class="mt-6 font-semibold tracking-tight leading-tight text-foreground text-[clamp(2rem,5vw,6rem)]">
+        El significado de <br />
+        <span class="text-primary">frankuxui</span>
+      </h2>
+      <p class="mt-7 max-w-2xl mx-auto text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+        El símbolo reúne mi identidad y las dos disciplinas que orientan mi forma de convertir ideas en productos digitales.
+      </p>
+    </div>
+
+    <div class="mt-12 bg-background/60 mx-auto max-w-10xl backdrop-blur-2xl rounded-4xl p-8 sm:p-12 lg:p-16">
+      <div class="grid sm:grid-cols-3 gap-8 lg:gap-12">
+        {
+          brandMeanings.map((item) => (
+            <article class="flex flex-col gap-4 text-center">
+              <span class="text-sm font-semibold uppercase tracking-[0.22em] text-foreground-muted">{item.key}</span>
+              <h3 class="font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h4)" }}>
+                {item.title}
+              </h3>
+              <p class="text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+                {item.description}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mt-12 bg-background/60 mx-auto max-w-10xl backdrop-blur-2xl rounded-4xl p-8 sm:p-12 lg:p-16">
+      <div class="w-full flex flex-col justify-between gap-6 md:flex-row md:items-center">
+        <ul class="flex flex-wrap gap-x-6 gap-y-3" aria-label="Perfiles sociales">
+          {
+            socialProfiles.map((profile) => (
+              <li>
+                <a
+                  href={profile.href}
+                  target="_blank"
+                  rel="me noopener noreferrer"
+                  class="text-sm text-foreground-muted underline decoration-foreground/20 underline-offset-8 hover:text-foreground transition-colors duration-200"
+                >
+                  {profile.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a
+          href="/contacto"
+          class="inline-flex items-center justify-center font-medium px-8 h-12 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity duration-200 flex-none"
+        >
+          Contactar
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,246 @@
+---
+import { palettes } from "@/lib/palettes";
+import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
+---
+
+<div id="palette-modal-wrapper" class="fixed inset-0 z-[90] hidden items-center justify-center p-4 sm:p-6" aria-hidden="true" transition:persist>
+  <button class="absolute inset-0 bg-foreground/40 backdrop-blur-sm cursor-default" type="button" data-toggle="palette-modal-close" aria-label="Cerrar selector de paletas"></button>
+
+  <section
+    id="palette-modal"
+    class="palette-modal-content relative z-10 w-full max-w-4xl rounded-4xl bg-background/95 backdrop-blur-2xl shadow-2xl opacity-0"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="palette-modal-title"
+    tabindex="-1"
+  >
+    <header class="flex items-start justify-between gap-6 px-6 py-6 sm:px-10 sm:py-8">
+      <div>
+        <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Personaliza la web</p>
+        <h2 id="palette-modal-title" class="mt-2 font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h3)" }}>Temas y paletas</h2>
+      </div>
+
+      <button
+        class="inline-flex size-11 flex-none cursor-pointer items-center justify-center rounded-full bg-secondary text-secondary-foreground transition-colors duration-200 hover:bg-foreground hover:text-background"
+        type="button"
+        data-toggle="palette-modal-close"
+        aria-label="Cerrar selector de paletas"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275t.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275z"
+          ></path>
+        </svg>
+      </button>
+    </header>
+
+    <div class="max-h-[min(70vh,42rem)] overflow-y-auto px-6 pb-6 sm:px-10 sm:pb-10">
+      <div class="grid gap-4 sm:grid-cols-2 pt-4">
+        {
+          palettes.map((palette) => (
+            <button
+              class="palette-card group flex flex-col gap-4 cursor-pointer rounded-3xl bg-secondary/40 p-5 text-left transition-all duration-200 hover:bg-secondary/70 data-[state='active']:bg-secondary data-[state='active']:ring-2 data-[state='active']:ring-primary"
+              type="button"
+              data-palette-option={palette.id}
+              data-palette-primary={palette.primary}
+              data-palette-primary-foreground={palette.primaryForeground}
+              data-palette-gradient={JSON.stringify(palette.gradient)}
+              aria-pressed="false"
+            >
+              <span class="h-20 w-full rounded-2xl block" style={{ background: `linear-gradient(120deg, ${palette.gradient.join(", ")})` }} aria-hidden="true" />
+
+              <span class="flex items-center justify-between gap-3">
+                <span class="flex items-center gap-3 min-w-0">
+                  <span class="size-6 flex-none rounded-full" style={{ background: palette.primary }} aria-hidden="true" />
+                  <span class="font-semibold text-foreground truncate" style={{ "font-size": "var(--font-body)" }}>
+                    {palette.name}
+                  </span>
+                </span>
+                <span
+                  class="palette-check inline-flex size-7 flex-none items-center justify-center opacity-0 transition-opacity duration-200 group-data-[state='active']:opacity-100"
+                  aria-hidden="true"
+                >
+                  <SvgSuccessAnimation size={28} background={palette.primary} foreground={palette.primaryForeground} duration={700} />
+                </span>
+              </span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  import { defaultPaletteId, getPaletteById, paletteStorageKey, paletteStyleStorageKey } from "@/lib/palettes";
+
+  function getCurrentPalette() {
+    return document.documentElement.dataset.palette || defaultPaletteId;
+  }
+
+  function applyPalette(id: string, persist = true) {
+    const def = getPaletteById(id);
+    document.documentElement.dataset.palette = def.id;
+    document.documentElement.style.setProperty("--primary", def.primary);
+    document.documentElement.style.setProperty("--primary-foreground", def.primaryForeground);
+
+    if (persist) {
+      localStorage.setItem(paletteStorageKey, def.id);
+      localStorage.setItem(paletteStyleStorageKey, JSON.stringify({ primary: def.primary, primaryForeground: def.primaryForeground }));
+    }
+
+    updateSelectedPalette(def.id);
+    window.dispatchEvent(new CustomEvent("frankuxui:palette-change", { detail: def }));
+  }
+
+  // El SVG del check dibuja su animación (relleno + trazo) una sola vez al
+  // montarse, ya que usa `animation: ... forwards`. Al elegir un tema
+  // el badge solo cambiaba de opacidad, mostrando el estado final sin
+  // reproducir la animación de nuevo. Forzamos un reflow reseteando la
+  // propiedad `animation` para que vuelva a reproducirse en cada selección.
+  function replaySuccessAnimation(optionEl: HTMLElement) {
+    const targets = optionEl.querySelectorAll<HTMLElement>(".success-fill-circle, .success-check");
+    if (!targets.length) return;
+
+    targets.forEach((el) => {
+      el.style.animation = "none";
+    });
+
+    void optionEl.offsetWidth;
+
+    targets.forEach((el) => {
+      el.style.animation = "";
+    });
+  }
+
+  function updateSelectedPalette(palette = getCurrentPalette()) {
+    const paletteOptions = document.querySelectorAll("[data-palette-option]") as NodeListOf<HTMLButtonElement>;
+
+    paletteOptions.forEach((option) => {
+      const isActive = option.dataset.paletteOption === palette;
+      option.dataset.state = isActive ? "active" : "";
+      option.setAttribute("aria-pressed", String(isActive));
+    });
+  }
+
+  // Astro's ClientRouter replaces <html>'s attributes (including inline `style`
+  // and `data-palette`) with the new page's static SSR output on every soft
+  // navigation, wiping the runtime palette we set via JS. Re-apply it from
+  // localStorage right after each swap, before other `astro:page-load`
+  // listeners (like the canvas gradient) read `data-palette`.
+  function restorePaletteFromStorage() {
+    const storedId = localStorage.getItem(paletteStorageKey);
+    const def = getPaletteById(storedId);
+    document.documentElement.dataset.palette = def.id;
+    document.documentElement.style.setProperty("--primary", def.primary);
+    document.documentElement.style.setProperty("--primary-foreground", def.primaryForeground);
+    updateSelectedPalette(def.id);
+  }
+
+  document.addEventListener("astro:after-swap", restorePaletteFromStorage);
+
+  function setupPaletteModal() {
+    const wrapper = document.querySelector("#palette-modal-wrapper") as HTMLElement | null;
+    const modal = document.querySelector("#palette-modal") as HTMLElement | null;
+    const triggers = document.querySelectorAll("[data-toggle='palette-modal']");
+    const closeTriggers = document.querySelectorAll("[data-toggle='palette-modal-close']");
+    const paletteOptions = document.querySelectorAll("[data-palette-option]") as NodeListOf<HTMLButtonElement>;
+    let lastFocusedElement: Element | null = null;
+
+    if (!wrapper || !modal || !triggers.length) return;
+
+    restorePaletteFromStorage();
+
+    function openModal() {
+      lastFocusedElement = document.activeElement;
+      wrapper?.classList.remove("hidden");
+      wrapper?.classList.add("flex", "palette-modal-open");
+      wrapper?.setAttribute("aria-hidden", "false");
+      document.body.classList.add("overflow-hidden");
+      modal?.focus();
+    }
+
+    function closeModal() {
+      wrapper?.classList.remove("palette-modal-open");
+      wrapper?.classList.add("palette-modal-close");
+
+      wrapper?.addEventListener(
+        "animationend",
+        () => {
+          wrapper?.classList.remove("flex", "palette-modal-close");
+          wrapper?.classList.add("hidden");
+          wrapper?.setAttribute("aria-hidden", "true");
+          document.body.classList.remove("overflow-hidden");
+
+          if (lastFocusedElement instanceof HTMLElement) {
+            lastFocusedElement.focus();
+          }
+        },
+        { once: true }
+      );
+    }
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", openModal);
+    });
+
+    closeTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", closeModal);
+    });
+
+    paletteOptions.forEach((option) => {
+      option.addEventListener("click", () => {
+        const palette = option.dataset.paletteOption;
+        if (!palette) return;
+
+        applyPalette(palette);
+        replaySuccessAnimation(option);
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !wrapper.classList.contains("hidden")) {
+        closeModal();
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupPaletteModal);
+  } else {
+    setupPaletteModal();
+  }
+</script>
+
+<style>
+  .palette-modal-open .palette-modal-content {
+    animation: palette-modal-in 200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .palette-modal-close .palette-modal-content {
+    animation: palette-modal-out 150ms ease-in forwards;
+  }
+
+  @keyframes palette-modal-in {
+    from {
+      opacity: 0;
+      transform: translateY(1rem) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes palette-modal-out {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(1rem) scale(0.98);
+    }
+  }
+</style>
