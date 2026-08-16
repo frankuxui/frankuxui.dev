@@ -14,6 +14,11 @@ export default defineConfig({
 	adapter: node({
 		mode: 'standalone',
 	}),
+	// @astrojs/node doesn't honor X-Forwarded-Proto, so behind Traefik (TLS terminated there)
+	// it sees http:// while the browser sends an https:// Origin, tripping the CSRF check.
+	security: {
+		checkOrigin: false,
+	},
 	server: {
 		host: true,
 		allowedHosts: ['frankuxui.dev', 'www.frankuxui.dev'],
