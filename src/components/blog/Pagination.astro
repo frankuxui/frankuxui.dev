@@ -1,0 +1,53 @@
+---
+import type { BlogPagination } from "@/services/blogApiService";
+
+interface Props {
+  pagination: BlogPagination;
+  category?: string | null;
+}
+
+const { pagination, category = null } = Astro.props as Props;
+const { page, totalPages } = pagination;
+
+function buildHref(targetPage: number) {
+  const params = new URLSearchParams();
+  if (category) params.set("category", category);
+  if (targetPage > 1) params.set("page", String(targetPage));
+  const query = params.toString();
+  return query ? `/blog?${query}` : "/blog";
+}
+
+const hasPrev = page > 1;
+const hasNext = page < totalPages;
+
+const buttonClass =
+  "inline-flex items-center justify-center uppercase font-medium h-10 px-4 text-sm border-2 border-foreground shadow-[3px_3px_0px_var(--color-foreground)] transition-all duration-200";
+const enabledClass = "hover:shadow-[1px_1px_0px_var(--color-foreground)] hover:translate-x-[2px] hover:translate-y-[2px] bg-background text-foreground hover:bg-foreground/5";
+const disabledClass = "opacity-30 pointer-events-none bg-background text-foreground";
+---
+
+{
+  totalPages > 1 && (
+    <nav class="mt-14 flex w-full items-center justify-between gap-4" aria-label="Paginación de artículos">
+      {hasPrev ? (
+        <a href={buildHref(page - 1)} class:list={[buttonClass, enabledClass]}>
+          ← Anteriores
+        </a>
+      ) : (
+        <span class:list={[buttonClass, disabledClass]}>← Anteriores</span>
+      )}
+
+      <p class="text-sm font-medium uppercase tracking-wide text-foreground/60">
+        Página {page} de {totalPages}
+      </p>
+
+      {hasNext ? (
+        <a href={buildHref(page + 1)} class:list={[buttonClass, enabledClass]}>
+          Siguientes →
+        </a>
+      ) : (
+        <span class:list={[buttonClass, disabledClass]}>Siguientes →</span>
+      )}
+    </nav>
+  )
+}

@@ -1,0 +1,57 @@
+---
+import type { BlogPostSummary } from "@/services/blogApiService";
+
+interface Props {
+  post: BlogPostSummary;
+}
+
+const { post } = Astro.props as Props;
+
+const publishedDate = post.publishedAt ? new Date(post.publishedAt) : null;
+const hasValidDate = publishedDate !== null && !Number.isNaN(publishedDate.getTime());
+const primaryCategory = post.categories[0] ?? null;
+---
+
+<article class="group relative flex h-full flex-col border-2 border-foreground bg-background shadow-[4px_4px_0px_var(--color-foreground)] transition-all duration-200 hover:shadow-[2px_2px_0px_var(--color-foreground)] hover:translate-x-[2px] hover:translate-y-[2px]">
+  <a href={`/blog/${post.slug}`} class="absolute inset-0 z-10" aria-label={post.title}></a>
+
+  <div class="relative aspect-[16/10] w-full overflow-hidden border-b-2 border-foreground bg-foreground/5">
+    {
+      post.coverImage ? (
+        <img
+          src={post.coverImage}
+          alt={post.title}
+          loading="lazy"
+          class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      ) : (
+        <div class="flex h-full w-full items-center justify-center text-sm uppercase tracking-[0.22em] text-foreground/40">Frankuxui Blog</div>
+      )
+    }
+    {
+      primaryCategory && (
+        <span class="absolute left-3 top-3 inline-flex items-center border-2 border-foreground bg-background px-3 py-1 text-xs font-bold uppercase tracking-wide text-foreground shadow-[2px_2px_0px_var(--color-foreground)]">
+          {primaryCategory.name}
+        </span>
+      )
+    }
+  </div>
+
+  <div class="flex flex-1 flex-col gap-3 p-6">
+    <h3 class="text-xl font-semibold leading-snug tracking-tight text-foreground">{post.title}</h3>
+    {post.excerpt && <p class="line-clamp-3 text-sm leading-relaxed text-foreground/70">{post.excerpt}</p>}
+
+    <div class="mt-auto flex items-center justify-between pt-4 text-xs font-medium uppercase tracking-wide text-foreground/50">
+      {
+        hasValidDate ? (
+          <time datetime={publishedDate!.toISOString()}>
+            {publishedDate!.toLocaleDateString("es-ES", { year: "numeric", month: "short", day: "numeric" })}
+          </time>
+        ) : (
+          <span />
+        )
+      }
+      {post.readingTime && <span>{post.readingTime} min</span>}
+    </div>
+  </div>
+</article>

@@ -1,0 +1,31 @@
+---
+import Root from "@/layouts/Root.astro";
+import BlogHeroSection from "@/features/blog/sections/BlogHeroSection.astro";
+import BlogCategoriesSection from "@/features/blog/sections/BlogCategoriesSection.astro";
+import BlogPostsSection from "@/features/blog/sections/BlogPostsSection.astro";
+import CategoriesSkeleton from "@/components/blog/CategoriesSkeleton.astro";
+import PostsSkeleton from "@/components/blog/PostsSkeleton.astro";
+
+const searchParams = Astro.url.searchParams;
+
+const pageParam = Number(searchParams.get("page"));
+const page = Number.isFinite(pageParam) && pageParam > 0 ? Math.floor(pageParam) : 1;
+const category = searchParams.get("category")?.trim() || null;
+const q = searchParams.get("q")?.trim() || null;
+const pageSize = 9;
+
+const title = category ? `Blog · ${category} — Frankuxui` : "Blog — Frankuxui";
+const description = "Artículos sobre frontend, UX/UI, Astro, SEO técnico y automatización escritos por Frank Esteban (Frankuxui).";
+---
+
+<Root title={title} description={description}>
+  <BlogHeroSection />
+
+  <BlogCategoriesSection activeCategory={category} server:defer>
+    <CategoriesSkeleton slot="fallback" />
+  </BlogCategoriesSection>
+
+  <BlogPostsSection page={page} pageSize={pageSize} category={category} q={q} server:defer>
+    <PostsSkeleton slot="fallback" />
+  </BlogPostsSection>
+</Root>

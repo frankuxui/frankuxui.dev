@@ -1,0 +1,268 @@
+---
+import Root from "@/layouts/Root.astro";
+import { getBlogPostBySlug } from "@/services/blogApiService";
+import { siteConfig } from "@/config";
+
+const { slug } = Astro.params;
+const post = slug ? await getBlogPostBySlug(slug) : null;
+
+if (!post) {
+  Astro.response.status = 404;
+}
+
+const publishedDate = post?.publishedAt ? new Date(post.publishedAt) : null;
+const hasValidPublishedDate = publishedDate !== null && !Number.isNaN(publishedDate.getTime());
+const updatedDate = post?.updatedAt ? new Date(post.updatedAt) : null;
+const hasValidUpdatedDate = updatedDate !== null && !Number.isNaN(updatedDate.getTime());
+
+const title = post ? `${post.seoTitle || post.title} — Frankuxui Blog` : "Artículo no encontrado — Frankuxui";
+const description = post ? post.seoDescription || post.excerpt || post.subtitle || "" : "El artículo que buscas no existe o ya no está disponible.";
+const ogImage = post?.seoImage || post?.coverImage || undefined;
+
+const articleSchema = post
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.excerpt || undefined,
+      image: post.coverImage || undefined,
+      datePublished: hasValidPublishedDate ? publishedDate!.toISOString() : undefined,
+      dateModified: hasValidUpdatedDate ? updatedDate!.toISOString() : hasValidPublishedDate ? publishedDate!.toISOString() : undefined,
+      author: { "@type": "Person", name: post.author || siteConfig.authorName },
+      publisher: { "@type": "Organization", name: siteConfig.siteName, logo: { "@type": "ImageObject", url: siteConfig.logo } },
+      mainEntityOfPage: new URL(`/blog/${post.slug}`, Astro.site).toString(),
+    }
+  : null;
+---
+
+<Root title={title} description={description} image={ogImage}>
+  {
+    post ? (
+      <article class="w-full">
+        {articleSchema && <script type="application/ld+json" is:inline set:html={JSON.stringify(articleSchema)} />}
+
+        <header class="w-full border-b-2 border-border">
+          <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto px-6 lg:px-10 py-12 lg:py-20">
+            <a href="/blog" class="inline-flex w-fit items-center gap-2 text-sm font-medium uppercase tracking-wide text-foreground/60 hover:text-foreground">
+              ← Volver al blog
+            </a>
+
+            <div class="mt-8 grid gap-8 lg:grid-cols-12 lg:items-start lg:gap-10">
+              {/* Imagen destacada */}
+              <div class="lg:col-span-4">
+                <div class="aspect-[4/5] w-full overflow-hidden border-2 border-foreground bg-foreground/5">
+                  {post.coverImage ? (
+                    <img src={post.coverImage} alt={post.coverImageAlt || post.title} class="h-full w-full object-cover" loading="eager" />
+                  ) : (
+                    <div class="flex h-full w-full items-center justify-center text-sm uppercase tracking-[0.22em] text-foreground/40">Frankuxui Blog</div>
+                  )}
+                </div>
+                {post.coverImageCaption && <p class="mt-2 border-2 border-foreground/20 px-3 py-2 text-xs text-foreground/50">{post.coverImageCaption}</p>}
+              </div>
+
+              {/* Metadatos + título + extracto */}
+              <div class="flex flex-col gap-4 lg:col-span-5">
+                {post.categories.length > 0 && (
+                  <ul class="flex flex-wrap gap-2" aria-label="Categorías del artículo">
+                    {post.categories.map((category) => (
+                      <li>
+                        <a
+                          href={`/blog?category=${encodeURIComponent(category.slug)}`}
+                          class="inline-flex items-center border-2 border-foreground bg-background px-3 py-1 text-xs font-bold uppercase tracking-wide text-foreground shadow-[2px_2px_0px_var(--color-foreground)] hover:bg-foreground hover:text-background"
+                        >
+                          {category.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-2 border-foreground px-4 py-3 text-xs font-medium uppercase tracking-wide text-foreground/60">
+                  {post.author && <span>{post.author}</span>}
+                  {hasValidPublishedDate && (
+                    <time datetime={publishedDate!.toISOString()}>
+                      {publishedDate!.toLocaleDateString("es-ES", { year: "numeric", month: "long", day: "numeric" })}
+                    </time>
+                  )}
+                  {post.readingTime && <span>{post.readingTime} min de lectura</span>}
+                </div>
+
+                <h1 class="border-2 border-foreground px-5 py-6 text-2xl font-semibold leading-snug tracking-tight sm:text-3xl">
+                  {post.title}
+                  {post.subtitle && <span class="mt-3 block text-base font-normal leading-relaxed text-foreground/60">{post.subtitle}</span>}
+                </h1>
+
+                {post.excerpt && <p class="border-2 border-foreground/30 px-4 py-3 text-base leading-relaxed text-foreground/70">{post.excerpt}</p>}
+              </div>
+
+              {/* Tabla de contenidos */}
+              {post.toc.length > 0 && (
+                <aside class="lg:col-span-3" aria-label="Tabla de contenidos">
+                  <div class="border-2 border-foreground p-5 lg:sticky lg:top-28">
+                    <p class="text-xs font-bold uppercase tracking-wide">Tabla de contenidos</p>
+                    <nav class="mt-4">
+                      <ul class="flex flex-col gap-2 text-sm">
+                        {post.toc.map((heading) => (
+                          <li class:list={["border-l-2 border-transparent pl-3", heading.level === 3 && "ml-3"]}>
+                            <a
+                              href={`#${heading.id}`}
+                              data-toc-link
+                              data-target={heading.id}
+                              class="block text-foreground/60 transition-colors hover:text-foreground"
+                            >
+                              {heading.text}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </nav>
+                  </div>
+                </aside>
+              )}
+            </div>
+          </div>
+        </header>
+
+        <div class="w-full">
+          <div class="mx-auto w-full max-w-4xl px-6 py-16 lg:px-10">
+            <div
+              class="blog-post-content prose prose-lg max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-headings:scroll-mt-28 prose-a:text-foreground prose-a:underline prose-a:decoration-foreground/30 hover:prose-a:decoration-foreground prose-img:border-2 prose-img:border-foreground prose-blockquote:border-l-4 prose-blockquote:border-foreground prose-blockquote:not-italic prose-blockquote:font-medium"
+              set:html={post.content}
+            />
+          </div>
+        </div>
+
+        <footer class="w-full border-t-2 border-border">
+          <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto px-6 lg:px-10">
+            <div class="flex flex-col items-start justify-between gap-6 py-16 sm:flex-row sm:items-center">
+              <p class="text-lg font-medium">¿Te ha sido útil este artículo?</p>
+              <a
+                href="/blog"
+                class="inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm border-2 border-foreground shadow-[4px_4px_0px_var(--color-foreground)] hover:shadow-[2px_2px_0px_var(--color-foreground)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200"
+              >
+                Ver más artículos
+              </a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    ) : (
+      <section class="w-full border-b-2 border-border">
+        <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto lg:px-10">
+          <div class="flex flex-col items-start justify-center gap-6 px-10 lg:px-0 py-32 text-left">
+            <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground/60">Error 404</p>
+            <h1 class="leading-11 text-3xl 2xl:text-5xl font-semibold tracking-tight">Este artículo no existe o ya no está disponible.</h1>
+            <p class="max-w-2xl text-lg leading-relaxed text-foreground/70">Puede que el enlace esté mal escrito o que el artículo se haya movido. Vuelve al blog para ver todo el contenido publicado.</p>
+            <a
+              href="/blog"
+              class="mt-4 inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm bg-foreground text-background border-2 border-foreground shadow-[4px_4px_0px_var(--color-foreground)] hover:shadow-[2px_2px_0px_var(--color-foreground)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200"
+            >
+              Volver al blog
+            </a>
+          </div>
+        </div>
+      </section>
+    )
+  }
+</Root>
+
+<style is:global>
+  /* El contenido del post llega como HTML crudo (set:html), así que los
+     estilos "scoped" de Astro no lo alcanzan. Estas reglas quedan
+     acotadas a .blog-post-content para no afectar a otras páginas. */
+  .blog-post-content figure[data-rehype-pretty-code-figure] {
+    border: 2px solid var(--color-foreground);
+    box-shadow: 4px 4px 0px var(--color-foreground);
+    position: relative;
+  }
+
+  .blog-post-content figure[data-rehype-pretty-code-figure]::after {
+    content: attr(data-language);
+    text-transform: capitalize;
+    font-family: var(--font-mono);
+  }
+
+  .blog-post-content figure[data-rehype-pretty-code-figure] [data-copy-code-button] {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+</style>
+
+<script>
+  function initTableOfContents() {
+    const links = document.querySelectorAll<HTMLAnchorElement>("[data-toc-link]");
+    if (links.length === 0) return;
+
+    const headingEls = Array.from(links)
+      .map((link) => document.getElementById(link.dataset.target ?? ""))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (headingEls.length === 0) return;
+
+    function setActive(id: string) {
+      links.forEach((link) => {
+        const isActive = link.dataset.target === id;
+        link.classList.toggle("text-foreground", isActive);
+        link.classList.toggle("font-semibold", isActive);
+        link.parentElement?.classList.toggle("border-foreground", isActive);
+      });
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-96px 0px -70% 0px", threshold: 0 }
+    );
+
+    headingEls.forEach((el) => observer.observe(el));
+  }
+
+  function initCodeCopyButtons() {
+    const figures = document.querySelectorAll<HTMLElement>(".blog-post-content figure[data-rehype-pretty-code-figure]");
+
+    figures.forEach((figure) => {
+      if (figure.querySelector("[data-copy-code-button]")) return;
+      const pre = figure.querySelector("pre");
+      if (!pre) return;
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.copyCodeButton = "true";
+      button.setAttribute("aria-label", "Copiar código");
+      button.className =
+        "inline-flex items-center justify-center h-8 px-3 text-xs font-medium uppercase border-2 border-foreground bg-background text-foreground shadow-[2px_2px_0px_var(--color-foreground)] hover:shadow-[1px_1px_0px_var(--color-foreground)] transition-all duration-150";
+      button.textContent = "Copiar";
+
+      button.addEventListener("click", async () => {
+        const code = pre.textContent ?? "";
+        try {
+          await navigator.clipboard.writeText(code);
+          button.textContent = "¡Copiado!";
+          window.setTimeout(() => {
+            button.textContent = "Copiar";
+          }, 2000);
+        } catch (error) {
+          console.error("No se pudo copiar el código", error);
+        }
+      });
+
+      figure.appendChild(button);
+    });
+  }
+
+  function init() {
+    initTableOfContents();
+    initCodeCopyButtons();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+</script>

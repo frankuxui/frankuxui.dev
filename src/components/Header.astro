@@ -4,155 +4,160 @@ import MobileMenuToggle from "@/components/MobileMenuToggle.astro";
 const pathname = Astro.url.pathname;
 ---
 
-<header class="sticky top-0 left-0 w-full h-20 sm:h-24 flex items-center justify-center z-50 duration-300 border-b-2 border-border bg-background/70 backdrop-blur-2xl" data-toggle="header">
-  <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto px-10">
-    <div class="w-full relative flex items-center">
-      <div class="header-inner flex items-center w-full h-full">
-        <nav class="flex items-center justify-between w-full gap-8">
-          <div class="mr-auto flex-1">
-            <Logo />
-          </div>
-          <ul class="hidden md:flex flex-none items-center justify-center mx-auto gap-2" role="list">
-            {
-              [
-                { href: "/sobre-mi", label: "Sobre mi" },
-                { href: "/contacto", label: "Contacto" }
-              ].map(({ href, label }) => (
-                <li role="listitem">
-                  <a
-                    href={href}
-                    data-toggle="header-link"
-                    class:list={[
-                      "inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm transition-all duration-300 hover:bg-foreground/5 data-[state='active']:bg-foreground data-[state='active']:text-background border-2 border-foreground shadow-[4px_4px_0px_var(--color-foreground)] hover:shadow-[2px_2px_0px_var(--color-foreground)] transform-[translate(2px,_2px)]",
-                      {
-                        "bg-foreground text-background": pathname.includes(href)
-                      }
-                    ]}
-                    data-state={pathname.includes(href) ? "active" : ""}
-                    aria-current={pathname.includes(href) ? "page" : undefined}
-                    data-astro-reload
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-
-          <div class="ml-auto flex flex-1 items-center justify-end gap-4">
-            <button
-              class="inline-flex flex-none size-12 items-center justify-center cursor-pointer hover:bg-foreground/6 motion-safe:transition-all duration-200"
-              type="button"
-              data-toggle="palette-modal"
-              aria-label="Cambiar tema de la web"
-              aria-haspopup="dialog"
-              aria-controls="palette-modal"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24">
-                <path d="M0 0h24v24H0z" fill="none"></path>
-                <path
-                  fill="currentColor"
-                  d="M12 22q-2.05 0-3.875-.788t-3.187-2.15t-2.15-3.187T2 12q0-2.075.813-3.9t2.2-3.175T8.25 2.788T12.2 2q2 0 3.775.688t3.113 1.9t2.125 2.875T22 11.05q0 2.875-1.75 4.413T16 17h-1.85q-.225 0-.312.125t-.088.275q0 .3.375.863t.375 1.287q0 1.25-.687 1.85T12 22m-4.425-9.425Q8 12.15 8 11.5t-.425-1.075T6.5 10t-1.075.425T5 11.5t.425 1.075T6.5 13t1.075-.425m3-4Q11 8.15 11 7.5t-.425-1.075T9.5 6t-1.075.425T8 7.5t.425 1.075T9.5 9t1.075-.425m5 0Q16 8.15 16 7.5t-.425-1.075T14.5 6t-1.075.425T13 7.5t.425 1.075T14.5 9t1.075-.425m3 4Q19 12.15 19 11.5t-.425-1.075T17.5 10t-1.075.425T16 11.5t.425 1.075T17.5 13t1.075-.425M12 20q.225 0 .363-.125t.137-.325q0-.35-.375-.825T11.75 17.3q0-1.05.725-1.675T14.25 15H16q1.65 0 2.825-.962T20 11.05q0-3.025-2.312-5.038T12.2 4Q8.8 4 6.4 6.325T4 12q0 3.325 2.338 5.663T12 20"
-                ></path>
-              </svg>
-            </button>
-            <MobileMenuToggle />
-          </div>
-        </nav>
+<header class="fixed top-0 left-0 w-full h-24 sm:h-28 flex items-center justify-center z-50" data-toggle="header" transition:persist>
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <nav class="flex items-center justify-between w-full gap-8">
+      <div class="mr-auto flex-1">
+        <Logo />
       </div>
-    </div>
+
+      <ul class="header-nav hidden md:flex relative flex-none items-center justify-center mx-auto gap-0.5 rounded-full p-4 transition-all duration-300" role="list">
+        <li class="header-indicator absolute rounded-full transition-all duration-300 ease-out" aria-hidden="true"></li>
+        {
+          [
+            { href: "/", label: "Inicio" },
+            { href: "/sobre-mi", label: "Sobre mi" },
+            { href: "/blog", label: "Blog" },
+            { href: "/contacto", label: "Contacto" }
+          ].map(({ href, label }) => (
+            <li role="listitem">
+              <a
+                href={href}
+                data-toggle="header-link"
+                class:list={[
+                  "relative z-10 inline-flex items-center justify-center font-normal px-6 h-12 text-base 2xl:text-lg rounded-full transition-colors duration-300",
+                  pathname === href || (href !== "/" && pathname.startsWith(href)) ? "text-primary" : "text-foreground hover:text-foreground/70"
+                ]}
+                data-state={pathname === href || (href !== "/" && pathname.startsWith(href)) ? "active" : ""}
+                aria-current={pathname === href || (href !== "/" && pathname.startsWith(href)) ? "page" : undefined}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="ml-auto flex flex-1 items-center justify-end gap-4">
+        <button
+          class="inline-flex flex-none size-10 items-center justify-center cursor-pointer rounded-full hover:bg-foreground/10 transition-colors duration-200"
+          type="button"
+          data-toggle="palette-modal"
+          aria-label="Cambiar tema de la web"
+          aria-haspopup="dialog"
+          aria-controls="palette-modal"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none"></path>
+            <path
+              fill="currentColor"
+              d="M12 22q-2.05 0-3.875-.788t-3.187-2.15t-2.15-3.187T2 12q0-2.075.813-3.9t2.2-3.175T8.25 2.788T12.2 2q2 0 3.775.688t3.113 1.9t2.125 2.875T22 11.05q0 2.875-1.75 4.413T16 17h-1.85q-.225 0-.312.125t-.088.275q0 .3.375.863t.375 1.287q0 1.25-.687 1.85T12 22m-4.425-9.425Q8 12.15 8 11.5t-.425-1.075T6.5 10t-1.075.425T5 11.5t.425 1.075T6.5 13t1.075-.425m3-4Q11 8.15 11 7.5t-.425-1.075T9.5 6t-1.075.425T8 7.5t.425 1.075T9.5 9t1.075-.425m5 0Q16 8.15 16 7.5t-.425-1.075T14.5 6t-1.075.425T13 7.5t.425 1.075T14.5 9t1.075-.425m3 4Q19 12.15 19 11.5t-.425-1.075T17.5 10t-1.075.425T16 11.5t.425 1.075T17.5 13t1.075-.425M12 20q.225 0 .363-.125t.137-.325q0-.35-.375-.825T11.75 17.3q0-1.05.725-1.675T14.25 15H16q1.65 0 2.825-.962T20 11.05q0-3.025-2.312-5.038T12.2 4Q8.8 4 6.4 6.325T4 12q0 3.325 2.338 5.663T12 20"
+            ></path>
+          </svg>
+        </button>
+        <MobileMenuToggle />
+      </div>
+    </nav>
   </div>
 </header>
 
 <script>
-  (function () {
-    let header: HTMLDivElement | null = null;
-    let lastScroll = 0;
-    let ticking = false;
-    const threshold = 80;
-    const tolerance = 5;
+  function positionIndicator() {
+    const nav = document.querySelector(".header-nav");
+    const indicator = document.querySelector(".header-indicator") as HTMLElement;
+    if (!nav || !indicator) return;
 
-    function onScroll() {
-      const currentScroll = window.scrollY;
-      const delta = currentScroll - lastScroll;
-
-      if (Math.abs(delta) < tolerance) return;
-
-      if (currentScroll > threshold && delta > 0) {
-        if (header) header.style.transform = "translateY(-100%)";
-      } else {
-        if (header) header.style.transform = "translateY(0)";
-      }
-
-      lastScroll = currentScroll;
+    const activeLink = nav.querySelector('a[data-state="active"]') as HTMLElement;
+    if (!activeLink) {
+      indicator.style.opacity = "0";
+      return;
     }
 
-    function scrollHandler() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          onScroll();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }
+    const navRect = nav.getBoundingClientRect();
+    const linkRect = activeLink.getBoundingClientRect();
 
-    function setup() {
-      header = document.querySelector("[data-toggle='header']") as HTMLDivElement;
-      if (!header) return;
-
-      // Reiniciamos posición
-      header.style.transform = "translateY(0)";
-      lastScroll = window.scrollY;
-
-      // Quitamos listeners anteriores por si acaso (prevención si Astro rehidrata)
-      window.removeEventListener("scroll", scrollHandler);
-      window.addEventListener("scroll", scrollHandler, { passive: true });
-    }
-
-    // Setup inicial
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", setup);
-    } else {
-      setup();
-    }
-
-    document.addEventListener("DOMContentLoaded", setup);
-  })();
-
-  // Header links
+    indicator.style.left = `${linkRect.left - navRect.left}px`;
+    indicator.style.top = `${linkRect.top - navRect.top}px`;
+    indicator.style.width = `${linkRect.width}px`;
+    indicator.style.height = `${linkRect.height}px`;
+    indicator.style.opacity = "1";
+  }
 
   function updateActiveLinks() {
-    const headerLinks = document.querySelectorAll("[data-toggle='header-link']") as NodeListOf<HTMLAnchorElement>;
+    const links = document.querySelectorAll("[data-toggle='header-link']") as NodeListOf<HTMLAnchorElement>;
     const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
 
-    headerLinks.forEach((link) => {
+    links.forEach((link) => {
       const href = (link.getAttribute("href") ?? "").replace(/\/+$/, "") || "/";
-      if (href === "/" && currentPath === "/") {
+      const isActive = href === "/" ? currentPath === "/" : currentPath === href || currentPath.startsWith(href + "/");
+
+      if (isActive) {
         link.setAttribute("data-state", "active");
-      } else if (href !== "/" && (currentPath === href || currentPath.startsWith(href + "/"))) {
-        link.setAttribute("data-state", "active");
+        link.classList.remove("text-foreground", "hover:text-foreground/70");
+        link.classList.add("text-primary");
       } else {
         link.removeAttribute("data-state");
+        link.classList.remove("text-primary");
+        link.classList.add("text-foreground", "hover:text-foreground/70");
       }
     });
+
+    positionIndicator();
   }
 
-  function setupActiveLinkHandler() {
+  function onScroll() {
+    const nav = document.querySelector(".header-nav");
+    if (!nav) return;
+    if (window.scrollY > 10) {
+      nav.classList.add("nav-scrolled");
+    } else {
+      nav.classList.remove("nav-scrolled");
+    }
+  }
+
+  function setup() {
     updateActiveLinks();
-    document.addEventListener("DOMContentLoaded", updateActiveLinks);
+    onScroll();
+
+    let ticking = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            onScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
   }
 
-  // Ejecutamos cuando el DOM esté listo
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", setupActiveLinkHandler);
+    document.addEventListener("DOMContentLoaded", setup);
   } else {
-    setupActiveLinkHandler();
+    setup();
   }
+
+  document.addEventListener("astro:after-swap", updateActiveLinks);
+  document.addEventListener("astro:page-load", updateActiveLinks);
 </script>
 
 <style>
-  [data-toggle="header"] {
-    transition: transform 0.2s ease-in-out;
+  .header-nav {
+    background-color: transparent;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  .header-nav.nav-scrolled {
+    background-color: rgba(255, 255, 255, 0.532);
+  }
+
+  .header-indicator {
+    background-color: var(--color-secondary);
+    opacity: 0;
   }
 </style>

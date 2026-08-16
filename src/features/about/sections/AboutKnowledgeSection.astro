@@ -1,50 +1,28 @@
 ---
 const knowledgeTopics = [
-  "Next.js",
-  "Tailwind CSS",
-  "React",
-  "UX/UI",
-  "SEO",
-  "n8n",
-  "Docker",
-  "Markdown",
-  "MDX",
-  "Automatización de contenidos",
-  "Integraciones API",
-  "Tanstack",
-  "Astro",
-  "Svelte",
-  "Vite",
-  "JavaScript",
-  "TypeScript",
-  "HTML5",
-  "CSS3",
-  "PM2",
-  "Traefik"
+  "Next.js", "Tailwind CSS", "React", "UX/UI", "SEO", "n8n", "Docker", "Markdown", "MDX",
+  "Automatización de contenidos", "Integraciones API", "Tanstack", "Astro", "Svelte", "Vite",
+  "JavaScript", "TypeScript", "HTML5", "CSS3", "PM2", "Traefik"
 ];
 ---
 
-<section class="scroll-mt-32 relative" aria-labelledby="about-knowledge-title">
-  <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto lg:px-10">
-    <div class="mx-auto grid lg:grid-cols-12 lg:gap-10 xl:gap-20 items-center isolate relative">
-      <div class="bg-tertiary text-background lg:col-span-5">
-        <div class="lg:sticky lg:top-28 lg:self-start lg:py-32">
-          <div class="px-10 py-20 xl:p-20">
-            <p class="text-sm font-medium uppercase tracking-[0.22em] text-background">Divulgación técnica</p>
-            <h2 id="about-knowledge-title" class="mt-4 leading-11 text-3xl 2xl:text-4xl 3xl:text-5xl 3xl:leading-14 font-semibold tracking-tight">
-              Conocimiento práctico para diseñadores y desarrolladores.
-            </h2>
-          </div>
-        </div>
+<section class="scroll-mt-32 py-16 lg:py-24 relative" aria-labelledby="about-knowledge-title">
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24">
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Divulgación técnica</p>
+        <h2 id="about-knowledge-title" class="mt-4 font-semibold tracking-tight text-foreground text-[clamp(1.5rem,4vw,5rem)] leading-[1.2]">
+          Conocimiento práctico para diseñadores y desarrolladores.
+        </h2>
       </div>
-      <div class="w-full py-20 lg:col-span-7">
-        <p class="text-2xl font-medium leading-normal">
+      <div class="w-full">
+        <p class="text-foreground font-medium leading-normal" style={{ "font-size": "var(--font-h3)" }}>
           Además de construir productos digitales, documento procesos, soluciones y aprendizajes mediante artículos y tutoriales que otras personas puedan aplicar directamente en sus proyectos.
         </p>
         <ul class="mt-10 flex flex-wrap gap-3" aria-label="Temas de divulgación">
           {
             knowledgeTopics.map((topic) => (
-              <li class="inline-flex items-center uppercase justify-center font-medium px-5 h-9 text-xs transition-all duration-300 border-2 bg-background border-foreground shadow-[3px_3px_0px_var(--color-foreground)] transform-[translate(1.5px,_1.5px)]">
+              <li class="inline-flex items-center justify-center font-medium px-8 h-12 text-sm rounded-full bg-secondary text-secondary-foreground">
                 {topic}
               </li>
             ))

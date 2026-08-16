@@ -1,0 +1,53 @@
+---
+// Server island (usado con `server:defer` desde la página que lo importa).
+// Recibe los parámetros de filtrado como props serializables (la página que
+// lo instancia ya conoce `Astro.url.searchParams`; dentro de un server
+// island `Astro.url` no apunta a la URL real, así que no lo leemos aquí).
+import PostCard from "@/components/blog/PostCard.astro";
+import Pagination from "@/components/blog/Pagination.astro";
+import { getBlogPosts } from "@/services/blogApiService";
+
+interface Props {
+  page?: number;
+  pageSize?: number;
+  category?: string | null;
+  q?: string | null;
+}
+
+const { page = 1, pageSize = 9, category = null, q = null } = Astro.props as Props;
+
+const { posts, pagination } = await getBlogPosts({
+  page,
+  pageSize,
+  category: category || undefined,
+  q: q || undefined,
+});
+---
+
+<section class="w-full" aria-label="Listado de artículos del blog">
+  <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto px-10 py-16">
+    {
+      posts.length > 0 ? (
+        <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post) => (
+            <PostCard post={post} />
+          ))}
+        </div>
+      ) : (
+        <div class="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-foreground/25 py-24 text-center">
+          <p class="text-xl font-semibold">No se encontraron artículos.</p>
+          <p class="max-w-md text-sm text-foreground/60">
+            {category ? "No hay artículos publicados en esta categoría todavía." : "Vuelve a intentarlo en unos minutos o revisa otra categoría."}
+          </p>
+          {category && (
+            <a href="/blog" class="mt-4 inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm border-2 border-foreground shadow-[4px_4px_0px_var(--color-foreground)] hover:shadow-[2px_2px_0px_var(--color-foreground)] transition-all duration-200">
+              Ver todos los artículos
+            </a>
+          )}
+        </div>
+      )
+    }
+
+    <Pagination pagination={pagination} category={category} />
+  </div>
+</section>

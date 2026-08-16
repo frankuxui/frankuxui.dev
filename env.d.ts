@@ -19,3 +19,29 @@ interface Window {
   };
   dataLayer: Array<Record<string, any>>;
 }
+
+declare module "granim" {
+  type Gradient = [string, string, string] | string[];
+
+  interface GranimState {
+    gradients: Gradient[];
+    transitionSpeed?: number;
+    loop?: boolean;
+  }
+
+  interface GranimOptions {
+    element: string | HTMLCanvasElement;
+    direction?: "diagonal" | "left-right" | "top-bottom" | "radial";
+    isPausedWhenNotInView?: boolean;
+    stateTransitionSpeed?: number;
+    states: Record<string, GranimState>;
+  }
+
+  export default class Granim {
+    constructor(options: GranimOptions);
+    changeState(stateName: string): void;
+    pause(): void;
+    play(): void;
+    destroy(): void;
+  }
+}

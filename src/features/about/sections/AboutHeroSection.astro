@@ -2,53 +2,12 @@
 
 ---
 
-<header class="w-full border-b-2 border-border">
-  <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto lg:px-10">
-    <div class="grid lg:grid-cols-2 items-stretch">
-      <div class="flex flex-col justify-center gap-6 pl-10 lg:pl-0 pr-10 py-20 lg:py-32">
-        <p
-          class="text-sm font-medium uppercase tracking-[0.22em] text-foreground/60 animate-reveal"
-          style={{
-            "--animate-reveal-duration": "0.5s",
-            "--animate-reveal-delay": "0.2s"
-          }}
-        >
-          Sobre mí
-        </p>
-        <h1
-          class="leading-11 text-4xl 2xl:text-5xl 3xl:text-6xl font-semibold tracking-tight animate-reveal"
-          style={{
-            "--animate-reveal-duration": "0.5s",
-            "--animate-reveal-delay": "0.4s"
-          }}
-        >
-          Frank Esteban
-        </h1>
-        <p
-          class="text-2xl font-medium leading-normal animate-reveal"
-          style={{
-            "--animate-reveal-duration": "0.5s",
-            "--animate-reveal-delay": "0.6s"
-          }}
-        >
-          Diseñador UX/UI y desarrollador Frontend detrás de frankuxui.
-        </p>
-        <p
-          class="max-w-2xl text-lg leading-relaxed text-foreground/70 animate-reveal"
-          style={{
-            "--animate-reveal-duration": "0.5s",
-            "--animate-reveal-delay": "0.8s"
-          }}
-        >
-          Desde Tarragona, diseño y desarrollo experiencias digitales modernas, accesibles y optimizadas para conversión, rendimiento y posicionamiento web.
-        </p>
-      </div>
-      <div class="w-full h-full border-t-2 lg:border-t-0 lg:border-l-2 border-border bg-foreground/5">
-        <picture class="block w-full h-full">
-          <source srcset="/imagen_de_frankuxui.webp" type="image/webp" />
-          <img src="/imagen_de_frankuxui.webp" alt="Retrato de Frank Esteban Isdray Junco" class="w-full h-full min-h-80 lg:min-h-full object-cover grayscale-25" loading="eager" />
-        </picture>
-      </div>
-    </div>
+<header class="w-full flex items-center justify-center pt-32 sm:pt-36 pb-16 lg:pb-24" style={{ "min-height": "100dvh" }}>
+  <div class="w-full xl:max-w-5xl 3xl:max-w-8xl mx-auto px-10 text-center">
+    <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted anim-fade-up" style={{ "--anim-delay": "0.1s" }}>Sobre mí</p>
+    <h1 class="mt-6 font-bold tracking-tight text-foreground anim-fade-up text-[clamp(3rem,6.5vw,8rem)] leading-[1.05]" style={{ "--anim-delay": "0.3s" }}>Frontend Developer & UX/UI Designer</h1>
+    <p class="mt-8 sm:max-w-3xl mx-auto text-foreground-muted leading-relaxed anim-fade-up" style={{ "font-size": "var(--font-h3)", "--anim-delay": "0.5s" }}>
+      Desde Tarragona, diseño y desarrollo experiencias digitales modernas, accesibles y optimizadas para conversión, rendimiento y posicionamiento web.
+    </p>
   </div>
 </header>

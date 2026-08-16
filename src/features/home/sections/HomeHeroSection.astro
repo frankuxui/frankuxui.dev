@@ -2,118 +2,41 @@
 
 ---
 
-<section class="mx-auto border-b-2 border-border" itemscope itemtype="https://schema.org/Person">
-  <div class="w-full h-full">
-    <div class="w-full h-full max-w-7xl 3xl:max-w-8xl mx-auto lg:px-10">
-      <div class="w-full h-full md:min-h-[calc(100vh_-_96px)] grid lg:grid-cols-2 divide-border lg:border-x-2 border-border place-items-center items-center">
-        <section class="flex flex-col items-start justify-center min-w-full w-full h-full px-10 py-12 lg:py-0">
-          <header class="flex flex-col items-start justify-center w-full h-full">
-            <p
-              itemprop="name"
-              class="relative text-left leading-9 text-xl text-foreground animate-reveal"
-              style={{
-                "--animate-reveal-duration": "0.5s",
-                "--animate-reveal-delay": "0.2s"
-              }}
-            >
-              @frankuxui
-            </p>
-            <h1
-              itemprop="jobTitle"
-              class="leading-12 text-3xl sm:leading-14 sm:text-5xl font-bold tracking-[-0.055em] 3xl:leading-18 3xl:text-6xl animate-reveal lg:max-w-xl text-foreground"
-              style={{
-                "--animate-reveal-duration": "0.5s",
-                "--animate-reveal-delay": "0.4s"
-              }}
-            >
-              Frontend Developer & UX/UI Designer
-            </h1>
-            <h2
-              class="w-full text-xl leading-8 2xl:leading-10 2xl:text-2xl mt-6 animate-reveal text-foreground"
-              style={{
-                "--animate-reveal-duration": "0.5s",
-                "--animate-reveal-delay": "0.6s"
-              }}
-            >
-              Diseño y desarrollo experiencias digitales que funcionan.
-            </h2>
-            <p
-              class="mt-6 max-w-full lg:max-w-2xl text-lg leading-relaxed animate-reveal text-foreground"
-              style={{
-                "--animate-reveal-duration": "0.5s",
-                "--animate-reveal-delay": "0.8s"
-              }}
-            >
-              Combino UX/UI, desarrollo frontend, SEO técnico y automatización para crear productos rápidos, accesibles y orientados a resultados.
-            </p>
-            <div class="flex items-center justify-start gap-4 mt-6">
-              <a
-                href="/proyectos"
-                class="inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm transition-all duration-300 bg-foreground text-background hover:bg-foreground/90 border-2 border-foreground shadow-[4px_4px_0px_var(--color-foreground)] hover:shadow-[2px_2px_0px_var(--color-foreground)] transform-[translate(2px,_2px)] motion-safe:animate-text-reveal"
-                style={{
-                  "--animate-reveal-duration": "0.5s",
-                  "--animate-reveal-delay": "1.0s"
-                }}
-              >
-                Mis proyectos
-              </a>
-              <a
-                href="/blog"
-                data-toggle="navigate-client"
-                class="inline-flex items-center uppercase justify-center font-medium px-6 h-10 text-sm transition-all duration-300 hover:bg-foreground/5 border-2 border-foreground shadow-[4px_4px_0px_var(--color-foreground)] hover:shadow-[2px_2px_0px_var(--color-foreground)] transform-[translate(2px,_2px)] motion-safe:animate-text-reveal"
-                style={{
-                  "--animate-reveal-duration": "0.5s",
-                  "--animate-reveal-delay": "0.8s"
-                }}
-              >
-                Blog
-              </a>
-            </div>
-          </header>
-        </section>
+<section class="relative w-full pt-8 overflow-hidden">
+  <div class="relative z-20 flex flex-col lg:flex-row items-center w-full max-w-12xl px-10">
+    <div class="lg:w-1/2 lg:sticky lg:top-0 lg:self-start flex flex-col justify-center pb-10 lg:pb-0" style={{ "min-height": "100dvh" }}>
+      <div class="flex flex-col gap-4 lg:gap-6">
+        <p class="text-foreground-muted font-medium text-lg sm:text-xl lg:text-2xl anim-fade-up" style={{ "--anim-delay": "0.1s" }}>Hola, soy</p>
 
-        <figure class="relative w-full h-full flex flex-col items-end justify-end overflow-hidden bg-foreground">
-          <div class="relative w-full overflow-hidden h-full flex flex-col items-end justify-end">
-            <div class="hidden" aria-hidden="true"></div>
-            <div class="relative flex flex-col items-end justify-end w-full overflow-hidden">
-              <img
-                src="/frankuxui-ux-ui-designer-frontend-developer-cover-desktop.webp"
-                alt="Foto de Frank Esteban, Frontend Developer y UX/UI Designer"
-                loading="lazy"
-                class="w-full max-w-full"
-                itemprop="image"
-              />
-            </div>
-          </div>
-        </figure>
+        <div class="flex items-end gap-0 anim-fade-up" style={{ "--anim-delay": "0.25s", "--anim-duration": "0.9s" }}>
+          <h1 class="hero-name text-foreground text-left">Frank</h1>
+        </div>
+
+        <h2 class="max-w-3xl text-foreground anim-fade-up" style={{ "font-size": "var(--font-h2-display)", "--anim-delay": "0.4s" }}>Frontend Developer & UX/UI Designer</h2>
+      </div>
+    </div>
+
+    <div class="lg:w-1/2 flex flex-col justify-center gap-6 pt-10 lg:pt-0 pb-16 lg:pb-0 lg:pl-16 xl:pl-24" style={{ "min-height": "100dvh" }}>
+      <p class="text-foreground-muted anim-fade-up" style={{ "font-size": "var(--font-h3)", "--anim-delay": "0.5s" }}>Trabajando desde Tarragona, España.</p>
+
+      <p class="max-w-4xl anim-fade-up" style={{ "--anim-delay": "0.6s" }}>
+        Diseño y desarrollo experiencias digitales que funcionan. Combino UX/UI, desarrollo frontend, SEO técnico y automatización para crear productos rápidos, accesibles y orientados a resultados.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4 anim-fade-up" style={{ "--anim-delay": "0.75s" }}>
+        <a
+          href="/proyectos"
+          class="inline-flex items-center justify-center font-semibold px-7 sm:px-9 h-12 sm:h-14 text-sm sm:text-base rounded-full bg-foreground text-[#f0e8dc] hover:opacity-90 transition-opacity duration-200"
+        >
+          Mis proyectos
+        </a>
+        <a
+          href="/blog"
+          class="inline-flex items-center justify-center font-semibold px-7 sm:px-9 h-12 sm:h-14 text-sm sm:text-base rounded-full text-foreground bg-background hover:bg-background/80 transition-colors duration-200"
+        >
+          Blog
+        </a>
       </div>
     </div>
   </div>
 </section>
-
-<script>
-  const initNavigateClient = () => {
-    document.querySelectorAll("[data-toggle='navigate-client']").forEach((el) => {
-      const href = el.getAttribute("href");
-
-      if (!href || !href.startsWith("#")) return;
-
-      // Escuchar el clic solo si el href es una referencia a ID
-      el.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        const targetId = href.slice(1);
-        const targetEl = document.getElementById(targetId);
-
-        if (targetEl) {
-          targetEl.scrollIntoView({ behavior: "smooth" });
-          // Opcional: actualizar hash en la URL sin recargar
-          history.pushState(null, "", href);
-        }
-      });
-    });
-  };
-
-  document.addEventListener("DOMContentLoaded", initNavigateClient);
-  window.addEventListener("astro: page:load", initNavigateClient);
-</script>
