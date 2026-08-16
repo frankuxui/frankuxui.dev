@@ -82,7 +82,7 @@ const allItems = technologyGroups.flatMap((group) => group.items.map((item) => (
       <div class="swiper-wrapper">
         {
           allItems.map((item) => (
-            <div class="swiper-slide h-auto">
+            <div class="swiper-slide h-auto w-full min-w-sm max-w-md">
               <div class="relative overflow-hidden flex items-start flex-col gap-3 rounded-3xl bg-background/40 backdrop-blur-xl p-6 sm:p-8 h-full">
                 <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/50 to-transparent" />
                 <div class="flex items-center gap-4 w-full">
@@ -139,23 +139,27 @@ const allItems = technologyGroups.flatMap((group) => group.items.map((item) => (
 
     stackSwiperInstance = new Swiper(el, {
       modules: [Navigation],
-      slidesPerView: 1.15,
+      slidesPerView: 1.12,
+      centeredSlides: true,
       spaceBetween: 14,
       grabCursor: true,
       watchOverflow: true,
+      speed: 550,
+      cssMode: false,
+      resistanceRatio: 0.85,
       navigation: {
         prevEl: ".stack-prev",
         nextEl: ".stack-next"
       },
       breakpoints: {
-        640: { slidesPerView: 1.6, spaceBetween: 24 },
-        768: { slidesPerView: 2.2, spaceBetween: 24 },
-        1024: { slidesPerView: 3, spaceBetween: 24 },
-        1280: { slidesPerView: 3.5, spaceBetween: 24 },
-        1536: { slidesPerView: 4, spaceBetween: 24 },
-        1920: { slidesPerView: 4.5, spaceBetween: 24 },
-        2560: { slidesPerView: 6, spaceBetween: 24 },
-        3840: { slidesPerView: 7, spaceBetween: 24 }
+        640: { slidesPerView: 1.6, spaceBetween: 24, centeredSlides: false },
+        768: { slidesPerView: 2.2, spaceBetween: 24, centeredSlides: false },
+        1024: { slidesPerView: 3, spaceBetween: 24, centeredSlides: false },
+        1280: { slidesPerView: 3.5, spaceBetween: 24, centeredSlides: false },
+        1536: { slidesPerView: 4, spaceBetween: 24, centeredSlides: false },
+        1920: { slidesPerView: 4.5, spaceBetween: 24, centeredSlides: false },
+        2560: { slidesPerView: 6, spaceBetween: 24, centeredSlides: false },
+        3840: { slidesPerView: 7, spaceBetween: 24, centeredSlides: false }
       }
     });
   }

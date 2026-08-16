@@ -27,7 +27,7 @@ const LEGAL_ITEMS = [
     type="button"
     id="mobile-menu-overlay"
     aria-label="Cerrar menu"
-    class="mobile-menu-overlay absolute inset-0 h-full w-full bg-foreground/50"
+    class="mobile-menu-overlay absolute inset-0 h-full w-full bg-foreground/40 backdrop-blur-sm"
   ></button>
 
   <div
@@ -35,7 +35,7 @@ const LEGAL_ITEMS = [
     role="dialog"
     aria-modal="true"
     aria-label="Menu principal"
-    class="mobile-menu-panel absolute inset-x-0 bottom-0 flex flex-col border-t-2 border-foreground bg-background px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-[0_-6px_0px_var(--color-foreground)] will-change-transform"
+    class="mobile-menu-panel absolute inset-x-3 bottom-3 flex flex-col rounded-4xl bg-background/95 backdrop-blur-2xl px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-2xl will-change-transform"
   >
     <button
       type="button"
@@ -43,18 +43,18 @@ const LEGAL_ITEMS = [
       aria-label="Redimensionar menu"
       class="mx-auto flex w-full touch-none cursor-ns-resize select-none items-center justify-center py-5"
     >
-      <span class="h-1.5 w-14 border-2 border-foreground bg-background" aria-hidden="true"></span>
+      <span class="h-1.5 w-14 rounded-full bg-foreground/20" aria-hidden="true"></span>
     </button>
 
     <div class="flex items-center justify-between px-1">
-      <p class="inline-flex items-center border-2 border-foreground bg-foreground px-3 py-1 text-xs font-bold uppercase tracking-wide text-background">Navegación</p>
+      <p class="inline-flex items-center rounded-full bg-secondary px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-secondary-foreground">Navegación</p>
       <button
         type="button"
         id="mobile-menu-close"
-        class="inline-flex size-10 items-center justify-center border-2 border-foreground bg-background p-2 transition-colors hover:bg-foreground hover:text-background"
+        class="inline-flex size-10 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition-colors hover:bg-foreground hover:text-background"
         aria-label="Cerrar menu"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M6 18L18 6M6 6l12 12"></path>
         </svg>
       </button>
@@ -69,7 +69,7 @@ const LEGAL_ITEMS = [
                 href={item.href}
                 data-nav-link
                 data-href={item.href}
-                class="flex min-h-14 items-center justify-between px-5 text-base font-semibold uppercase tracking-wide border-2 border-foreground bg-background text-foreground shadow-[4px_4px_0px_var(--color-foreground)] transition-all duration-150 hover:shadow-[2px_2px_0px_var(--color-foreground)] hover:translate-x-[2px] hover:translate-y-[2px] data-[active=true]:bg-foreground data-[active=true]:text-background"
+                class="flex min-h-14 items-center justify-between px-6 text-base font-semibold rounded-full bg-secondary/60 text-foreground transition-all duration-200 hover:bg-secondary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground"
               >
                 {item.label}
               </a>
@@ -78,7 +78,7 @@ const LEGAL_ITEMS = [
         }
       </ul>
 
-      <div class="my-6 border-t-2 border-dashed border-foreground/25" role="separator"></div>
+      <div class="my-6 h-px w-full bg-foreground/10" role="separator"></div>
 
       <ul class="grid gap-1" id="mobile-menu-legal-list">
         {
@@ -88,7 +88,7 @@ const LEGAL_ITEMS = [
                 href={item.href}
                 data-nav-link
                 data-href={item.href}
-                class="flex min-h-11 items-center px-2 text-sm font-medium text-foreground/60 border-b-2 border-transparent transition-colors hover:border-foreground hover:text-foreground data-[active=true]:border-foreground data-[active=true]:text-foreground"
+                class="flex min-h-11 items-center px-4 rounded-full text-sm font-medium text-foreground-muted transition-colors hover:bg-secondary/50 hover:text-foreground data-[active=true]:bg-secondary/60 data-[active=true]:text-foreground"
               >
                 {item.label}
               </a>
@@ -150,7 +150,7 @@ const LEGAL_ITEMS = [
       // 1) Commit the "closed" (off-screen) state with transitions disabled,
       // right as the panel becomes visible (display: none -> block).
       panel.style.transition = "none";
-      panel.style.transform = "translateY(100%)";
+      panel.style.transform = "translateY(120%)";
       overlay.style.transition = "none";
       overlay.classList.remove("mobile-menu-overlay-visible");
 
@@ -181,7 +181,7 @@ const LEGAL_ITEMS = [
       overlay.classList.remove("mobile-menu-overlay-visible");
       panel.classList.remove("mobile-menu-panel-open");
       panel.style.transition = "";
-      panel.style.transform = "translateY(100%)";
+      panel.style.transform = "translateY(120%)";
 
       document.removeEventListener("keydown", onKeydown);
 
@@ -273,7 +273,7 @@ const LEGAL_ITEMS = [
 <style>
   .mobile-menu-panel {
     height: 50dvh;
-    transform: translateY(100%);
+    transform: translateY(120%);
     transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
