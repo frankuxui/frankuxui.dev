@@ -1,120 +1,32 @@
 ---
-const palettes = [
-  {
-    id: "refreshing-summer-fun",
-    name: "Refreshing Summer Fun",
-    colors: {
-      background: "#ffb703",
-      foreground: "#023047",
-      primary: "#3055c2",
-      secondary: "#8ecae6",
-      tertiary: "#fb8500"
-    }
-  },
-  {
-    id: "sunny-beach-day",
-    name: "Sunny Beach Day",
-    colors: {
-      background: "#e9c46a",
-      foreground: "#264653",
-      primary: "#2a9d8f",
-      secondary: "#f4a261",
-      tertiary: "#e76f51"
-    }
-  },
-  {
-    id: "mystic-evening",
-    name: "Mystic Evening",
-    colors: {
-      background: "#eacdc2",
-      foreground: "#1a1423",
-      primary: "#372549",
-      secondary: "#774c60",
-      tertiary: "#b75d69"
-    }
-  },
-  {
-    id: "ocean-sunset",
-    name: "Ocean Sunset",
-    colors: {
-      background: "#f4d58d",
-      foreground: "#001427",
-      primary: "#8d0801",
-      secondary: "#bf0603",
-      tertiary: "#708d81"
-    }
-  },
-  {
-    id: "asteroid-impact",
-    name: "Asteroid Impact",
-    colors: {
-      background: "#f2f0f1",
-      foreground: "#0b070a",
-      primary: "#30428c",
-      secondary: "#fe4f3e",
-      tertiary: "#18b5ec"
-    }
-  },
-  {
-    id: "neutral-earthtones",
-    name: "Neutral Earthtones",
-    colors: {
-      background: "#EAE0D5",
-      foreground: "#0A0908",
-      primary: "#fb6107",
-      secondary: "#5E503F",
-      tertiary: "#C6AC8F"
-    }
-  },
-  {
-    id: "sunset-beach-escape",
-    name: "Sunset Beach Escape",
-    colors: {
-      background: "#f4f7be",
-      foreground: "#1e000e",
-      primary: "#823038",
-      secondary: "#e5f77d",
-      tertiary: "#deba6f"
-    }
-  },
-  {
-    id: "warm-autumn-glow",
-    name: "Warm Autumn Glow",
-    colors: {
-      background: "#003049",
-      foreground: "#eae2b7",
-      primary: "#d62828",
-      secondary: "#f77f00",
-      tertiary: "#fcbf49"
-    }
-  }
-];
+import { palettes } from "@/lib/palettes";
+import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
 ---
 
-<div id="palette-modal-wrapper" class="fixed inset-0 z-[90] hidden items-center justify-center p-4 sm:p-6" aria-hidden="true">
-  <button class="absolute inset-0 bg-black/70 cursor-default" type="button" data-toggle="palette-modal-close" aria-label="Cerrar selector de paletas"></button>
+<div id="palette-modal-wrapper" class="fixed inset-0 z-[90] hidden items-center justify-center p-4 sm:p-6" aria-hidden="true" transition:persist>
+  <button class="absolute inset-0 bg-foreground/40 backdrop-blur-sm cursor-default" type="button" data-toggle="palette-modal-close" aria-label="Cerrar selector de paletas"></button>
 
   <section
     id="palette-modal"
-    class="palette-modal-content relative z-10 w-full max-w-4xl border-2 border-foreground bg-background shadow-[8px_8px_0px_var(--color-foreground)] opacity-0"
+    class="palette-modal-content relative z-10 w-full max-w-4xl rounded-4xl bg-background/95 backdrop-blur-2xl shadow-2xl opacity-0"
     role="dialog"
     aria-modal="true"
     aria-labelledby="palette-modal-title"
     tabindex="-1"
   >
-    <header class="flex items-start justify-between gap-6 border-b-2 border-foreground px-5 py-5 sm:px-8">
+    <header class="flex items-start justify-between gap-6 px-6 py-6 sm:px-10 sm:py-8">
       <div>
-        <p class="text-sm font-medium uppercase opacity-75">Personaliza la web</p>
-        <h2 id="palette-modal-title" class="mt-1 text-2xl font-bold sm:text-3xl">Temas y paletas</h2>
+        <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Personaliza la web</p>
+        <h2 id="palette-modal-title" class="mt-2 font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h3)" }}>Temas y paletas</h2>
       </div>
 
       <button
-        class="inline-flex size-11 flex-none cursor-pointer items-center justify-center border-2 border-foreground bg-background shadow-[3px_3px_0px_var(--color-foreground)] motion-safe:transition-all duration-200 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_var(--color-foreground)]"
+        class="inline-flex size-11 flex-none cursor-pointer items-center justify-center rounded-full bg-secondary text-secondary-foreground transition-colors duration-200 hover:bg-foreground hover:text-background"
         type="button"
         data-toggle="palette-modal-close"
         aria-label="Cerrar selector de paletas"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" aria-hidden="true">
           <path
             fill="currentColor"
             d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275t.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275z"
@@ -123,45 +35,37 @@ const palettes = [
       </button>
     </header>
 
-    <div class="max-h-[min(70vh,42rem)] overflow-y-auto px-5 py-6 sm:px-8">
-      <div class="grid gap-4 sm:grid-cols-2">
+    <div class="max-h-[min(70vh,42rem)] overflow-y-auto px-6 pb-6 sm:px-10 sm:pb-10">
+      <div class="grid gap-4 sm:grid-cols-2 pt-4">
         {
-          palettes.map((palette) => {
-            const style = `--palette-background:${palette.colors.background};--palette-foreground:${palette.colors.foreground};--palette-primary:${palette.colors.primary};--palette-secondary:${palette.colors.secondary};--palette-tertiary:${palette.colors.tertiary};`;
+          palettes.map((palette) => (
+            <button
+              class="palette-card group flex flex-col gap-4 cursor-pointer rounded-3xl bg-secondary/40 p-5 text-left transition-all duration-200 hover:bg-secondary/70 data-[state='active']:bg-secondary data-[state='active']:ring-2 data-[state='active']:ring-primary"
+              type="button"
+              data-palette-option={palette.id}
+              data-palette-primary={palette.primary}
+              data-palette-primary-foreground={palette.primaryForeground}
+              data-palette-gradient={JSON.stringify(palette.gradient)}
+              aria-pressed="false"
+            >
+              <span class="h-20 w-full rounded-2xl block" style={{ background: `linear-gradient(120deg, ${palette.gradient.join(", ")})` }} aria-hidden="true" />
 
-            return (
-              <button
-                class="palette-card group flex min-h-48 cursor-pointer flex-col justify-between border-2 border-foreground p-5 text-left shadow-[5px_5px_0px_var(--color-foreground)] motion-safe:transition-all duration-200 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_var(--color-foreground)] data-[state='active']:translate-x-1 data-[state='active']:translate-y-1 data-[state='active']:shadow-[2px_2px_0px_var(--color-foreground)]"
-                type="button"
-                style={style}
-                data-palette-option={palette.id}
-                aria-pressed="false"
-              >
-                <span class="flex items-start justify-between gap-4">
-                  <span>
-                    <span class="block text-xl font-bold">{palette.name}</span>
-                    <span class="mt-1 block text-sm opacity-75">{palette.id}</span>
-                  </span>
-                  <span
-                    class="palette-check inline-flex size-8 flex-none items-center justify-center border-2 border-current opacity-0 motion-safe:transition-opacity group-data-[state='active']:opacity-100"
-                    aria-hidden="true"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
-                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="m5 12l4.5 4.5L19 7" />
-                    </svg>
+              <span class="flex items-center justify-between gap-3">
+                <span class="flex items-center gap-3 min-w-0">
+                  <span class="size-6 flex-none rounded-full" style={{ background: palette.primary }} aria-hidden="true" />
+                  <span class="font-semibold text-foreground truncate" style={{ "font-size": "var(--font-body)" }}>
+                    {palette.name}
                   </span>
                 </span>
-
-                <span class="mt-8 flex h-16 overflow-hidden border-2 border-current" aria-hidden="true">
-                  <span class="block flex-1 bg-[var(--palette-background)]" />
-                  <span class="block flex-1 bg-[var(--palette-foreground)]" />
-                  <span class="block flex-1 bg-[var(--palette-primary)]" />
-                  <span class="block flex-1 bg-[var(--palette-secondary)]" />
-                  <span class="block flex-1 bg-[var(--palette-tertiary)]" />
+                <span
+                  class="palette-check inline-flex size-7 flex-none items-center justify-center opacity-0 transition-opacity duration-200 group-data-[state='active']:opacity-100"
+                  aria-hidden="true"
+                >
+                  <SvgSuccessAnimation size={28} background={palette.primary} foreground={palette.primaryForeground} duration={700} />
                 </span>
-              </button>
-            );
-          })
+              </span>
+            </button>
+          ))
         }
       </div>
     </div>
@@ -169,17 +73,45 @@ const palettes = [
 </div>
 
 <script>
-  const paletteStorageKey = "frankuxui-palette";
-  const defaultPalette = "ocean-sunset";
+  import { defaultPaletteId, getPaletteById, paletteStorageKey, paletteStyleStorageKey } from "@/lib/palettes";
 
   function getCurrentPalette() {
-    return document.documentElement.dataset.palette || defaultPalette;
+    return document.documentElement.dataset.palette || defaultPaletteId;
   }
 
-  function setPalette(palette: string) {
-    document.documentElement.dataset.palette = palette;
-    localStorage.setItem(paletteStorageKey, palette);
-    updateSelectedPalette(palette);
+  function applyPalette(id: string, persist = true) {
+    const def = getPaletteById(id);
+    document.documentElement.dataset.palette = def.id;
+    document.documentElement.style.setProperty("--primary", def.primary);
+    document.documentElement.style.setProperty("--primary-foreground", def.primaryForeground);
+
+    if (persist) {
+      localStorage.setItem(paletteStorageKey, def.id);
+      localStorage.setItem(paletteStyleStorageKey, JSON.stringify({ primary: def.primary, primaryForeground: def.primaryForeground }));
+    }
+
+    updateSelectedPalette(def.id);
+    window.dispatchEvent(new CustomEvent("frankuxui:palette-change", { detail: def }));
+  }
+
+  // El SVG del check dibuja su animación (relleno + trazo) una sola vez al
+  // montarse, ya que usa `animation: ... forwards`. Al elegir un tema
+  // el badge solo cambiaba de opacidad, mostrando el estado final sin
+  // reproducir la animación de nuevo. Forzamos un reflow reseteando la
+  // propiedad `animation` para que vuelva a reproducirse en cada selección.
+  function replaySuccessAnimation(optionEl: HTMLElement) {
+    const targets = optionEl.querySelectorAll<HTMLElement>(".success-fill-circle, .success-check");
+    if (!targets.length) return;
+
+    targets.forEach((el) => {
+      el.style.animation = "none";
+    });
+
+    void optionEl.offsetWidth;
+
+    targets.forEach((el) => {
+      el.style.animation = "";
+    });
   }
 
   function updateSelectedPalette(palette = getCurrentPalette()) {
@@ -192,22 +124,33 @@ const palettes = [
     });
   }
 
+  // Astro's ClientRouter replaces <html>'s attributes (including inline `style`
+  // and `data-palette`) with the new page's static SSR output on every soft
+  // navigation, wiping the runtime palette we set via JS. Re-apply it from
+  // localStorage right after each swap, before other `astro:page-load`
+  // listeners (like the canvas gradient) read `data-palette`.
+  function restorePaletteFromStorage() {
+    const storedId = localStorage.getItem(paletteStorageKey);
+    const def = getPaletteById(storedId);
+    document.documentElement.dataset.palette = def.id;
+    document.documentElement.style.setProperty("--primary", def.primary);
+    document.documentElement.style.setProperty("--primary-foreground", def.primaryForeground);
+    updateSelectedPalette(def.id);
+  }
+
+  document.addEventListener("astro:after-swap", restorePaletteFromStorage);
+
   function setupPaletteModal() {
     const wrapper = document.querySelector("#palette-modal-wrapper") as HTMLElement | null;
     const modal = document.querySelector("#palette-modal") as HTMLElement | null;
     const triggers = document.querySelectorAll("[data-toggle='palette-modal']");
     const closeTriggers = document.querySelectorAll("[data-toggle='palette-modal-close']");
     const paletteOptions = document.querySelectorAll("[data-palette-option]") as NodeListOf<HTMLButtonElement>;
-    const storedPalette = localStorage.getItem(paletteStorageKey);
     let lastFocusedElement: Element | null = null;
 
     if (!wrapper || !modal || !triggers.length) return;
 
-    if (storedPalette) {
-      document.documentElement.dataset.palette = storedPalette;
-    }
-
-    updateSelectedPalette();
+    restorePaletteFromStorage();
 
     function openModal() {
       lastFocusedElement = document.activeElement;
@@ -251,7 +194,8 @@ const palettes = [
         const palette = option.dataset.paletteOption;
         if (!palette) return;
 
-        setPalette(palette);
+        applyPalette(palette);
+        replaySuccessAnimation(option);
       });
     });
 
@@ -270,18 +214,8 @@ const palettes = [
 </script>
 
 <style>
-  .palette-card {
-    background: var(--palette-background);
-    color: var(--palette-foreground);
-  }
-
-  .palette-check {
-    background: var(--palette-foreground);
-    color: var(--palette-background);
-  }
-
   .palette-modal-open .palette-modal-content {
-    animation: palette-modal-in 180ms ease-out forwards;
+    animation: palette-modal-in 200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
   .palette-modal-close .palette-modal-content {

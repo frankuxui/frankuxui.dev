@@ -1,0 +1,89 @@
+---
+export interface Props {
+  size?: number;
+  width?: number;
+  height?: number;
+  class?: string;
+  color?: "blue";
+  background?: string;
+  foreground?: string;
+  duration?: number;
+  title?: string;
+  description?: string;
+}
+
+const COLORS = {
+  blue: "#1b0bff"
+} as const;
+
+const { size, width, height, class: className, color = "blue", background, foreground = "#FFFFFF", duration = 900, title, description } = Astro.props;
+
+const bg = background ?? COLORS[color] ?? COLORS.blue;
+const animationDuration = Number.isFinite(duration) && duration > 0 ? duration : 900;
+
+// Duraciones derivadas exactamente igual que en la versión React: el relleno
+// del círculo ocupa el 60% de la duración total, y el trazo del check dibuja
+// el 50% restante empezando al 45% (para que se solapen ligeramente).
+const fillDuration = animationDuration * 0.6;
+const checkDuration = animationDuration * 0.5;
+const checkDelay = animationDuration * 0.45;
+
+const randomSuffix = () => Math.random().toString(36).slice(2, 10);
+const titleId = title ? `svg-success-title-${randomSuffix()}` : undefined;
+const descId = title && description ? `svg-success-desc-${randomSuffix()}` : undefined;
+const labelledBy = titleId ? `${titleId}${descId ? ` ${descId}` : ""}` : undefined;
+---
+
+<svg
+  data-success-anim
+  width={width ?? size ?? 115}
+  height={height ?? size ?? 115}
+  viewBox="0 0 133 133"
+  xmlns="http://www.w3.org/2000/svg"
+  class:list={["svg-success-animation", className]}
+  role={title ? "img" : undefined}
+  aria-labelledby={labelledBy}
+  aria-hidden={title ? undefined : "true"}
+  focusable="false"
+  style={`--success-fill-duration:${fillDuration}ms;--success-check-duration:${checkDuration}ms;--success-check-delay:${checkDelay}ms;`}
+>
+  {title && <title id={titleId}>{title}</title>}
+  {title && description && <desc id={descId}>{description}</desc>}
+
+  <g fill="none">
+    <circle class="success-fill-circle" cx="66.5" cy="66.5" r="54.5" fill={bg}></circle>
+    <polyline class="success-check" points="41 70 56 85 92 49" fill="none" stroke={foreground} stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></polyline>
+  </g>
+</svg>
+
+<style>
+  .success-fill-circle {
+    transform-origin: 66.5px 66.5px;
+    transform: scale(0);
+    animation: success-fill-circle-kf var(--success-fill-duration) ease-out forwards;
+  }
+
+  .success-check {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: success-draw-check-kf var(--success-check-duration) ease-out var(--success-check-delay) forwards;
+  }
+
+  @keyframes success-fill-circle-kf {
+    0% {
+      transform: scale(0);
+    }
+    70% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes success-draw-check-kf {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

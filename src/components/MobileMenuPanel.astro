@@ -11,9 +11,11 @@
 const NAV_ITEMS = [
   { href: "/", label: "Inicio" },
   { href: "/sobre-mi", label: "Sobre mi" },
-  { href: "/blog", label: "Blog" },
+  { href: "/biografia", label: "Biografía" },
   { href: "/contacto", label: "Contacto" },
 ] as const;
+
+const BLOG_URL = "https://frankuxui.com/blog";
 
 const LEGAL_ITEMS = [
   { href: "/terminos-y-condiciones", label: "Términos y condiciones" },
@@ -22,7 +24,7 @@ const LEGAL_ITEMS = [
 ] as const;
 ---
 
-<div id="mobile-menu-root" class="mobile-menu-root fixed inset-0 z-[9999] md:hidden hidden" role="presentation" aria-hidden="true">
+<div id="mobile-menu-root" class="mobile-menu-root fixed inset-0 z-[9999] md:hidden hidden" role="presentation" aria-hidden="true" transition:persist>
   <button
     type="button"
     id="mobile-menu-overlay"
@@ -76,6 +78,20 @@ const LEGAL_ITEMS = [
             </li>
           ))
         }
+        <li class="mobile-menu-nav-item" style={`transition-delay:${(0.2 + NAV_ITEMS.length * 0.06).toFixed(3)}s`}>
+          <a
+            href={BLOG_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex min-h-14 items-center justify-between px-6 text-base font-semibold rounded-full bg-secondary/60 text-foreground transition-all duration-200 hover:bg-secondary"
+          >
+            Blog
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 21 21" aria-hidden="true">
+              <path d="M0 0h21v21H0z" fill="none" />
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M14.5 13.5v-7h-7m7 0l-8 8" />
+            </svg>
+          </a>
+        </li>
       </ul>
 
       <div class="my-6 h-px w-full bg-foreground/10" role="separator"></div>
@@ -83,7 +99,7 @@ const LEGAL_ITEMS = [
       <ul class="grid gap-1" id="mobile-menu-legal-list">
         {
           LEGAL_ITEMS.map((item, index) => (
-            <li class="mobile-menu-nav-item" style={`transition-delay:${(0.2 + (NAV_ITEMS.length + index) * 0.06).toFixed(3)}s`}>
+            <li class="mobile-menu-nav-item" style={`transition-delay:${(0.2 + (NAV_ITEMS.length + 1 + index) * 0.06).toFixed(3)}s`}>
               <a
                 href={item.href}
                 data-nav-link

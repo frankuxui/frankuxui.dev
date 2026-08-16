@@ -6,10 +6,10 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
   <button
     type="button"
     id="feedback-fab"
-    class="fixed bottom-5 left-4 z-50 inline-flex size-14 items-center justify-center border-2 border-foreground bg-foreground text-background shadow-[4px_4px_0px_var(--color-foreground)] transition-all duration-150 hover:shadow-[2px_2px_0px_var(--color-foreground)] hover:translate-x-[2px] hover:translate-y-[2px] sm:hidden"
+    class="fixed bottom-5 left-4 z-50 inline-flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform duration-200 hover:scale-105 sm:hidden"
     aria-label="Votar sobre el sitio web"
   >
-    <span class="absolute inset-0 bg-foreground/35 motion-safe:animate-ping" aria-hidden="true"></span>
+    <span class="absolute inset-0 rounded-full bg-primary/40 motion-safe:animate-ping" aria-hidden="true"></span>
     <svg xmlns="http://www.w3.org/2000/svg" class="relative size-6 motion-safe:animate-pulse" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="m12 2l3.09 6.26L22 9.27l-5 4.87l1.18 6.88L12 17.77l-6.18 3.25L7 14.14L2 9.27l6.91-1.01z"></path>
     </svg>
@@ -17,22 +17,22 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
 
   <aside
     id="feedback-card"
-    class="fixed bottom-5 left-4 right-4 z-50 hidden border-2 border-foreground bg-background/95 p-4 text-foreground shadow-[4px_4px_0px_var(--color-foreground)] backdrop-blur sm:left-6 sm:right-auto sm:block sm:max-w-sm"
+    class="fixed bottom-5 left-4 right-4 z-50 hidden rounded-3xl bg-background/95 p-5 text-foreground shadow-2xl backdrop-blur-2xl sm:left-6 sm:right-auto sm:block sm:max-w-sm"
     aria-label="Votación del sitio web"
   >
     <div class="flex items-start gap-3">
-      <span class="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center border-2 border-foreground bg-foreground text-background" aria-hidden="true">
+      <span class="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground" aria-hidden="true">
         <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="m12 2l3.09 6.26L22 9.27l-5 4.87l1.18 6.88L12 17.77l-6.18 3.25L7 14.14L2 9.27l6.91-1.01z"></path>
         </svg>
       </span>
       <div class="min-w-0">
-        <p class="text-sm font-semibold leading-5">¿Qué opinas del sitio?</p>
-        <p class="mt-1 text-xs leading-5 text-foreground/70">Tu voto me ayuda a mejorar el diseño y la experiencia de usuario.</p>
+        <p class="text-sm font-semibold leading-5 text-foreground">¿Qué opinas del sitio?</p>
+        <p class="mt-1 text-xs leading-5 text-foreground-muted">Tu voto me ayuda a mejorar el diseño y la experiencia de usuario.</p>
         <button
           type="button"
           id="feedback-card-open"
-          class="mt-3 inline-flex h-10 items-center justify-center border-2 border-foreground bg-foreground px-4 text-sm font-semibold text-background shadow-[4px_4px_0px_var(--color-foreground)] transition-all duration-150 hover:shadow-[2px_2px_0px_var(--color-foreground)] hover:translate-x-[2px] hover:translate-y-[2px]"
+          class="mt-3 inline-flex h-10 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-opacity duration-200 hover:opacity-90"
         >
           Votar ahora
         </button>
@@ -42,47 +42,47 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
 </div>
 
 <div id="feedback-modal-root" class="feedback-modal-root fixed inset-0 z-[60] hidden grid place-items-center p-4" role="presentation">
-  <button type="button" id="feedback-modal-overlay" aria-label="Cerrar" class="feedback-modal-overlay absolute inset-0 h-full w-full bg-black/50 backdrop-blur-xs"></button>
+  <button type="button" id="feedback-modal-overlay" aria-label="Cerrar" class="feedback-modal-overlay absolute inset-0 h-full w-full bg-foreground/40 backdrop-blur-sm"></button>
 
   <div
     id="feedback-modal-panel"
     role="dialog"
     aria-modal="true"
     aria-label="Feedback del sitio"
-    class="feedback-modal-panel relative w-full max-w-md overflow-hidden border-2 border-foreground bg-background shadow-[8px_8px_0px_var(--color-foreground)]"
+    class="feedback-modal-panel relative w-full max-w-md overflow-hidden rounded-4xl bg-background/95 backdrop-blur-2xl shadow-2xl"
   >
     <button
       type="button"
       id="feedback-modal-close"
-      class="absolute right-4 top-4 inline-flex size-9 items-center justify-center border-2 border-foreground bg-background transition-colors hover:bg-foreground hover:text-background"
+      class="absolute right-6 top-6 inline-flex size-10 items-center justify-center rounded-full bg-secondary text-secondary-foreground transition-colors duration-200 hover:bg-foreground hover:text-background"
       aria-label="Cerrar"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
 
     <div id="feedback-form-view">
       <form id="feedback-form">
-        <div class="px-6 pt-6">
-          <p class="text-xs font-medium uppercase text-foreground/55">Feedback rápido</p>
-          <h2 class="mt-2 text-xl font-semibold tracking-tight">Nuevo diseño de mi sitio web</h2>
-          <p class="mt-1 text-xs leading-6 text-foreground/75">Porfa dime qué te parece el nuevo diseño y experiencia de usuario de mi sitio web.</p>
+        <div class="px-6 pt-6 sm:px-8 sm:pt-8">
+          <p class="text-xs font-medium uppercase tracking-[0.22em] text-foreground-muted">Feedback rápido</p>
+          <h2 class="mt-2 font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h4)" }}>Nuevo diseño de mi sitio web</h2>
+          <p class="mt-1 text-sm leading-6 text-foreground-muted">Porfa dime qué te parece el nuevo diseño y experiencia de usuario de mi sitio web.</p>
         </div>
-        <div class="px-6 py-5">
+        <div class="px-6 py-5 sm:px-8">
           <label for="feedback-name" class="text-sm font-medium text-foreground">Nombre</label>
           <input
             id="feedback-name"
             name="name"
             type="text"
             autocomplete="name"
-            class="mt-2 h-12 w-full border-2 border-foreground/25 bg-background px-4 text-sm outline-none transition-colors placeholder:text-foreground/40 focus:border-foreground disabled:opacity-70"
+            class="mt-2 h-12 w-full rounded-full bg-secondary/50 px-5 text-sm text-foreground outline-none transition-all placeholder:text-foreground-muted/60 focus:bg-secondary disabled:opacity-70"
             placeholder="Tu nombre"
             minlength="2"
             maxlength="100"
             required
           />
-          <p id="feedback-name-error" class="mt-2 hidden text-sm font-medium text-red-600" role="alert"></p>
+          <p id="feedback-name-error" class="mt-2 hidden px-1 text-sm font-medium text-red-500" role="alert"></p>
 
           <fieldset class="mt-5">
             <legend class="text-sm font-medium text-foreground">¿Qué te parece el nuevo diseño?</legend>
@@ -95,25 +95,25 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
                     aria-checked="false"
                     aria-label={`${star} ${star === 1 ? "estrella" : "estrellas"}`}
                     data-star={star}
-                    class="feedback-star inline-flex size-11 items-center justify-center border-2 border-foreground/20 bg-foreground/5 text-foreground/35 shadow-[3px_3px_0px_var(--color-foreground)] transition-all focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2 focus:ring-offset-background disabled:pointer-events-none disabled:opacity-70"
+                    class="feedback-star inline-flex size-11 items-center justify-center rounded-full bg-secondary/50 text-foreground-muted transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-70"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="m12 2l3.09 6.26L22 9.27l-5 4.87l1.18 6.88L12 17.77l-6.18 3.25L7 14.14L2 9.27l6.91-1.01z" />
                     </svg>
                   </button>
                 ))
               }
             </div>
-            <p class="mt-2 text-sm text-foreground/60" id="feedback-rating-label" aria-live="polite">Sin valoración</p>
+            <p class="mt-2 text-sm text-foreground-muted" id="feedback-rating-label" aria-live="polite">Sin valoración</p>
           </fieldset>
 
-          <p id="feedback-error" class="mt-4 hidden border-2 border-red-600 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-600" role="alert">No se pudo enviar tu valoración. Inténtalo nuevamente.</p>
+          <p id="feedback-error" class="mt-4 hidden rounded-2xl bg-red-500/10 px-4 py-3 text-sm font-medium text-red-500" role="alert">No se pudo enviar tu valoración. Inténtalo nuevamente.</p>
         </div>
-        <div class="flex flex-col-reverse gap-3 px-6 pb-6 sm:flex-row sm:justify-end">
+        <div class="flex flex-col-reverse gap-3 px-6 pb-6 sm:flex-row sm:justify-end sm:px-8 sm:pb-8">
           <button
             type="button"
             id="feedback-dismiss"
-            class="inline-flex h-11 items-center justify-center border-2 border-foreground px-5 text-sm font-semibold text-foreground shadow-[4px_4px_0px_var(--color-foreground)] transition-all duration-150 hover:shadow-[2px_2px_0px_var(--color-foreground)] hover:translate-x-[2px] hover:translate-y-[2px]"
+            class="inline-flex h-11 items-center justify-center rounded-full bg-secondary px-6 text-sm font-semibold text-secondary-foreground transition-opacity duration-200 hover:opacity-90"
           >
             Ahora no
           </button>
@@ -121,7 +121,7 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
             type="submit"
             id="feedback-submit"
             disabled
-            class="inline-flex h-11 items-center justify-center border-2 border-foreground bg-foreground px-5 text-sm font-semibold text-background shadow-[4px_4px_0px_var(--color-foreground)] transition-all duration-150 hover:shadow-[2px_2px_0px_var(--color-foreground)] hover:translate-x-[2px] hover:translate-y-[2px] disabled:pointer-events-none disabled:opacity-45 disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
+            class="inline-flex h-11 items-center justify-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-opacity duration-200 hover:opacity-90 disabled:pointer-events-none disabled:opacity-40"
           >
             Enviar comentario
           </button>
@@ -130,17 +130,17 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
     </div>
 
     <div id="feedback-success-view" class="hidden">
-      <div class="px-6 pt-6">
-        <h2 class="text-xl font-semibold tracking-tight">Votación recibida</h2>
+      <div class="px-6 pt-6 sm:px-8 sm:pt-8">
+        <h2 class="font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h4)" }}>Votación recibida</h2>
       </div>
-      <div class="px-6 py-5">
-        <p class="text-sm leading-6 text-foreground/75">Gracias por tu votación, esto me ayuda a mejorar la experiencia de usuario y diseño</p>
+      <div class="px-6 py-5 sm:px-8">
+        <p class="text-sm leading-6 text-foreground-muted">Gracias por tu votación, esto me ayuda a mejorar la experiencia de usuario y diseño</p>
       </div>
-      <div class="flex justify-end px-6 pb-6">
+      <div class="flex justify-end px-6 pb-6 sm:px-8 sm:pb-8">
         <button
           type="button"
           id="feedback-success-close"
-          class="inline-flex h-11 items-center justify-center border-2 border-foreground bg-foreground px-5 text-sm font-semibold text-background shadow-[4px_4px_0px_var(--color-foreground)] transition-all duration-150 hover:shadow-[2px_2px_0px_var(--color-foreground)] hover:translate-x-[2px] hover:translate-y-[2px]"
+          class="inline-flex h-11 items-center justify-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-opacity duration-200 hover:opacity-90"
         >
           Cerrar
         </button>
@@ -201,7 +201,8 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
         nameError.textContent = message;
         nameError.classList.toggle("hidden", !shouldShow);
       }
-      nameInput!.classList.toggle("border-red-500/70", shouldShow);
+      nameInput!.classList.toggle("ring-2", shouldShow);
+      nameInput!.classList.toggle("ring-red-400", shouldShow);
       updateSubmitState();
       return message.length === 0;
     }
@@ -217,12 +218,10 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
         const starValue = Number(star.dataset.star);
         const isActive = starValue <= value;
         star.setAttribute("aria-checked", String(starValue === value));
-        star.classList.toggle("border-yellow-500", isActive);
-        star.classList.toggle("bg-yellow-400/10", isActive);
-        star.classList.toggle("text-yellow-500", isActive);
-        star.classList.toggle("border-foreground/20", !isActive);
-        star.classList.toggle("bg-foreground/5", !isActive);
-        star.classList.toggle("text-foreground/35", !isActive);
+        star.classList.toggle("bg-primary", isActive);
+        star.classList.toggle("text-primary-foreground", isActive);
+        star.classList.toggle("bg-secondary/50", !isActive);
+        star.classList.toggle("text-foreground-muted", !isActive);
       });
       if (ratingLabel) ratingLabel.textContent = value ? `${value} de 5 estrellas` : "Sin valoración";
       updateSubmitState();

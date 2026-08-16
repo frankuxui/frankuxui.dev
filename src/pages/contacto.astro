@@ -37,75 +37,83 @@ const breadcrumbSchema = {
   <script type="application/ld+json" is:inline set:html={JSON.stringify(contactSchema)} />
   <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
 
-  <div class="w-full max-w-7xl 3xl:max-w-8xl mx-auto lg:px-10">
-    <header class="border-b-2 border-border px-10 py-16 lg:py-24">
-      <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground/60">Hablemos</p>
-      <h1 class="mt-4 max-w-4xl text-5xl font-semibold tracking-tight sm:text-7xl">Contacto</h1>
-      <p class="mt-6 max-w-3xl text-lg leading-relaxed text-foreground/70 sm:text-xl">
+  <header class="w-full flex items-center justify-center pt-32 sm:pt-36 pb-16 lg:pb-24" style={{ "min-height": "100dvh" }}>
+    <div class="w-full xl:max-w-5xl 3xl:max-w-8xl mx-auto px-10 text-center">
+      <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted anim-fade-up" style={{ "--anim-delay": "0.1s" }}>Hablemos</p>
+      <h1 class="mt-6 font-bold tracking-tight text-foreground anim-fade-up text-[clamp(3rem,6.5vw,8rem)] leading-[1.05]" style={{ "--anim-delay": "0.3s" }}>Hablemos de tu próximo proyecto</h1>
+      <p class="mt-8 sm:max-w-3xl mx-auto text-foreground-muted leading-relaxed anim-fade-up" style={{ "font-size": "var(--font-h3)", "--anim-delay": "0.5s" }}>
         Si tienes alguna pregunta, un proyecto en mente o simplemente deseas conectar, no dudes en enviarme un mensaje.
       </p>
-    </header>
+    </div>
+  </header>
 
-    <section class="grid items-stretch lg:grid-cols-[1.02fr_1.72fr] lg:divide-x-2 lg:divide-border" aria-labelledby="contact-title">
-      <div class="border-b-2 border-border px-10 py-16 lg:border-b-0 lg:py-20">
-        <div class="lg:sticky lg:top-32">
-          <p class="text-sm text-foreground/40">01 / MENSAJE</p>
-          <h2 id="contact-title" class="mt-10 text-3xl font-semibold tracking-tight sm:text-4xl">Cuéntame qué tienes en mente.</h2>
-          <p class="mt-5 max-w-md text-lg leading-relaxed text-foreground/70">
-            Describe tu consulta, propuesta o idea. Suelo responder en menos de 24 horas; si no recibes respuesta, revisa tu carpeta de spam.
-          </p>
-          <div class="mt-12 border-t-2 border-border pt-6">
-            <p class="text-sm uppercase tracking-[0.18em] text-foreground/40">Tiempo de respuesta</p>
-            <p class="mt-2 font-medium">Menos de 24 horas</p>
+  <section class="w-full pb-16 lg:pb-24" aria-labelledby="contact-title">
+    <div class="w-full max-w-12xl mx-auto px-10">
+      <div class="rounded-4xl bg-background/60 backdrop-blur-2xl p-8 sm:p-12 lg:p-16 xl:p-20">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24">
+          <div class="lg:sticky lg:top-28 lg:self-start">
+            <p class="text-sm text-foreground-muted/60">01 / MENSAJE</p>
+            <h2 id="contact-title" class="mt-6 font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h2)" }}>Cuéntame qué tienes en mente.</h2>
+            <p class="mt-5 max-w-md text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+              Describe tu consulta, propuesta o idea. Suelo responder en menos de 24 horas; si no recibes respuesta, revisa tu carpeta de spam.
+            </p>
+            <div class="mt-10 flex items-center gap-4 rounded-2xl bg-secondary/50 px-6 py-5">
+              <p class="text-sm uppercase tracking-[0.18em] text-foreground-muted">Tiempo de respuesta</p>
+              <p class="font-semibold text-foreground">Menos de 24 horas</p>
+            </div>
+          </div>
+
+          <div class="w-full">
+            <ContactForm />
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="w-full px-10 py-16 lg:py-20">
-        <ContactForm />
+  <section class="w-full py-16 lg:py-24" aria-labelledby="contact-social-title">
+    <div class="w-full max-w-12xl mx-auto px-10">
+      <div class="rounded-4xl bg-background/60 backdrop-blur-2xl p-8 sm:p-12 lg:p-16 xl:p-20">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div>
+            <figure class="w-full max-w-xs">
+              <picture>
+                <source srcset="/frankuxui_logo_poster.webp" type="image/webp" />
+                <img src="/frankuxui_logo_poster.webp" alt="Imagen del logotipo en tercera dimensión de Frankuxui" class="w-full object-contain rounded-3xl" loading="lazy" />
+              </picture>
+              <figcaption class="text-sm text-foreground-muted/60 mt-3">Imagen del logotipo en tercera dimensión de Frankuxui.</figcaption>
+            </figure>
+            <h2 id="contact-social-title" class="mt-8 font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h2)" }}>Descubre más sobre mis proyectos</h2>
+            <p class="mt-5 max-w-md text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+              Conoce más sobre mis proyectos a través de las diferentes plataformas donde comparto mi trabajo. Haz clic en los enlaces para ver más detalles y conocer de cerca mi proceso creativo y técnico.
+            </p>
+          </div>
+
+          <ul class="grid grid-cols-4 sm:grid-cols-5 gap-3 place-items-start" aria-label="Perfiles sociales">
+            {
+              social.map((item) => (
+                <li class="group relative inline-block">
+                  <div class="pointer-events-none absolute z-[2] bottom-full left-1/2 -translate-x-1/2 mb-2 inline-flex items-center justify-center h-8 px-3 text-xs rounded-full font-medium whitespace-nowrap translate-y-1 motion-safe:transition-all motion-safe:duration-200 group-hover:-translate-y-0 opacity-0 group-hover:opacity-100 text-background bg-foreground">
+                    {item.name}
+                  </div>
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Encuéntrame en ${item.name}`}
+                    data-action={`social-${item.name}`}
+                    data-testid={`social-${item.name}`}
+                    class="overflow-hidden relative inline-flex items-center justify-center w-14 h-14 rounded-full bg-secondary/50 text-foreground transition-colors duration-200 hover:bg-secondary"
+                  >
+                    <span class="sr-only">{item.name}</span>
+                    <span class="relative z-[1] cursor-pointer text-2xl" set:html={item.icon} />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
       </div>
-    </section>
-  </div>
-
-  <section class="py-40 sm:px-6 border-t-2 border-border">
-    <div class="w-full max-w-6xl mx-auto px-10">
-      <header class="flex flex-col items-start gap-6 w-full max-w-5xl">
-        <figure class="w-full lg:max-w-xs">
-          <picture>
-            <source srcset="/frankuxui_logo_poster.webp" type="image/webp" />
-            <img src="/frankuxui_logo_poster.webp" alt="Imagen del logotipo en tercera dimensión de Frankuxui" class="w-full object-contain rounded-2xl sm:animate-hero-reveal" loading="lazy" />
-          </picture>
-          <figcaption class="text-sm text-foreground/50 mt-2">Imagen del logotipo en tercera dimensión de Frankuxui.</figcaption>
-        </figure>
-        <h2 class="mt-10 text-left w-full leading-10 text-3xl sm:leading-12 sm:text-4xl font-normal">Descubre más sobre mis proyectos</h2>
-        <p>
-          Conoce más sobre mis proyectos a través de las diferentes plataformas donde comparto mi trabajo. Haz clic en los enlaces a continuación para ver más detalles y conocer de
-          cerca mi proceso creativo y técnico.
-        </p>
-      </header>
-      <ul class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 gap-2 mt-10 place-items-start">
-        {
-          social.map((item, _index) => (
-            <li class="group relative inline-block">
-              <div class="pointer-events-none absolute z-[2] bottom-full left-1/2 -translate-x-1/2 inline-flex items-center justify-center h-8 px-3 text-xs rounded font-medium uppercase translate-y-6 motion-safe:transition-all motion-safe:duration-200 group-hover:-translate-y-1 opacity-0 group-hover:opacity-100 text-white bg-black">
-                {item.name}
-              </div>
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Encuéntrame en ${item.name}`}
-                data-action={`social-${item.name}`}
-                data-testid={`social-${item.name}`}
-                class="overflow-hidden relative inline-flex items-center justify-center w-14 h-14 rounded-full text-foreground"
-              >
-                <span class="sr-only">{item.name}</span>
-                <span class="relative z-[1] cursor-pointer text-4xl" set:html={item.icon} />
-              </a>
-            </li>
-          ))
-        }
-      </ul>
     </div>
   </section>
 </Root>

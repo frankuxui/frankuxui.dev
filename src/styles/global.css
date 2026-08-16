@@ -4,8 +4,8 @@
 
 :root {
   --body-font: "Poppins", sans-serif;
-  --foreground: #145b5b;
-  --foreground-muted: #0d4646;
+  --foreground: #15273b;
+  --foreground-muted: rgb(29, 41, 54);
   --background: #ffffff;
   --background-card: #e8dfd2;
   --body-background: #f0e8dc;
@@ -189,9 +189,6 @@ body {
 }
 
 .hero-photo-ring {
-  width: clamp(60px, 6vw + 10px, 160px);
-  height: clamp(60px, 6vw + 10px, 160px);
-  background: #145b5b;
   background-size: 300% 300%;
   animation: gradient-anim 6s ease infinite;
 }
@@ -211,11 +208,6 @@ body {
 @media (max-height: 700px) {
   .hero-name {
     font-size: clamp(3rem, 1.5rem + 10vw, 8rem);
-  }
-
-  .hero-photo-ring {
-    width: 50px;
-    height: 50px;
   }
 }
 
