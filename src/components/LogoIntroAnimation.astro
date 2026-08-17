@@ -31,6 +31,8 @@
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let currentSide: "left" | "right" | null = null;
+    let motionState: "peeking" | "walking" | "paused" = "peeking";
+    let activeTl: gsap.core.Timeline | null = null;
     let idleTween: gsap.core.Tween | null = null;
 
     function saveSide(side: "left" | "right") {
@@ -85,12 +87,18 @@
       });
     }
 
-    function enablePeek(side: "left" | "right") {
-      saveSide(side);
+    function makeInteractive() {
       btn!.classList.remove("pointer-events-none");
       btn!.classList.add("pointer-events-auto", "cursor-pointer");
       btn!.tabIndex = 0;
       btn!.setAttribute("aria-hidden", "false");
+    }
+
+    function enterPeek(side: "left" | "right") {
+      motionState = "peeking";
+      activeTl = null;
+      saveSide(side);
+      makeInteractive();
       btn!.setAttribute(
         "aria-label",
         side === "right" ? "Logo asomado en la esquina derecha, pulsa para que camine hacia la izquierda" : "Logo asomado en la esquina izquierda, pulsa para que camine hacia la derecha"
@@ -98,21 +106,25 @@
       startIdle();
     }
 
-    function disablePeek() {
-      btn!.classList.add("pointer-events-none");
-      btn!.classList.remove("pointer-events-auto", "cursor-pointer");
-      btn!.tabIndex = -1;
-      btn!.setAttribute("aria-hidden", "true");
-      btn!.removeAttribute("aria-label");
+    function enterWalking() {
+      motionState = "walking";
+      makeInteractive();
       stopIdle();
+      btn!.setAttribute("aria-label", "Logo caminando, pulsa para pausarlo");
+    }
+
+    function enterPaused() {
+      motionState = "paused";
+      btn!.setAttribute("aria-label", "Logo en pausa, pulsa para que siga caminando");
     }
 
     // Camina a brincos (con balanceo) desde la posicion actual hasta la
-    // esquina indicada, y al llegar deja el logo "asomado" y clickeable.
-    // Guarda el lado en localStorage para que la proxima carga aparezca ahi
-    // directamente, sin repetir el recorrido.
+    // esquina indicada. Mientras camina sigue siendo clickeable: un click
+    // lo pausa a mitad de camino y otro click retoma el mismo recorrido
+    // hasta su destino. Al llegar deja el logo "asomado" y guarda el lado
+    // en localStorage para que la proxima carga aparezca ahi directamente.
     function walkTo(side: "left" | "right") {
-      disablePeek();
+      stopIdle();
       gsap.set(btn, { y: 0 });
 
       const startRect = btn!.getBoundingClientRect();
@@ -120,7 +132,7 @@
 
       if (prefersReducedMotion) {
         gsap.set(btn, { left: target.left, top: target.top, rotation: 0 });
-        enablePeek(side);
+        enterPeek(side);
         return;
       }
 
@@ -134,7 +146,7 @@
       const tl = gsap.timeline({
         onComplete: () => {
           gsap.set(btn, { left: target.left, top: target.top, y: 0, rotation: 0 });
-          enablePeek(side);
+          enterPeek(side);
         }
       });
 
@@ -154,11 +166,22 @@
           ease: "sine.in"
         });
       }
+
+      activeTl = tl;
+      enterWalking();
     }
 
     btn.addEventListener("click", () => {
-      if (!currentSide) return;
-      walkTo(currentSide === "right" ? "left" : "right");
+      if (motionState === "peeking") {
+        if (!currentSide) return;
+        walkTo(currentSide === "right" ? "left" : "right");
+      } else if (motionState === "walking") {
+        activeTl?.pause();
+        enterPaused();
+      } else if (motionState === "paused") {
+        activeTl?.play();
+        enterWalking();
+      }
     });
 
     const savedSide = loadSide();
@@ -171,7 +194,7 @@
       const target = getRestTarget(savedSide);
       gsap.set(btn, { left: target.left, top: target.top });
       btn!.style.opacity = "1";
-      enablePeek(savedSide);
+      enterPeek(savedSide);
       return;
     }
 
