@@ -45,16 +45,42 @@
     let activeTl: gsap.core.Timeline | null = null;
     let idleTween: gsap.core.Tween | null = null;
     let blinkTimeoutId: number | null = null;
+    let gazeTrackingEnabled = false;
 
-    // El arte de los ojos mira hacia la izquierda por defecto (pupilas
-    // desplazadas a ese lado). Al caminar/asomarse hacia la derecha,
-    // volteamos el grupo de ojos horizontalmente para que la mirada
-    // acompañe la direccion.
-    // Los ojos (esclera) quedan fijos; solo desplazamos la pupila dentro de
-    // cada uno hacia el lado correspondiente. Evita voltear el grupo entero
-    // (con scaleX), que en SVG tiene problemas de origen de transformacion
-    // poco fiables entre navegadores y terminaba separando un ojo del logo.
+    const EYES = [
+      { id: "pupil-left", ecx: 78, ecy: 34 },
+      { id: "pupil-right", ecx: 142, ecy: 34 }
+    ];
+    const MAX_DX = 7;
+    const MAX_DY = 10;
+    const VB_W = 204;
+    const VB_H = 272;
+
+    function updatePupilsFromCursor(mx: number, my: number) {
+      if (!gazeTrackingEnabled) return;
+      const svgRect = svg!.getBoundingClientRect();
+      const sx = svgRect.width / VB_W;
+      const sy = svgRect.height / VB_H;
+
+      for (const eye of EYES) {
+        const ex = svgRect.left + eye.ecx * sx;
+        const ey = svgRect.top + eye.ecy * sy;
+        const dx = mx - ex;
+        const dy = my - ey;
+        const dist = Math.hypot(dx, dy) || 1;
+        const factor = Math.min(1, dist / 120);
+        const pupil = document.getElementById(eye.id);
+        if (pupil) {
+          pupil.setAttribute("cx", String(eye.ecx + (dx / dist) * MAX_DX * factor));
+          pupil.setAttribute("cy", String(eye.ecy + (dy / dist) * MAX_DY * factor));
+        }
+      }
+    }
+
+    document.addEventListener("mousemove", (e) => updatePupilsFromCursor(e.clientX, e.clientY));
+
     function setGaze(side: "left" | "right") {
+      if (gazeTrackingEnabled) return;
       const offset = side === "right" ? 5 : -5;
       gsap.to("#pupil-left", { attr: { cx: 78 + offset }, duration: 0.25, ease: "power1.out" });
       gsap.to("#pupil-right", { attr: { cx: 142 + offset }, duration: 0.25, ease: "power1.out" });
@@ -140,9 +166,7 @@
       activeTl = null;
       saveSide(side);
       makeInteractive();
-      // Asomado, mira hacia el centro de la pantalla (direccion contraria
-      // a la esquina donde quedo), no hacia afuera.
-      setGaze(side === "left" ? "right" : "left");
+      gazeTrackingEnabled = true;
       btn!.setAttribute(
         "aria-label",
         side === "right" ? "Logo asomado en la esquina derecha, pulsa para que camine hacia la izquierda" : "Logo asomado en la esquina izquierda, pulsa para que camine hacia la derecha"
@@ -154,6 +178,7 @@
       motionState = "walking";
       makeInteractive();
       stopIdle();
+      gazeTrackingEnabled = true;
       btn!.setAttribute("aria-label", "Logo caminando, pulsa para pausarlo");
     }
 
@@ -242,6 +267,7 @@
       gsap.set(btn, { left: target.left, top: target.top });
       gsap.set("#logo-eyes", { opacity: 1 });
       btn!.style.opacity = "1";
+      gazeTrackingEnabled = true;
       enterPeek(savedSide);
       return;
     }
@@ -300,7 +326,12 @@
     const tl = gsap.timeline({
       onComplete: () => {
         convertToFixedPositioning();
-        gsap.to("#logo-eyes", { opacity: 1, duration: 0.25, ease: "power1.out" });
+        gsap.to("#logo-eyes", {
+          opacity: 1,
+          duration: 0.25,
+          ease: "power1.out",
+          onComplete: () => { gazeTrackingEnabled = true; }
+        });
         gsap.delayedCall(0.45, () => walkTo("right"));
       }
     });
