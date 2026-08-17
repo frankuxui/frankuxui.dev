@@ -152,6 +152,7 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
 <script>
   import { trackAnalyticsEvent } from "@/lib/analytics";
   import { FEEDBACK_NAME_MAX_LENGTH, getFeedbackNameValidationMessage, sanitizeFeedbackNameInput } from "@/schemas/designFeedback.schema";
+  import { trapFocus } from "@/lib/focus-trap";
 
   const FEEDBACK_COOKIE_NAME = "frankuxui_design_feedback_sent";
 
@@ -188,6 +189,7 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
     let isSubmitting = false;
     let hasTouchedName = false;
     let hasAttemptedSubmit = false;
+    let releaseFocusTrap: (() => void) | null = null;
 
     if (!hasFeedbackCookie()) {
       prompt.classList.remove("hidden");
@@ -279,6 +281,7 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
       });
 
       window.setTimeout(() => closeBtn!.focus(), prefersReducedMotion ? 0 : 220);
+      if (panel) releaseFocusTrap = trapFocus(panel);
       document.addEventListener("keydown", onKeydown);
     }
 
@@ -286,6 +289,8 @@ const STAR_VALUES = [1, 2, 3, 4, 5] as const;
       overlay?.classList.remove("feedback-modal-overlay-visible");
       panel?.classList.remove("feedback-modal-panel-visible");
       document.removeEventListener("keydown", onKeydown);
+      releaseFocusTrap?.();
+      releaseFocusTrap = null;
       document.body.style.overflow = "";
 
       window.setTimeout(

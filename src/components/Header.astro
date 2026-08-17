@@ -43,6 +43,7 @@ const pathname = Astro.url.pathname;
           href="https://frankuxui.com/blog"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Blog (abre en nueva ventana)"
           class="hidden sm:inline-flex items-center gap-1.5 h-12 px-4 rounded-full font-medium text-sm text-foreground hover:bg-white transition-colors duration-200"
         >
           Blog
@@ -59,7 +60,7 @@ const pathname = Astro.url.pathname;
           aria-haspopup="dialog"
           aria-controls="palette-modal"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24">
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M0 0h24v24H0z" fill="none"></path>
             <path
               fill="currentColor"

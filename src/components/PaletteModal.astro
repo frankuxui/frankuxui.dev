@@ -74,6 +74,7 @@ import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
 
 <script>
   import { defaultPaletteId, getPaletteById, paletteStorageKey, paletteStyleStorageKey } from "@/lib/palettes";
+  import { trapFocus } from "@/lib/focus-trap";
 
   function getCurrentPalette() {
     return document.documentElement.dataset.palette || defaultPaletteId;
@@ -147,6 +148,7 @@ import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
     const closeTriggers = document.querySelectorAll("[data-toggle='palette-modal-close']");
     const paletteOptions = document.querySelectorAll("[data-palette-option]") as NodeListOf<HTMLButtonElement>;
     let lastFocusedElement: Element | null = null;
+    let releaseFocusTrap: (() => void) | null = null;
 
     if (!wrapper || !modal || !triggers.length) return;
 
@@ -159,6 +161,7 @@ import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
       wrapper?.setAttribute("aria-hidden", "false");
       document.body.classList.add("overflow-hidden");
       modal?.focus();
+      if (modal) releaseFocusTrap = trapFocus(modal);
     }
 
     function closeModal() {
@@ -172,6 +175,8 @@ import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
           wrapper?.classList.add("hidden");
           wrapper?.setAttribute("aria-hidden", "true");
           document.body.classList.remove("overflow-hidden");
+          releaseFocusTrap?.();
+          releaseFocusTrap = null;
 
           if (lastFocusedElement instanceof HTMLElement) {
             lastFocusedElement.focus();
