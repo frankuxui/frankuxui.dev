@@ -1,0 +1,21 @@
+---
+import ContactForm from "@/components/ContactForm.astro";
+---
+
+<section class="w-full pb-16 lg:pb-24" aria-labelledby="contact-title">
+  <div class="w-full max-w-5xl mx-auto px-10">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24">
+      <div class="lg:sticky lg:top-36 3xl:top-52 lg:self-start">
+        <p class="text-sm text-foreground-muted/60">01 / MENSAJE</p>
+        <h2 id="contact-title" class="mt-6 font-semibold tracking-tight text-foreground text-[clamp(2rem,5vw,4rem)]">Cuéntame qué tienes en mente.</h2>
+        <p class="mt-5 max-w-md text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+          Describe tu consulta, propuesta o idea. Suelo responder en menos de 24 horas; si no recibes respuesta, revisa tu carpeta de spam.
+        </p>
+      </div>
+
+      <div class="w-full">
+        <ContactForm />
+      </div>
+    </div>
+  </div>
+</section>
