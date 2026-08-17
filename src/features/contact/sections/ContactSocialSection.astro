@@ -1,0 +1,48 @@
+---
+import { social } from "@/data/social";
+---
+
+<section class="w-full py-16 lg:py-24" aria-labelledby="contact-social-title">
+  <div class="w-full max-w-5xl mx-auto px-10">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div>
+        <figure class="w-full max-w-xs">
+          <picture>
+            <source srcset="/frankuxui_logo_poster.webp" type="image/webp" />
+            <img src="/frankuxui_logo_poster.webp" alt="Imagen del logotipo en tercera dimensión de Frankuxui" class="w-full object-contain rounded-3xl" loading="lazy" />
+          </picture>
+          <figcaption class="text-sm text-foreground-muted/60 mt-3">Imagen del logotipo en tercera dimensión de Frankuxui.</figcaption>
+        </figure>
+        <h2 id="contact-social-title" class="mt-8 font-semibold tracking-tight text-foreground text-[clamp(2rem,5vw,3.5rem)]">Descubre más sobre mis proyectos</h2>
+        <p class="mt-5 max-w-md text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+          Conoce más sobre mis proyectos a través de las diferentes plataformas donde comparto mi trabajo. Haz clic en los enlaces para ver más detalles y conocer de cerca mi proceso creativo y
+          técnico.
+        </p>
+      </div>
+
+      <ul class="grid grid-cols-4 sm:grid-cols-5 gap-3 place-items-start" aria-label="Perfiles sociales">
+        {
+          social.map((item) => (
+            <li class="group relative inline-block">
+              <div class="pointer-events-none absolute z-[2] bottom-full left-1/2 -translate-x-1/2 mb-2 inline-flex items-center justify-center h-9 px-4 text-xs rounded-full font-medium whitespace-nowrap translate-y-1 motion-safe:transition-all motion-safe:duration-200 group-hover:-translate-y-0 opacity-0 group-hover:opacity-100 text-background bg-foreground">
+                {item.name}
+              </div>
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Encuéntrame en ${item.name}`}
+                data-action={`social-${item.name}`}
+                data-testid={`social-${item.name}`}
+                class="overflow-hidden relative inline-flex items-center justify-center size-16 rounded-full bg-secondary/50 text-foreground transition-colors duration-200 hover:bg-secondary"
+              >
+                <span class="sr-only">{item.name}</span>
+                <span class="relative z-[1] cursor-pointer text-2xl" set:html={item.icon} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

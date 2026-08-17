@@ -7,37 +7,21 @@ import Root from "@/layouts/Root.astro";
   title="Política de Privacidad | Frank Esteban - Frontend Developer UX/UI"
   description="Lee la política de privacidad de frankuxui.dev: cómo recopilamos, usamos y protegemos tus datos personales de forma transparente y cumpliendo con el RGPD."
 >
-  <main
-    class="w-full max-w-6xl px-10 mx-auto prose lg:prose-lg py-20 prose-h1:font-medium"
-    aria-labelledby="page-title"
-  >
+  <main class="w-full max-w-4xl px-10 mx-auto prose lg:prose-lg py-20 prose-h1:font-medium pt-40" aria-labelledby="page-title">
     <header>
       <h1 id="page-title">Política de Privacidad</h1>
       <p class="lead text-lg text-foreground/80">
-        En <strong>frankuxui.dev</strong> nos tomamos muy en serio la protección
-        de tu información personal. Aquí te explicamos qué datos recopilamos, cómo
-        los utilizamos y cuáles son tus derechos.
+        En <strong>frankuxui.dev</strong> nos tomamos muy en serio la protección de tu información personal. Aquí te explicamos qué datos recopilamos, cómo los utilizamos y cuáles son tus derechos.
       </p>
     </header>
 
     <section aria-labelledby="datos-recogidos">
       <h2 id="datos-recogidos">1. Información que recopilamos</h2>
-      <p>
-        Al navegar por este sitio web no estás obligado a compartir datos
-        personales. Sin embargo, podemos recopilar la siguiente información:
-      </p>
+      <p>Al navegar por este sitio web no estás obligado a compartir datos personales. Sin embargo, podemos recopilar la siguiente información:</p>
       <ul>
-        <li>
-          Datos de contacto que compartas voluntariamente, como tu correo
-          electrónico.
-        </li>
-        <li>
-          Información técnica y de uso (dirección IP, dispositivo, navegador,
-          páginas visitadas).
-        </li>
-        <li>
-          Cookies y tecnologías similares para estadísticas y mejoras del sitio.
-        </li>
+        <li>Datos de contacto que compartas voluntariamente, como tu correo electrónico.</li>
+        <li>Información técnica y de uso (dirección IP, dispositivo, navegador, páginas visitadas).</li>
+        <li>Cookies y tecnologías similares para estadísticas y mejoras del sitio.</li>
       </ul>
     </section>
 
@@ -46,81 +30,48 @@ import Root from "@/layouts/Root.astro";
       <p>Los datos recopilados se utilizan únicamente para:</p>
       <ul>
         <li>Garantizar el correcto funcionamiento del sitio web.</li>
-        <li>
-          Analizar de forma anónima el tráfico y mejorar la experiencia de
-          usuario.
-        </li>
-        <li>
-          Responder a consultas o solicitudes que realices voluntariamente.
-        </li>
+        <li>Analizar de forma anónima el tráfico y mejorar la experiencia de usuario.</li>
+        <li>Responder a consultas o solicitudes que realices voluntariamente.</li>
       </ul>
-      <p>
-        Nunca venderemos, alquilaremos ni compartiremos tus datos con terceros
-        con fines comerciales.
-      </p>
+      <p>Nunca venderemos, alquilaremos ni compartiremos tus datos con terceros con fines comerciales.</p>
     </section>
 
     <section aria-labelledby="cookies">
       <h2 id="cookies">3. Cookies y tecnologías similares</h2>
+      <p>Este sitio utiliza cookies necesarias para su funcionamiento básico. También puede usar cookies analíticas (Google Analytics) y de marketing a través de Google Tag Manager.</p>
       <p>
-        Este sitio utiliza cookies necesarias para su funcionamiento básico.
-        También puede usar cookies analíticas (Google Analytics) y de marketing
-        a través de Google Tag Manager.
-      </p>
-      <p>
-        Cuando accedas al sitio, se te pedirá consentimiento para activar estas
-        cookies opcionales. Puedes aceptar, rechazar o configurar tus
-        preferencias en cualquier momento a través del banner de cookies.
+        Cuando accedas al sitio, se te pedirá consentimiento para activar estas cookies opcionales. Puedes aceptar, rechazar o configurar tus preferencias en cualquier momento a través del banner de
+        cookies.
       </p>
     </section>
 
     <section aria-labelledby="conservacion">
       <h2 id="conservacion">4. Conservación de datos</h2>
-      <p>
-        Conservaremos tus datos solo durante el tiempo necesario para los fines
-        descritos en esta política. Posteriormente, serán eliminados o
-        anonimizados de forma segura.
-      </p>
+      <p>Conservaremos tus datos solo durante el tiempo necesario para los fines descritos en esta política. Posteriormente, serán eliminados o anonimizados de forma segura.</p>
     </section>
 
     <section aria-labelledby="enlaces">
       <h2 id="enlaces">5. Enlaces a terceros</h2>
       <p>
-        Este sitio puede contener enlaces a otras plataformas externas (por
-        ejemplo: GitHub, LinkedIn, Instagram). Ten en cuenta que no somos
-        responsables de las prácticas de privacidad de esos sitios.
+        Este sitio puede contener enlaces a otras plataformas externas (por ejemplo: GitHub, LinkedIn, Instagram). Ten en cuenta que no somos responsables de las prácticas de privacidad de esos
+        sitios.
       </p>
     </section>
 
     <section aria-labelledby="derechos">
       <h2 id="derechos">6. Derechos de los usuarios</h2>
-      <p>
-        Como usuario, tienes derecho a acceder, rectificar, limitar o eliminar
-        los datos que nos hayas proporcionado. También puedes oponerte a su
-        tratamiento en cualquier momento.
-      </p>
+      <p>Como usuario, tienes derecho a acceder, rectificar, limitar o eliminar los datos que nos hayas proporcionado. También puedes oponerte a su tratamiento en cualquier momento.</p>
       <p>
         Para ejercer estos derechos, escríbenos a:
-        <a
-          href={`mailto:${siteConfig.contact.email}`}
-          class="underline hover:text-foreground"
-        >
-          {siteConfig.contact.email}</a
-        >.
+        <a href={`mailto:${siteConfig.contact.email}`} class="underline hover:text-foreground"> {siteConfig.contact.email}</a>.
       </p>
     </section>
 
     <section aria-labelledby="contacto">
       <h2 id="contacto">7. Contacto</h2>
-      <p>
-        Si tienes dudas sobre esta política de privacidad o sobre cómo tratamos
-        tus datos personales, puedes ponerte en contacto con nosotros:
-      </p>
+      <p>Si tienes dudas sobre esta política de privacidad o sobre cómo tratamos tus datos personales, puedes ponerte en contacto con nosotros:</p>
       <address class="not-italic">
-        ✉️ <a
-          href={`mailto:${siteConfig.contact.email}`}
-          class="underline hover:text-foreground">{siteConfig.contact.email}</a
-        ><br />
+        ✉️ <a href={`mailto:${siteConfig.contact.email}`} class="underline hover:text-foreground">{siteConfig.contact.email}</a><br />
         📍 Salou, Tarragona, España
       </address>
     </section>

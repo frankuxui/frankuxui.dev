@@ -12,7 +12,7 @@ import {
 } from "@/forms/contact/schema";
 
 const inputClassName =
-  "h-16 px-6 text-base font-medium placeholder:text-sm placeholder:text-foreground-muted/60 outline-none rounded-full motion-safe:transition-all motion-safe:duration-200 bg-secondary/50 text-foreground focus:bg-secondary aria-invalid:ring-2 aria-invalid:ring-red-400";
+  "h-20 px-6 text-base font-medium placeholder:text-sm placeholder:text-foreground-muted/60 outline-none rounded-xl motion-safe:transition-all motion-safe:duration-200 bg-secondary/50 hover:bg-secondary/80 text-foreground focus:bg-secondary focus:hover:bg-secondary aria-invalid:ring-2 aria-invalid:ring-red-400";
 ---
 
 <div id="contact-form-root" class="w-full max-w-full">
@@ -82,7 +82,7 @@ const inputClassName =
         placeholder="Deja tu mensaje"
         rows="4"
         cols="30"
-        class={`resize-none rounded-3xl py-4 ${inputClassName}`}
+        class={`resize-none py-4 ${inputClassName}`}
         aria-invalid="false"
         aria-describedby="message-error message-counter"
         minlength={CONTACT_MESSAGE_MIN_LENGTH}
