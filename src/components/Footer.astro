@@ -89,9 +89,8 @@ import { siteConfig } from "@/config";
           </ul>
 
           <address class="flex flex-col gap-3 not-italic text-foreground-muted" style={{ "font-size": "var(--font-mini)" }}>
-            <span>📍 &nbsp; {siteConfig.address.locality}, {siteConfig.address.region}, España</span>
-            <span> ✉️ &nbsp; <a href={`mailto:${siteConfig.contact.email}`} class="hover:text-foreground transition-colors duration-200">{siteConfig.contact.email}</a> </span>
-            <span> 📞 &nbsp; <a href={`tel:${siteConfig.contact.phone}`} class="hover:text-foreground transition-colors duration-200">{siteConfig.contact.phone}</a> </span>
+            <span>{siteConfig.address.locality}, {siteConfig.address.region}, España</span>
+            <span><a href={`mailto:${siteConfig.contact.email}`} class="hover:text-foreground transition-colors duration-200">{siteConfig.contact.email}</a> </span>
           </address>
         </article>
 
