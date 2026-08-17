@@ -83,6 +83,7 @@ const LEGAL_ITEMS = [
             href={BLOG_URL}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Blog (abre en nueva ventana)"
             class="flex min-h-14 items-center justify-between px-6 text-base font-semibold rounded-full bg-secondary/60 text-foreground transition-all duration-200 hover:bg-secondary"
           >
             Blog
@@ -118,6 +119,7 @@ const LEGAL_ITEMS = [
 
 <script>
   import { trackAnalyticsEvent } from "@/lib/analytics";
+  import { trapFocus } from "@/lib/focus-trap";
 
   function getPathname() {
     return window.location.pathname.replace(/\/+$/, "") || "/";
@@ -141,6 +143,7 @@ const LEGAL_ITEMS = [
     let dragStartY = 0;
     let dragStartTranslate = 0;
     let panelHeight = 0;
+    let releaseFocusTrap: (() => void) | null = null;
 
     function highlightActiveLink() {
       const pathname = getPathname();
@@ -185,6 +188,7 @@ const LEGAL_ITEMS = [
       panel.style.transform = "translateY(0)";
 
       window.setTimeout(() => closeBtn.focus(), prefersReducedMotion ? 0 : 260);
+      releaseFocusTrap = trapFocus(panel);
       document.addEventListener("keydown", onKeydown);
       trackAnalyticsEvent("mobile_menu_toggle", { action: "open", location: "header" });
     }
@@ -200,6 +204,8 @@ const LEGAL_ITEMS = [
       panel.style.transform = "translateY(120%)";
 
       document.removeEventListener("keydown", onKeydown);
+      releaseFocusTrap?.();
+      releaseFocusTrap = null;
 
       window.setTimeout(
         () => {

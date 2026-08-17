@@ -1,0 +1,324 @@
+---
+---
+
+<div id="logo-intro" class="fixed inset-0 z-999 flex items-center justify-center text-foreground pointer-events-none" transition:persist>
+  <button type="button" id="logo-intro-btn" class="pointer-events-none block appearance-none border-0 bg-transparent p-0 opacity-0" tabindex="-1" aria-hidden="true">
+    <svg id="logo-intro-svg" class="block w-28 sm:w-36 md:w-44" style="overflow: visible;" viewBox="0 0 204 272" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M68 0H0V68H68V0Z" fill="currentColor"></path>
+      <path d="M68 68H0V136H68V68Z" fill="currentColor"></path>
+      <path d="M136 136H67.9999V204H136V136Z" fill="currentColor"></path>
+      <path d="M68 204H0V272H68V204Z" fill="currentColor"></path>
+      <path d="M136 0H67.9999V68H136V0Z" fill="currentColor"></path>
+      <path d="M204 0H136V68H204V0Z" fill="currentColor"></path>
+      <path
+        d="M186.994 271.987C196.379 271.987 203.987 264.379 203.987 254.994C203.987 245.608 196.379 238 186.994 238C177.608 238 170 245.608 170 254.994C170 264.379 177.608 271.987 186.994 271.987Z"
+        fill="currentColor"></path>
+      <g id="logo-eyes" style="opacity: 0;">
+        <g id="eye-left" style="transform-origin: 78px 34px;">
+          <ellipse cx="78" cy="34" rx="15" ry="19" fill="#fff"></ellipse>
+          <circle id="pupil-left" cx="73" cy="34" r="7" fill="#141414"></circle>
+        </g>
+        <g id="eye-right" style="transform-origin: 142px 34px;">
+          <ellipse cx="142" cy="34" rx="15" ry="19" fill="#fff"></ellipse>
+          <circle id="pupil-right" cx="137" cy="34" r="7" fill="#141414"></circle>
+        </g>
+      </g>
+    </svg>
+  </button>
+</div>
+
+<script>
+  import { gsap } from "gsap";
+
+  const SIDE_KEY = "frankuxui-logo-side";
+
+  function initLogo() {
+    const btn = document.getElementById("logo-intro-btn") as HTMLButtonElement | null;
+    const svg = document.getElementById("logo-intro-svg");
+    if (!btn || !svg) return;
+
+    const paths = Array.from(svg.querySelectorAll("path"));
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let currentSide: "left" | "right" | null = null;
+    let motionState: "peeking" | "walking" | "paused" = "peeking";
+    let activeTl: gsap.core.Timeline | null = null;
+    let idleTween: gsap.core.Tween | null = null;
+    let blinkTimeoutId: number | null = null;
+
+    // El arte de los ojos mira hacia la izquierda por defecto (pupilas
+    // desplazadas a ese lado). Al caminar/asomarse hacia la derecha,
+    // volteamos el grupo de ojos horizontalmente para que la mirada
+    // acompañe la direccion.
+    // Los ojos (esclera) quedan fijos; solo desplazamos la pupila dentro de
+    // cada uno hacia el lado correspondiente. Evita voltear el grupo entero
+    // (con scaleX), que en SVG tiene problemas de origen de transformacion
+    // poco fiables entre navegadores y terminaba separando un ojo del logo.
+    function setGaze(side: "left" | "right") {
+      const offset = side === "right" ? 5 : -5;
+      gsap.to("#pupil-left", { attr: { cx: 78 + offset }, duration: 0.25, ease: "power1.out" });
+      gsap.to("#pupil-right", { attr: { cx: 142 + offset }, duration: 0.25, ease: "power1.out" });
+    }
+
+    function blinkOnce() {
+      gsap
+        .timeline()
+        .to(["#eye-left", "#eye-right"], { scaleY: 0.08, duration: 0.09, ease: "power1.in", transformOrigin: "50% 50%" })
+        .to(["#eye-left", "#eye-right"], { scaleY: 1, duration: 0.12, ease: "power1.out", transformOrigin: "50% 50%" });
+    }
+
+    function scheduleBlink() {
+      if (prefersReducedMotion) return;
+      const delay = 2500 + Math.random() * 3000;
+      blinkTimeoutId = window.setTimeout(() => {
+        blinkOnce();
+        scheduleBlink();
+      }, delay);
+    }
+
+    function saveSide(side: "left" | "right") {
+      currentSide = side;
+      try {
+        localStorage.setItem(SIDE_KEY, side);
+      } catch (e) {}
+    }
+
+    function loadSide(): "left" | "right" | null {
+      try {
+        const v = localStorage.getItem(SIDE_KEY);
+        return v === "left" || v === "right" ? v : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Convierte el boton (que hasta ahora vivia centrado por flexbox) en un
+    // elemento con posicion fija y coordenadas explicitas, para poder
+    // desplazarlo libremente por el viewport sin que el layout se mueva.
+    function convertToFixedPositioning() {
+      btn!.style.position = "fixed";
+      btn!.style.margin = "0";
+    }
+
+    // Posicion de "asomado": la mayor parte del logo queda fuera del
+    // viewport por la esquina inferior correspondiente, dejando solo una
+    // porcion visible, como si estuviese espiando hacia la web.
+    function getRestTarget(side: "left" | "right") {
+      const rect = btn!.getBoundingClientRect();
+      const visible = 0.55;
+      const top = window.innerHeight - visible * rect.height;
+      const left = side === "right" ? window.innerWidth - visible * rect.width : -(1 - visible) * rect.width;
+      return { left, top };
+    }
+
+    function stopIdle() {
+      idleTween?.kill();
+      idleTween = null;
+    }
+
+    function startIdle() {
+      if (prefersReducedMotion) return;
+      stopIdle();
+      idleTween = gsap.to(btn, {
+        y: -6,
+        duration: 1.2,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1
+      });
+    }
+
+    function makeInteractive() {
+      btn!.classList.remove("pointer-events-none");
+      btn!.classList.add("pointer-events-auto", "cursor-pointer");
+      btn!.tabIndex = 0;
+      btn!.setAttribute("aria-hidden", "false");
+    }
+
+    function enterPeek(side: "left" | "right") {
+      motionState = "peeking";
+      activeTl = null;
+      saveSide(side);
+      makeInteractive();
+      // Asomado, mira hacia el centro de la pantalla (direccion contraria
+      // a la esquina donde quedo), no hacia afuera.
+      setGaze(side === "left" ? "right" : "left");
+      btn!.setAttribute(
+        "aria-label",
+        side === "right" ? "Logo asomado en la esquina derecha, pulsa para que camine hacia la izquierda" : "Logo asomado en la esquina izquierda, pulsa para que camine hacia la derecha"
+      );
+      startIdle();
+    }
+
+    function enterWalking() {
+      motionState = "walking";
+      makeInteractive();
+      stopIdle();
+      btn!.setAttribute("aria-label", "Logo caminando, pulsa para pausarlo");
+    }
+
+    function enterPaused() {
+      motionState = "paused";
+      btn!.setAttribute("aria-label", "Logo en pausa, pulsa para que siga caminando");
+    }
+
+    // Camina a brincos (con balanceo) desde la posicion actual hasta la
+    // esquina indicada. Mientras camina sigue siendo clickeable: un click
+    // lo pausa a mitad de camino y otro click retoma el mismo recorrido
+    // hasta su destino. Al llegar deja el logo "asomado" y guarda el lado
+    // en localStorage para que la proxima carga aparezca ahi directamente.
+    function walkTo(side: "left" | "right") {
+      stopIdle();
+      gsap.set(btn, { y: 0 });
+      setGaze(side);
+
+      const startRect = btn!.getBoundingClientRect();
+      const target = getRestTarget(side);
+
+      if (prefersReducedMotion) {
+        gsap.set(btn, { left: target.left, top: target.top, rotation: 0 });
+        enterPeek(side);
+        return;
+      }
+
+      const dx = target.left - startRect.left;
+      const dy = target.top - startRect.top;
+      const distance = Math.max(Math.hypot(dx, dy), 1);
+      const hopDistance = 70;
+      const hopDuration = 0.16;
+      const steps = Math.max(3, Math.ceil(distance / hopDistance));
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          gsap.set(btn, { left: target.left, top: target.top, y: 0, rotation: 0 });
+          enterPeek(side);
+        }
+      });
+
+      for (let i = 0; i < steps; i++) {
+        const wobble = i % 2 === 0 ? 6 : -6;
+        const midLeft = startRect.left + dx * ((i + 0.5) / steps);
+        const midTop = startRect.top + dy * ((i + 0.5) / steps);
+        const landLeft = startRect.left + dx * ((i + 1) / steps);
+        const landTop = startRect.top + dy * ((i + 1) / steps);
+
+        tl.to(btn, { left: midLeft, top: midTop, y: -20, rotation: wobble, duration: hopDuration, ease: "sine.out" }).to(btn, {
+          left: landLeft,
+          top: landTop,
+          y: 0,
+          rotation: 0,
+          duration: hopDuration,
+          ease: "sine.in"
+        });
+      }
+
+      activeTl = tl;
+      enterWalking();
+    }
+
+    btn.addEventListener("click", () => {
+      if (motionState === "peeking") {
+        if (!currentSide) return;
+        walkTo(currentSide === "right" ? "left" : "right");
+      } else if (motionState === "walking") {
+        activeTl?.pause();
+        enterPaused();
+      } else if (motionState === "paused") {
+        activeTl?.play();
+        enterWalking();
+      }
+    });
+
+    scheduleBlink();
+
+    const savedSide = loadSide();
+
+    if (savedSide) {
+      // Ya se establecio en una visita anterior: aparece directamente en su
+      // ultima posicion, visible e interactivo desde el primer frame, sin
+      // repetir el ensamblaje ni la caminata.
+      convertToFixedPositioning();
+      const target = getRestTarget(savedSide);
+      gsap.set(btn, { left: target.left, top: target.top });
+      gsap.set("#logo-eyes", { opacity: 1 });
+      btn!.style.opacity = "1";
+      enterPeek(savedSide);
+      return;
+    }
+
+    btn!.style.opacity = "1";
+
+    if (prefersReducedMotion) {
+      gsap.set(paths, { opacity: 1, x: 0, y: 0, rotation: 0 });
+      gsap.set("#logo-eyes", { opacity: 1 });
+      convertToFixedPositioning();
+      walkTo("right");
+      return;
+    }
+
+    // Cada pieza sale disparada en la direccion opuesta a su posicion final
+    // (vector desde el centro del logo hacia esa pieza, con un poco de jitter
+    // angular para que no se vea perfectamente simetrico) y con varias
+    // vueltas de rotacion, asi al converger da la sensacion de una piedra
+    // rodando hasta encajar en su sitio.
+    const svgRect = svg.getBoundingClientRect();
+    const cx = svgRect.left + svgRect.width / 2;
+    const cy = svgRect.top + svgRect.height / 2;
+    const flight = Math.max(window.innerWidth, window.innerHeight) * 0.65;
+
+    const starts = paths.map((path) => {
+      const r = path.getBoundingClientRect();
+      const px = r.left + r.width / 2;
+      const py = r.top + r.height / 2;
+      let dx = px - cx;
+      let dy = py - cy;
+      const len = Math.hypot(dx, dy) || 1;
+      dx /= len;
+      dy /= len;
+
+      const jitter = (Math.random() - 0.5) * 1.1;
+      const cos = Math.cos(jitter);
+      const sin = Math.sin(jitter);
+      const jdx = dx * cos - dy * sin;
+      const jdy = dx * sin + dy * cos;
+
+      return {
+        x: jdx * flight + (Math.random() - 0.5) * 100,
+        y: jdy * flight + (Math.random() - 0.5) * 100,
+        rotation: (Math.random() > 0.5 ? 1 : -1) * (360 * 2 + Math.random() * 360)
+      };
+    });
+
+    gsap.set(paths, {
+      x: (i) => starts[i].x,
+      y: (i) => starts[i].y,
+      rotation: (i) => starts[i].rotation,
+      opacity: 0,
+      transformOrigin: "50% 50%"
+    });
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        convertToFixedPositioning();
+        gsap.to("#logo-eyes", { opacity: 1, duration: 0.25, ease: "power1.out" });
+        gsap.delayedCall(0.45, () => walkTo("right"));
+      }
+    });
+
+    tl.to(paths, {
+      x: 0,
+      y: 0,
+      rotation: 0,
+      opacity: 1,
+      duration: 1.05,
+      ease: "back.out(1.5)",
+      stagger: { each: 0.09, from: "random" }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLogo);
+  } else {
+    initLogo();
+  }
+</script>
