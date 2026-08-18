@@ -67,12 +67,35 @@ export const palettes: PaletteDefinition[] = [
     primary: "#351e14",
     primaryForeground: "#fbf1e8",
     gradient: ["#f7dcb0", "#f2c69f", "#ecb98a", "#f8e6cf"]
+  },
+  {
+    id: "purple-dream",
+    name: "Purple Dream",
+    primary: "#231942",
+    primaryForeground: "#ffffff",
+    gradient: ["#9F86C0", "#E0B1CB", "#E3B8D0", "#ECCEDF", "#FFE5D9"]
+  },
+  {
+    id: "soft-peachy-delight",
+    name: "Soft Peachy Delight",
+    primary: "#4E2C26",
+    primaryForeground: "#F8EDEB",
+    gradient: ["#FCD5CE", "#FAE1DD", "#E8E8E4", "#ECE4DB", "#FFD7BA"]
+  },
+  {
+    id: "mountain",
+    name: "Mountain",
+    primary: "#304421",
+    primaryForeground: "#ffffff",
+    gradient: ["#DDFFDD", "#B6B5B3", "#6D6A67", "#383D1D", "#59694C"]
+  },
+  {
+    id: "turquoise-waters",
+    name: "Turquoise Waters",
+    primary: "#077C78",
+    primaryForeground: "#ffffff",
+    gradient: ["#07BEB8", "#3DCCC7", "#68D8D6", "#9CEAEF", "#C4FFF9"]
   }
 ];
 
-export function getPaletteById(id: string | null | undefined): PaletteDefinition {
-  return palettes.find((palette) => palette.id === id) ?? palettes.find((palette) => palette.id === defaultPaletteId)!;
-}
-
 export const paletteStorageKey = "frankuxui-palette";
-export const paletteStyleStorageKey = "frankuxui-palette-style";

@@ -160,6 +160,8 @@ const notesData = sortedNotes.map((note: Note) => ({
     }
   }
 
+  let searchModalAc: AbortController | null = null;
+
   function initSearchModal(): void {
     const backdrop = document.getElementById("searchModalBackdrop") as HTMLDivElement | null;
     const panel = document.getElementById("searchModalPanel") as HTMLDivElement | null;
@@ -169,8 +171,10 @@ const notesData = sortedNotes.map((note: Note) => ({
     const emptyMsg = document.getElementById("searchModalEmpty") as HTMLDivElement | null;
 
     if (!backdrop || !panel || !content || !input || !list) return;
-    if (panel.dataset.smInit) return;
-    panel.dataset.smInit = "1";
+
+    searchModalAc?.abort();
+    searchModalAc = new AbortController();
+    const { signal } = searchModalAc;
 
     const portal = document.getElementById("popover-portal");
     if (portal) {
@@ -333,11 +337,15 @@ const notesData = sortedNotes.map((note: Note) => ({
       if (isOpen && !content.contains(target)) {
         close();
       }
-    });
+    }, { signal });
 
     backdrop.addEventListener("click", () => {
       if (isOpen) close();
-    });
+    }, { signal });
+
+    window.addEventListener("frankuxui:search-toggle", () => {
+      isOpen ? close() : open();
+    }, { signal });
 
     document.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -366,22 +374,22 @@ const notesData = sortedNotes.map((note: Note) => ({
           }
         }
       }
-    });
+    }, { signal });
 
     input.addEventListener("input", () => {
       filterNotes(input.value);
-    });
+    }, { signal });
 
     content.addEventListener("click", (e: MouseEvent) => {
       if ((e.target as HTMLElement).closest("a")) close();
-    });
+    }, { signal });
 
     list.addEventListener("mousemove", (e: MouseEvent) => {
       const li = (e.target as HTMLElement).closest<HTMLLIElement>("li[role='option']");
       if (!li) return;
       const idx = visibleItems.indexOf(li);
       if (idx !== -1 && idx !== activeIndex) setActive(idx);
-    });
+    }, { signal });
 
     document.addEventListener("astro:before-swap", () => {
       if (isOpen) {
@@ -391,7 +399,7 @@ const notesData = sortedNotes.map((note: Note) => ({
         document.body.style.overflow = "";
         resetState();
       }
-    });
+    }, { signal });
   }
 
   document.addEventListener("astro:page-load", initSearchModal);
