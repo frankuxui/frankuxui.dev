@@ -1,0 +1,25 @@
+---
+import Root from "@/layouts/Root.astro";
+import SiteMapHeroSection from "@/features/site-map/sections/SiteMapHeroSection.astro";
+import SiteMapLinksSection from "@/features/site-map/sections/SiteMapLinksSection.astro";
+
+const title = "Mapa del sitio";
+const description = "Listado de todas las páginas indexadas de frankuxui.dev: inicio, sobre mí, biografía, misión, contacto, legal y recursos.";
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", Astro.site).toString() },
+    { "@type": "ListItem", position: 2, name: "Mapa del sitio", item: canonicalURL }
+  ]
+};
+---
+
+<Root title={title} description={description}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <SiteMapHeroSection />
+  <SiteMapLinksSection />
+</Root>

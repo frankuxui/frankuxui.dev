@@ -1,0 +1,62 @@
+---
+const principles = [
+  {
+    number: "01",
+    title: "Utilidad antes que decoración",
+    description: "Cada decisión visual y técnica debe ayudar a comprender, completar una tarea o alcanzar un objetivo."
+  },
+  {
+    number: "02",
+    title: "Accesibilidad desde el inicio",
+    description: "La inclusión no es una corrección final: forma parte de la estructura, el contenido y la interacción."
+  },
+  {
+    number: "03",
+    title: "Rendimiento como experiencia",
+    description: "Una interfaz rápida transmite confianza, reduce fricción y mejora tanto la conversión como el posicionamiento."
+  },
+  {
+    number: "04",
+    title: "Contenido con arquitectura",
+    description: "La información necesita jerarquía, contexto y un sistema que permita mantenerla y hacerla crecer."
+  },
+  {
+    number: "05",
+    title: "Código preparado para evolucionar",
+    description: "Componentes claros, responsabilidades definidas y decisiones simples facilitan el mantenimiento del producto."
+  },
+  {
+    number: "06",
+    title: "Resultados medibles",
+    description: "El trabajo debe conectar necesidades de usuario con objetivos concretos de producto y negocio."
+  }
+];
+---
+
+<section class="scroll-mt-32 py-16 lg:py-24" aria-labelledby="mision-principios-title">
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <div class="max-w-3xl">
+      <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Principios</p>
+      <h2 id="mision-principios-title" class="mt-4 font-bold tracking-tight text-foreground max-w-3xl text-[clamp(2.5rem,4vw,5rem)] leading-[1.2]">
+        La calidad se construye mediante decisiones coherentes.
+      </h2>
+    </div>
+
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        principles.map((item) => (
+          <article class="relative flex flex-col gap-4 overflow-hidden rounded-3xl bg-background/40 backdrop-blur-xl p-8 h-full">
+            <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/50 to-transparent" />
+            <span class="text-sm text-foreground-muted/50 font-medium">{item.number}</span>
+            <h3 class="font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h5)" }}>
+              {item.title}
+            </h3>
+            <p class="text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+              {item.description}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

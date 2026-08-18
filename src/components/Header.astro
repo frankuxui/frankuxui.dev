@@ -11,13 +11,27 @@ const pathname = Astro.url.pathname;
         <Logo />
       </div>
 
-      <ul class="header-nav hidden md:flex relative flex-none items-center justify-center mx-auto gap-0.5 rounded-full p-4 transition-all duration-300" role="list">
+      <ul
+        class="header-nav hidden md:flex relative flex-none items-center justify-center mx-auto gap-2 rounded-full p-4 transition-all duration-300 backdrop-blur-xl [&.nav-scrolled]:bg-white/70"
+        role="list"
+      >
         <li class="header-indicator absolute rounded-full transition-all duration-300 ease-out" aria-hidden="true"></li>
+        <li role="listitem">
+          <button
+            type="button"
+            data-toggle="search-modal"
+            class="relative z-10 inline-flex items-center justify-center font-medium px-4 h-9 text-lg rounded-lg transition-colors duration-300 text-foreground hover:text-foreground/70 cursor-pointer select-none bg-white/30 hover:bg-white"
+            aria-label="Buscar notas"
+          >
+            <span class="font-mono tracking-tight font-black text-sm">/</span>
+          </button>
+        </li>
         {
           [
             { href: "/", label: "Inicio" },
             { href: "/sobre-mi", label: "Sobre mi" },
             { href: "/biografia", label: "Biografía" },
+            { href: "/notas", label: "Notas" },
             { href: "/contacto", label: "Contacto" }
           ].map(({ href, label }) => (
             <li role="listitem">
@@ -159,16 +173,6 @@ const pathname = Astro.url.pathname;
 </script>
 
 <style>
-  .header-nav {
-    background-color: transparent;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-  }
-
-  .header-nav.nav-scrolled {
-    background-color: rgba(255, 255, 255, 0.532);
-  }
-
   .header-indicator {
     background-color: var(--color-secondary);
     opacity: 0;

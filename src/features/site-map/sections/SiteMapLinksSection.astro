@@ -1,0 +1,81 @@
+---
+interface SiteMapLink {
+  href: string;
+  label: string;
+  description: string;
+  external?: boolean;
+}
+
+interface SiteMapGroup {
+  title: string;
+  links: SiteMapLink[];
+}
+
+const groups: SiteMapGroup[] = [
+  {
+    title: "Páginas principales",
+    links: [
+      { href: "/", label: "Inicio", description: "Visión general de mi trabajo como diseñador UX/UI y desarrollador Frontend." },
+      { href: "/sobre-mi", label: "Sobre mí", description: "Perfil profesional, stack técnico y divulgación técnica." },
+      { href: "/biografia", label: "Biografía", description: "La historia detrás de mi trayectoria." },
+      { href: "/mision", label: "Mi misión", description: "Los principios y el proceso que guían cada proyecto." },
+      { href: "/notas", label: "Notas", description: "Apuntes sobre programación, diseño y reflexiones." },
+      { href: "/contacto", label: "Contacto", description: "Formulario y medios de contacto directo." }
+    ]
+  },
+  {
+    title: "Legal",
+    links: [
+      { href: "/politica-de-privacidad", label: "Política de privacidad", description: "Cómo recopilamos, usamos y protegemos tus datos." },
+      { href: "/politica-de-cookies", label: "Política de cookies", description: "Qué cookies utiliza el sitio y para qué." },
+      { href: "/terminos-y-condiciones", label: "Términos y condiciones", description: "Condiciones de uso del sitio y sus servicios." }
+    ]
+  },
+  {
+    title: "Recursos",
+    links: [
+      { href: "https://frankuxui.com/blog", label: "Blog", description: "Artículos y tutoriales sobre desarrollo y diseño.", external: true },
+      { href: "/sitemap-index.xml", label: "Sitemap XML", description: "Versión técnica del mapa del sitio para buscadores.", external: true }
+    ]
+  }
+];
+---
+
+<section class="scroll-mt-32 pb-16 lg:pb-24" aria-labelledby="site-map-links-title">
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <h2 id="site-map-links-title" class="sr-only">Listado de páginas</h2>
+
+    <div class="flex flex-col gap-10 lg:gap-12">
+      {
+        groups.map((group) => (
+          <div class="bg-background/60 mx-auto w-full max-w-10xl backdrop-blur-2xl rounded-4xl p-8 sm:p-12 lg:p-16">
+            <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">{group.title}</p>
+            <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label={group.title}>
+              {group.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noopener noreferrer" : undefined}
+                    class="group relative flex h-full flex-col gap-2 overflow-hidden rounded-3xl bg-background/40 p-6 transition-colors duration-200 hover:bg-background/70"
+                  >
+                    <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/50 to-transparent" />
+                    <span class="inline-flex items-center gap-2 font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h5)" }}>
+                      {link.label}
+                      <span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-1">
+                        →
+                      </span>
+                    </span>
+                    <p class="text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+                      {link.description}
+                    </p>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

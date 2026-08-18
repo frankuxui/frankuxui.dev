@@ -211,6 +211,52 @@ body {
   }
 }
 
+/* ─── Note modal (bottom sheet) view transition ─── */
+
+@keyframes note-modal-in {
+  from {
+    transform: translateY(72px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes note-modal-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(72px);
+    opacity: 0;
+  }
+}
+
+@keyframes note-modal-backdrop-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes note-modal-backdrop-in {
+  from {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* ─── Base typography ─── */
 
 @layer base {
@@ -259,4 +305,38 @@ body {
   a {
     transition: opacity 0.2s ease;
   }
+}
+
+/** Highlight code */
+
+pre button.rehype-pretty-copy.rehype-pretty-copied .success {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2314575B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
+}
+[data-rehype-pretty-code-figure] pre {
+  background-color: #ffffffc2 !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 4px 86px rgba(0, 0, 0, 0.055) !important;
+  overflow: hidden !important;
+}
+
+/* ─── Note prose breakout: code blocks & images wider than body text ─── */
+
+[data-note-render] .prose {
+  max-width: none;
+}
+
+[data-note-render] .prose > * {
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+[data-note-render] .prose > figure,
+[data-note-render] .prose > p:has(> img:only-child) {
+  max-width: 100%;
+}
+
+[data-note-render] .prose img {
+  margin-left: auto;
+  margin-right: auto;
 }

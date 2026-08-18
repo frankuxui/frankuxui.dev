@@ -1,0 +1,67 @@
+---
+import NoteCard from "@/features/notes/NoteCard.astro";
+import type { Page } from "astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  page: Page<CollectionEntry<"notes">>;
+}
+
+const { page } = Astro.props as Props;
+---
+
+<section class="scroll-mt-32 pb-16 lg:pb-24" aria-labelledby="notes-list-title">
+  <div class="w-full max-w-5xl mx-auto px-10">
+    <h2 id="notes-list-title" class="sr-only">Listado de notas</h2>
+
+    {
+      page.data.length === 0 ? (
+        <p class="text-center text-foreground-muted" style={{ "font-size": "var(--font-body)" }}>
+          Todavía no hay notas publicadas. Vuelve pronto.
+        </p>
+      ) : (
+        <ul class="flex flex-col gap-6" aria-label="Notas">
+          {page.data.map((note, index) => (
+            <NoteCard note={note} fadeNumber={0.4 + index * 0.1} />
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      page.lastPage > 1 && (
+        <nav class="mt-12 flex items-center justify-center gap-4" aria-label="Paginación de notas">
+          {page.url.prev ? (
+            <a
+              href={page.url.prev}
+              rel="prev"
+              class="inline-flex items-center justify-center font-medium px-6 h-12 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors duration-200"
+            >
+              <span aria-hidden="true">&larr;</span>
+              <span class="ml-2">Anteriores</span>
+            </a>
+          ) : (
+            <span aria-hidden="true" />
+          )}
+
+          <span class="text-sm text-foreground-muted" aria-current="page">
+            Página {page.currentPage} de {page.lastPage}
+          </span>
+
+          {page.url.next ? (
+            <a
+              href={page.url.next}
+              rel="next"
+              class="inline-flex items-center justify-center font-medium px-6 h-12 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors duration-200"
+            >
+              <span class="mr-2">Siguientes</span>
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+          ) : (
+            <span aria-hidden="true" />
+          )}
+        </nav>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,25 @@
+---
+interface Props {
+  tag: string;
+  count: number;
+}
+
+const { tag, count } = Astro.props as Props;
+const noteWord = count === 1 ? "nota" : "notas";
+---
+
+<header class="w-full flex items-center justify-center pt-32 sm:pt-36 pb-16 lg:pb-24">
+  <div class="w-full xl:max-w-5xl 3xl:max-w-8xl mx-auto px-10 text-center">
+    <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted anim-fade-up" style={{ "--anim-delay": "0.1s" }}>
+      <a href="/notas" class="hover:text-foreground transition-colors duration-200">Notas</a>
+      {" "}/{" "}
+      Etiqueta
+    </p>
+    <h1 class="mt-6 font-bold tracking-tight text-foreground anim-fade-up text-[clamp(2.5rem,6vw,6rem)] leading-[1.05]" style={{ "--anim-delay": "0.3s" }}>
+      {tag}
+    </h1>
+    <p class="mt-8 text-foreground-muted leading-relaxed anim-fade-up" style={{ "font-size": "var(--font-h5)", "--anim-delay": "0.5s" }}>
+      {count} {noteWord} etiquetada{count === 1 ? "" : "s"} con <strong>{tag}</strong>.
+    </p>
+  </div>
+</header>

@@ -1,0 +1,39 @@
+---
+import NoteCard from "@/features/notes/NoteCard.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  notes: CollectionEntry<"notes">[];
+}
+
+const { notes } = Astro.props as Props;
+---
+
+<section class="scroll-mt-32 pb-16 lg:pb-24" aria-labelledby="notes-tag-list-title">
+  <div class="w-full max-w-5xl mx-auto px-10">
+    <h2 id="notes-tag-list-title" class="sr-only">Notas con esta etiqueta</h2>
+
+    {
+      notes.length === 0 ? (
+        <p class="text-center text-foreground-muted" style={{ "font-size": "var(--font-body)" }}>
+          No hay notas con esta etiqueta todavía.
+        </p>
+      ) : (
+        <ul class="flex flex-col gap-6" aria-label="Notas">
+          {notes.map((note) => (
+            <NoteCard note={note} />
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="mt-12 flex justify-center">
+      <a
+        href="/notas"
+        class="inline-flex items-center gap-2 font-semibold text-foreground underline decoration-foreground/30 underline-offset-8 transition-colors hover:decoration-foreground"
+      >
+        <span aria-hidden="true">&larr;</span> Ver todas las notas
+      </a>
+    </div>
+  </div>
+</section>

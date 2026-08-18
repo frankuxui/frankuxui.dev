@@ -1,0 +1,30 @@
+---
+import Root from "@/layouts/Root.astro";
+import MisionHeroSection from "@/features/mision/sections/MisionHeroSection.astro";
+import MisionPrinciplesSection from "@/features/mision/sections/MisionPrinciplesSection.astro";
+import MisionProcessSection from "@/features/mision/sections/MisionProcessSection.astro";
+import MisionCtaSection from "@/features/mision/sections/MisionCtaSection.astro";
+
+const title = "Mi misión";
+const description =
+  "Crear experiencias digitales que resuelvan problemas reales: diseño y tecnología trabajando juntas para hacer productos más claros, accesibles, rápidos y útiles.";
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", Astro.site).toString() },
+    { "@type": "ListItem", position: 2, name: "Mi misión", item: canonicalURL }
+  ]
+};
+---
+
+<Root title={title} description={description}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <MisionHeroSection />
+  <MisionPrinciplesSection />
+  <MisionProcessSection />
+  <MisionCtaSection />
+</Root>

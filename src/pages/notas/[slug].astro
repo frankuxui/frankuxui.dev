@@ -1,0 +1,29 @@
+---
+export const prerender = true;
+
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import NoteLayout from "@/layouts/NoteLayout.astro";
+import { estimateReadingTime } from "@/utils/notes";
+
+interface Props {
+  note: CollectionEntry<"notes">;
+}
+
+export const getStaticPaths = (async () => {
+  const notes = await getCollection("notes", ({ data }: CollectionEntry<"notes">) => (import.meta.env.PROD ? !data.draft : true));
+  return notes.map((note: CollectionEntry<"notes">) => ({
+    params: { slug: note.id },
+    props: { note },
+  }));
+}) satisfies GetStaticPaths;
+
+const { note } = Astro.props as Props;
+const { Content } = await render(note);
+const readingText = estimateReadingTime(note.body ?? "");
+---
+
+<NoteLayout note={note} readingText={readingText}>
+  <Content />
+</NoteLayout>
