@@ -8,36 +8,36 @@ interface Props {
 }
 
 const { note, fadeNumber } = Astro.props as Props;
-const { title, description, pubDate, icon, accentColor, cover } = note.data;
+const { title, description, pubDate, icon, accentColor, thumbnail } = note.data;
 ---
 
 <li class="anim-fade-up" style={{ "--anim-delay": `${fadeNumber ?? 0.4}s` }}>
   <a
     href={`/notas/${note.id}`}
-    class="group relative flex items-center gap-6 overflow-hidden rounded-3xl bg-background/40 backdrop-blur-xl p-8 2xl:p-10 transition-colors duration-200 hover:bg-background/70"
+    class="note-card group relative flex items-center flex-col md:flex-row gap-6 overflow-hidden rounded-3xl bg-background/40 backdrop-blur-xl p-8 2xl:p-10 transition-colors duration-200 hover:bg-background/70"
   >
     <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/50 to-transparent"></div>
 
     {
-      cover && (
-        <div class="w-full max-w-36 overflow-hidden flex-none rounded-2xl group bg-primary">
-          <img src={cover} alt="" class="w-full max-w-full flex-none object-cover transition-transform duration-200 group-hover:scale-105" aria-hidden="true" />
+      thumbnail && (
+        <div class="note-card__thumbnail w-full max-w-36 overflow-hidden flex-none rounded-2xl group bg-primary">
+          <img src={thumbnail} alt="" class="w-full max-w-full flex-none object-cover transition-transform duration-200 group-hover:scale-105" aria-hidden="true" />
         </div>
       )
     }
 
-    <div class="min-w-0 flex-1">
+    <div class="note-card__body min-w-0 flex-1 [&>h2]:font-medium">
       <p class="sr-only">{formatNoteDate(pubDate)}</p>
-      <h2 class="font-medium tracking-tight text-black text-lg lg:text-2xl">
+      <h2 class="font-medium tracking-tight text-black text-lg leading-[1.6] xl:text-xl">
         {title}
       </h2>
-      <p class="mt-3 text-foreground-muted leading-relaxed text-base lg:text-lg">
+      <p class="note-card__description mt-3 text-foreground-muted leading-relaxed text-base lg:text-lg">
         {description}
       </p>
     </div>
 
     <span
-      class="inline-flex size-16 sm:size-18 flex-none items-center justify-center rounded-full text-2xl transition-transform duration-200 group-hover:scale-105"
+      class="note-card__icon inline-flex size-16 sm:size-18 flex-none items-center justify-center rounded-full text-2xl transition-transform duration-200 group-hover:scale-105"
       style={{ "background-color": accentColor }}
       aria-hidden="true"
       data-note-icon

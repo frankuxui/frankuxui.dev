@@ -1,5 +1,6 @@
 ---
 import NoteCard from "@/features/notes/NoteCard.astro";
+import NotesViewToggle from "@/features/notes/NotesViewToggle.astro";
 import type { Page } from "astro";
 import type { CollectionEntry } from "astro:content";
 
@@ -11,8 +12,16 @@ const { page } = Astro.props as Props;
 ---
 
 <section class="scroll-mt-32 pb-16 lg:pb-24" aria-labelledby="notes-list-title">
-  <div class="w-full max-w-5xl mx-auto px-10">
+  <div class="w-full max-w-12xl mx-auto px-10">
     <h2 id="notes-list-title" class="sr-only">Listado de notas</h2>
+
+    {
+      page.data.length > 0 && (
+        <div class="mb-8 flex justify-center sm:justify-end ">
+          <NotesViewToggle targetId="notes-list" />
+        </div>
+      )
+    }
 
     {
       page.data.length === 0 ? (
@@ -20,11 +29,13 @@ const { page } = Astro.props as Props;
           Todavía no hay notas publicadas. Vuelve pronto.
         </p>
       ) : (
-        <ul class="flex flex-col gap-6" aria-label="Notas">
-          {page.data.map((note, index) => (
-            <NoteCard note={note} fadeNumber={0.4 + index * 0.1} />
-          ))}
-        </ul>
+        <div class="max-w-7xl mx-auto" data-notes-view-container data-target="notes-list">
+          <ul id="notes-list" class="flex flex-col gap-6 mx-auto data-[notes-view=list]:max-w-3xl" aria-label="Notas" data-notes-view="list">
+            {page.data.map((note, index) => (
+              <NoteCard note={note} fadeNumber={0.4 + index * 0.1} />
+            ))}
+          </ul>
+        </div>
       )
     }
 

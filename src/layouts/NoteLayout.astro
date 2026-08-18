@@ -63,13 +63,6 @@ const breadcrumbSchema = {
 
     <div id="note-render" data-note-render class="relative z-10 mx-auto w-full max-w-4xl pt-10">
       <header class="px-8 pt-16 pb-8 sm:px-16 sm:pt-20 text-center">
-        <!-- {
-          cover && (
-            <div class="mx-auto w-full max-w-full overflow-hidden rounded-2xl group bg-primary">
-              <img src={cover} alt="" class="w-full max-w-full flex-none object-cover transition-transform duration-200 group-hover:scale-105" aria-hidden="true" />
-            </div>
-          )
-        } -->
         <h1 id="note-title" class="font-semibold tracking-tight text-foreground text-[clamp(2.5rem,5vw,3.5rem)] leading-[1.2]">
           {title}
         </h1>
@@ -86,19 +79,28 @@ const breadcrumbSchema = {
         </div>
 
         {
-          tags.length > 0 && (
+          tags?.length > 0 && (
             <ul class="mt-6 flex flex-wrap items-center justify-center gap-2" aria-label="Etiquetas">
               {tags.map((tag: string) => (
                 <li>
                   <a
                     href={`/notas/tag/${slugifyTag(tag)}`}
-                    class="inline-flex items-center justify-center rounded-full bg-primary/5 px-6 h-10 text-xs font-medium text-secondary-foreground transition-colors duration-500 hover:bg-primary/10 hover:text-black"
+                    data-note-tag
+                    data-tag-value={tag}
+                    class="inline-flex items-center justify-center rounded-full bg-primary/5 px-6 h-10 text-sm font-medium text-secondary-foreground transition-colors duration-500 hover:bg-primary/10 hover:text-black"
                   >
-                    {tag}
+                    {tag !== undefined && tag !== null ? tag.at(0)?.toUpperCase() + tag.slice(1) : ""}
                   </a>
                 </li>
               ))}
             </ul>
+          )
+        }
+        {
+          cover && (
+            <div class="mx-auto w-full max-w-full overflow-hidden group mb-8 mt-6">
+              <img src={cover} alt="" class="w-full max-w-full object-cover rounded-2xl" aria-hidden="true" />
+            </div>
           )
         }
       </header>
