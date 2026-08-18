@@ -43,7 +43,7 @@ const breadcrumbSchema = {
   <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
 
   <article
-    class="note-sheet relative w-full max-w-7xl mx-auto mt-24 sm:mt-28 mb-16 rounded-4xl bg-background/40 backdrop-blur-2xl overflow-hidden shadow-2xl drop-shadow-primary transition-colors duration-200 border border-white"
+    class="note-sheet relative w-full max-w-7xl mx-auto mt-24 sm:mt-28 mb-16 rounded-4xl bg-background/40 backdrop-blur-2xl overflow-hidden transition-colors duration-200 border border-white/80 shadow-[1px_1px_87px_4px_color-mix(in_srgb,var(--color-primary)_20%,transparent)]"
     aria-labelledby="note-title"
   >
     <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
@@ -62,7 +62,7 @@ const breadcrumbSchema = {
 
     <div id="note-render" data-note-render class="relative z-10 mx-auto w-full max-w-4xl pt-10">
       <header class="px-8 pt-16 pb-8 sm:px-16 sm:pt-20 text-center">
-        <h1 id="note-title" class="font-semibold tracking-tight text-foreground text-[clamp(2rem,5vw,3.5rem)] leading-[1.1]">
+        <h1 id="note-title" class="font-semibold tracking-tight text-foreground text-[clamp(2.5rem,5vw,3.5rem)] leading-[1.2]">
           {title}
         </h1>
 
@@ -96,7 +96,10 @@ const breadcrumbSchema = {
       </header>
 
       <div class="px-8 pb-16 sm:px-16 sm:pb-20">
-        <div class="prose lg:prose-lg max-w-none mx-auto prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-img:rounded-2xl prose-img:w-full prose-img:max-w-full">
+        <div
+          class="prose lg:prose-lg max-w-none mx-auto prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-img:rounded-2xl prose-img:w-full prose-img:max-w-full prose-h2:text-[clamp(2rem,4vw,3rem)] prose-h3:text-[clamp(1.25rem,3vw,2rem)] prose-h4:text-[clamp(1.125rem,2.5vw,1.75rem)] prose-code:font-mono prose-code:text-sm prose-code:bg-background/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:tracking-tight prose-code:before:content-none prose-code:after:content-none"
+          data-note-content
+        >
           <slot />
         </div>
 
