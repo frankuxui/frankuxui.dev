@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import type { TransitionAnimationValue } from "astro";
 import "../styles/global.css";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
@@ -11,15 +12,18 @@ import PaletteModal from "@/components/PaletteModal.astro";
 import SiteFeedbackModal from "@/components/SiteFeedbackModal.astro";
 import MobileMenuPanel from "@/components/MobileMenuPanel.astro";
 import LogoIntroAnimation from "@/components/LogoIntroAnimation.astro";
+import NotesSearchModal from "@/components/NotesSearchModal.astro";
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
   keywords?: string;
+  /** Custom astro:transitions animation pair applied to <main>. Defaults to Astro's crossfade. */
+  mainAnimate?: TransitionAnimationValue;
 }
 
-const { title = siteConfig.title, description = siteConfig.description, image, keywords = siteConfig.keywords } = Astro.props as Props;
+const { title = siteConfig.title, description = siteConfig.description, image, keywords = siteConfig.keywords, mainAnimate } = Astro.props as Props;
 ---
 
 <!doctype html>
@@ -57,12 +61,15 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
     <!-- End Google Tag Manager (noscript) -->
     <Header />
     {/* Banner de cookies desactivado por ahora. <CookieConsent /> */}
-    <main id="main-content" class="relative z-20 w-full flex flex-col items-center justify-center">
+    <main id="main-content" class="relative z-20 w-full flex flex-col items-center justify-center" transition:animate={mainAnimate}>
       <slot />
     </main>
     <Footer />
     <div id="portal" class="z-[999]">
       <PaletteModal />
+    </div>
+    <div id="popover-portal" class="fixed z-[999] pointer-events-none" style="inset: 0;" transition:persist>
+      <NotesSearchModal />
     </div>
     <SiteFeedbackModal />
     <MobileMenuPanel />
@@ -128,12 +135,7 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
             for (let x = 0; x < COLS; x++) {
               const dx = x - cx;
               const dy = y - cy;
-              const value =
-                (Math.sin(x / 18 + time) +
-                  Math.sin(y / 18 + time * 1.3) +
-                  Math.sin((x + y) / 22 + time * 0.6) +
-                  Math.sin(Math.sqrt(dx * dx + dy * dy) / 14 - time)) /
-                4;
+              const value = (Math.sin(x / 18 + time) + Math.sin(y / 18 + time * 1.3) + Math.sin((x + y) / 22 + time * 0.6) + Math.sin(Math.sqrt(dx * dx + dy * dy) / 14 - time)) / 4;
 
               const v = (value + 1) / 2;
               const [r, g, b] = sampleColor(v);

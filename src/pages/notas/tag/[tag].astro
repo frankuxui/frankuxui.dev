@@ -1,0 +1,65 @@
+---
+export const prerender = true;
+
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import Root from "@/layouts/Root.astro";
+import NotesTagHeroSection from "@/features/notes/sections/NotesTagHeroSection.astro";
+import NotesTagListSection from "@/features/notes/sections/NotesTagListSection.astro";
+import { slugifyTag } from "@/utils/notes";
+
+interface Props {
+  label: string;
+  notes: CollectionEntry<"notes">[];
+}
+
+interface TagGroup {
+  label: string;
+  notes: CollectionEntry<"notes">[];
+}
+
+export const getStaticPaths = (async () => {
+  const notes = await getCollection("notes", ({ data }: CollectionEntry<"notes">) => (import.meta.env.PROD ? !data.draft : true));
+
+  const tagGroups = new Map<string, TagGroup>();
+  for (const note of notes) {
+    for (const tag of note.data.tags) {
+      const slug = slugifyTag(tag);
+      if (!tagGroups.has(slug)) tagGroups.set(slug, { label: tag, notes: [] });
+      tagGroups.get(slug)!.notes.push(note);
+    }
+  }
+
+  return Array.from(tagGroups.entries()).map(([slug, { label, notes: taggedNotes }]: [string, TagGroup]) => ({
+    params: { tag: slug },
+    props: {
+      label,
+      notes: taggedNotes.sort((a: CollectionEntry<"notes">, b: CollectionEntry<"notes">) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}) satisfies GetStaticPaths;
+
+const { label, notes } = Astro.props as Props;
+
+const title = `Notas etiquetadas con ${label}`;
+const description = `Notas de programación, diseño y reflexiones etiquetadas con "${label}".`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", Astro.site).toString() },
+    { "@type": "ListItem", position: 2, name: "Notas", item: new URL("/notas", Astro.site).toString() },
+    { "@type": "ListItem", position: 3, name: label, item: canonicalURL },
+  ],
+};
+---
+
+<Root title={title} description={description}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <NotesTagHeroSection tag={label} count={notes.length} />
+  <NotesTagListSection notes={notes} />
+</Root>

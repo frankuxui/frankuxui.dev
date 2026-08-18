@@ -1,0 +1,43 @@
+---
+export const prerender = true;
+
+import type { GetStaticPaths, Page } from "astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import Root from "@/layouts/Root.astro";
+import NotesHeroSection from "@/features/notes/sections/NotesHeroSection.astro";
+import NotesListSection from "@/features/notes/sections/NotesListSection.astro";
+
+interface Props {
+  page: Page<CollectionEntry<"notes">>;
+}
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const notes = await getCollection("notes", ({ data }: CollectionEntry<"notes">) => (import.meta.env.PROD ? !data.draft : true));
+  const sortedNotes = notes.sort((a: CollectionEntry<"notes">, b: CollectionEntry<"notes">) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return paginate(sortedNotes, { pageSize: 5 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props as Props;
+
+const title = page.currentPage === 1 ? "Notas" : `Notas · Página ${page.currentPage}`;
+const description = "Apuntes, reflexiones y notas sobre programación, diseño y la vida, junto con algo de trabajo en curso.";
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", Astro.site).toString() },
+    { "@type": "ListItem", position: 2, name: "Notas", item: new URL("/notas", Astro.site).toString() }
+  ]
+};
+---
+
+<Root title={title} description={description}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+  {page.url.prev && <link rel="prev" href={new URL(page.url.prev, Astro.site).toString()} />}
+  {page.url.next && <link rel="next" href={new URL(page.url.next, Astro.site).toString()} />}
+
+  <NotesHeroSection />
+  <NotesListSection page={page} />
+</Root>

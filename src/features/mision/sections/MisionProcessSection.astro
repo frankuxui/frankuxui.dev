@@ -1,0 +1,60 @@
+---
+const steps = [
+  {
+    number: "01",
+    title: "Entender",
+    description: "Definir el problema, la audiencia, el contexto y el resultado que necesita el proyecto."
+  },
+  {
+    number: "02",
+    title: "Diseñar",
+    description: "Organizar información, recorridos e interfaces alrededor de necesidades verificables."
+  },
+  {
+    number: "03",
+    title: "Construir",
+    description: "Convertir el sistema visual en componentes accesibles, rápidos y mantenibles."
+  },
+  {
+    number: "04",
+    title: "Optimizar",
+    description: "Medir, aprender y mejorar rendimiento, SEO, contenido y conversión."
+  },
+  {
+    number: "05",
+    title: "Escalar",
+    description: "Documentar, mantener y evolucionar el producto para que crezca con el negocio."
+  }
+];
+---
+
+<section class="scroll-mt-32 py-16 lg:py-24" aria-labelledby="mision-proceso-title">
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <div class="bg-background/60 mx-auto max-w-10xl backdrop-blur-2xl rounded-4xl p-8 sm:p-12 lg:p-16 xl:p-20">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24">
+        <div class="lg:sticky lg:top-28 lg:self-start">
+          <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Forma de trabajar</p>
+          <h2 id="mision-proceso-title" class="mt-4 font-medium tracking-tight text-foreground text-[clamp(1.5rem,4vw,5rem)] leading-[1.2]">
+            Un proceso conectado de principio a fin.
+          </h2>
+        </div>
+
+        <ol class="flex flex-col gap-8 lg:gap-10">
+          {
+            steps.map((step) => (
+              <li class="flex flex-col gap-4">
+                <span class="text-sm text-foreground-muted/50 font-medium">{step.number}</span>
+                <h3 class="font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h3)" }}>
+                  {step.title}
+                </h3>
+                <p class="max-w-xl text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+                  {step.description}
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>

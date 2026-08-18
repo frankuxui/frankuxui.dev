@@ -1,0 +1,142 @@
+---
+import Root from "./Root.astro";
+import { noteModalTransition } from "@/lib/transitions";
+import { formatNoteDate, slugifyTag } from "@/utils/notes";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  note: CollectionEntry<"notes">;
+  readingText: string;
+}
+
+const { note, readingText } = Astro.props as Props;
+const { title, description, pubDate, updatedDate, icon, accentColor, tags } = note.data;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+const publishedISO = pubDate.toISOString();
+const updatedISO = (updatedDate ?? pubDate).toISOString();
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  datePublished: publishedISO,
+  dateModified: updatedISO,
+  url: canonicalURL,
+  author: { "@type": "Person", name: "Frank Esteban Isdray Junco" }
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: new URL("/", Astro.site).toString() },
+    { "@type": "ListItem", position: 2, name: "Notas", item: new URL("/notas", Astro.site).toString() },
+    { "@type": "ListItem", position: 3, name: title, item: canonicalURL }
+  ]
+};
+---
+
+<Root title={`${title} · Notas`} description={description} mainAnimate={noteModalTransition}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(articleSchema)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <article
+    class="note-sheet relative w-full max-w-7xl mx-auto mt-24 sm:mt-28 mb-16 rounded-4xl bg-background/40 backdrop-blur-2xl overflow-hidden shadow-2xl drop-shadow-primary transition-colors duration-200 border border-white"
+    aria-labelledby="note-title"
+  >
+    <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/60 to-transparent"></div>
+    <div class="absolute -top-20 -right-20 w-200 h-200 bg-primary/5 z-0 rounded-full blur-3xl pointer-events-none"></div>
+
+    <a
+      href="/notas"
+      data-note-close
+      aria-label="Cerrar nota y volver a Notas"
+      class="absolute top-6 right-6 sm:top-10 sm:right-10 z-12 inline-flex size-12 items-center justify-center rounded-full bg-white/60 text-black transition-colors duration-200 hover:bg-white hover:text-black"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </a>
+
+    <div id="note-render" data-note-render class="relative z-10 mx-auto w-full max-w-4xl pt-10">
+      <header class="px-8 pt-16 pb-8 sm:px-16 sm:pt-20 text-center">
+        <h1 id="note-title" class="font-semibold tracking-tight text-foreground text-[clamp(2rem,5vw,3.5rem)] leading-[1.1]">
+          {title}
+        </h1>
+
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3 text-foreground-muted" style={{ "font-size": "var(--font-mini)" }}>
+          <span class="inline-flex size-9 items-center justify-center rounded-full text-lg flex-none" style={{ "background-color": accentColor }} aria-hidden="true">
+            {icon}
+          </span>
+          <span>
+            <time datetime={publishedISO}>{formatNoteDate(pubDate)}</time>
+            {" "}&bull;{" "}
+            {readingText}
+          </span>
+        </div>
+
+        {
+          tags.length > 0 && (
+            <ul class="mt-6 flex flex-wrap items-center justify-center gap-2" aria-label="Etiquetas">
+              {tags.map((tag: string) => (
+                <li>
+                  <a
+                    href={`/notas/tag/${slugifyTag(tag)}`}
+                    class="inline-flex items-center justify-center rounded-full bg-primary/5 px-6 h-10 text-xs font-medium text-secondary-foreground transition-colors duration-500 hover:bg-primary/10 hover:text-black"
+                  >
+                    {tag}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </header>
+
+      <div class="px-8 pb-16 sm:px-16 sm:pb-20">
+        <div class="prose lg:prose-lg max-w-none mx-auto prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-primary prose-img:rounded-2xl prose-img:w-full prose-img:max-w-full">
+          <slot />
+        </div>
+
+        <footer class="mt-16 pt-8 text-left w-full mx-auto max-w-[42rem]">
+          <a
+            href="/notas"
+            data-note-close
+            class="inline-flex items-center gap-2 font-semibold text-foreground underline decoration-foreground/30 underline-offset-8 transition-colors hover:decoration-foreground"
+          >
+            <span aria-hidden="true">&larr;</span> Volver a todas las notas
+          </a>
+        </footer>
+      </div>
+    </div>
+  </article>
+</Root>
+
+<script>
+  // `astro:after-swap` only fires after a client-side (SPA) navigation, never
+  // on the initial hard page load. So once it has fired, we know for certain
+  // the previous browser-history entry is another page on this same site,
+  // making `history.back()` safe — and it lets Astro's router play the
+  // `backwards` half of the note-modal transition (the sheet sliding back
+  // down) instead of a forward navigation to /notas, which would replay the
+  // "opening" animation instead of reversing it.
+  let cameViaSpaNav = false;
+  document.addEventListener("astro:after-swap", () => {
+    cameViaSpaNav = true;
+  });
+
+  function setup() {
+    document.querySelectorAll<HTMLAnchorElement>("[data-note-close]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if (cameViaSpaNav && window.history.length > 1) {
+          event.preventDefault();
+          window.history.back();
+        }
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", setup);
+</script>
