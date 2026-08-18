@@ -86,15 +86,17 @@ const breadcrumbSchema = {
         </div>
 
         {
-          tags.length > 0 && (
+          tags?.length > 0 && (
             <ul class="mt-6 flex flex-wrap items-center justify-center gap-2" aria-label="Etiquetas">
               {tags.map((tag: string) => (
                 <li>
                   <a
                     href={`/notas/tag/${slugifyTag(tag)}`}
-                    class="inline-flex items-center justify-center rounded-full bg-primary/5 px-6 h-10 text-xs font-medium text-secondary-foreground transition-colors duration-500 hover:bg-primary/10 hover:text-black"
+                    data-note-tag
+                    data-tag-value={tag}
+                    class="inline-flex items-center justify-center rounded-full bg-primary/5 px-6 h-10 text-sm font-medium text-secondary-foreground transition-colors duration-500 hover:bg-primary/10 hover:text-black"
                   >
-                    {tag}
+                    {tag !== undefined && tag !== null ? tag.at(0)?.toUpperCase() + tag.slice(1) : ""}
                   </a>
                 </li>
               ))}

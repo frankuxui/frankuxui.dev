@@ -5,7 +5,7 @@ pubDate: 2026-08-18
 icon: "🧩"
 accentColor: "#4a5a99"
 cover: "/notes/imagen-de-frankuxui.webp"
-tags: ["ux-ui", "frontend", "seo", "perfil-hibrido", "carrera"]
+tags: ["uxui", "frontend", "seo", "desarrollo web"]
 ---
 
 Cuando alguien me pregunta qué hago, la respuesta corta —"diseñador UX/UI y frontend developer"— nunca cuenta toda la historia. Lo que realmente hago es moverme constantemente entre dos formas de pensar: la de quien dibuja una interfaz preguntándose si alguien la va a entender, y la de quien la construye preguntándose si va a aguantar en producción.

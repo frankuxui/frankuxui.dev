@@ -1,0 +1,134 @@
+---
+interface Props {
+  targetId?: string;
+}
+
+const { targetId = "notes-list" } = Astro.props as Props;
+
+const options = [
+  { id: "list", label: "Lista" },
+  { id: "card", label: "Tarjetas" }
+];
+---
+
+<div
+  class="notes-view-toggle mx-auto relative inline-flex items-center rounded-full bg-background/40 backdrop-blur-xl anim-fade-up"
+  role="group"
+  aria-label="Vista del listado de notas"
+  data-notes-view-toggle
+  data-target={targetId}
+  style={{ "--anim-delay": "0.4s" }}
+>
+  <span class="notes-view-indicator absolute rounded-full bg-white/80 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]" aria-hidden="true"></span>
+
+  {
+    options.map((option) => (
+      <button
+        type="button"
+        class="relative z-10 inline-flex items-center justify-center rounded-full px-8 h-12 text-sm font-medium text-foreground/70 transition-colors duration-200 cursor-pointer hover:text-black data-[state='active']:text-black"
+        data-view-option={option.id}
+        aria-pressed={option.id === "list" ? "true" : "false"}
+      >
+        {option.label}
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  import gsap from "gsap";
+
+  const NOTES_VIEW_STORAGE_KEY = "frankuxui-notes-view";
+  const DEFAULT_NOTES_VIEW = "list";
+
+  function positionViewIndicator(toggle: HTMLElement, animate = true) {
+    const indicator = toggle.querySelector(".notes-view-indicator") as HTMLElement;
+    const activeButton = toggle.querySelector('[data-view-option][data-state="active"]') as HTMLElement;
+    if (!indicator || !activeButton) {
+      if (indicator) indicator.style.opacity = "0";
+      return;
+    }
+
+    const toggleRect = toggle.getBoundingClientRect();
+    const buttonRect = activeButton.getBoundingClientRect();
+
+    const left = buttonRect.left - toggleRect.left;
+    const top = buttonRect.top - toggleRect.top;
+    const width = buttonRect.width;
+    const height = buttonRect.height;
+
+    if (animate) {
+      indicator.style.opacity = "1";
+      indicator.style.left = `${left}px`;
+      indicator.style.top = `${top}px`;
+      indicator.style.width = `${width}px`;
+      indicator.style.height = `${height}px`;
+    } else {
+      indicator.style.cssText = `opacity:1;left:${left}px;top:${top}px;width:${width}px;height:${height}px;transition:none`;
+      void indicator.offsetWidth;
+      indicator.style.transition = "";
+    }
+  }
+
+  function animateNotes(target: HTMLElement) {
+    const items = target.querySelectorAll<HTMLElement>(".note-card");
+    if (!items.length) return;
+
+    gsap.fromTo(
+      items,
+      { opacity: 0, y: 20, scale: 0.97 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.45,
+        stagger: 0.06,
+        ease: "power2.out",
+        clearProps: "transform,opacity"
+      }
+    );
+  }
+
+  function applyNotesView(view: string, persist = true, animate = true) {
+    document.querySelectorAll<HTMLElement>("[data-notes-view-toggle]").forEach((toggle) => {
+      const targetId = toggle.dataset.target;
+      const target = targetId ? document.getElementById(targetId) : null;
+
+      toggle.querySelectorAll<HTMLButtonElement>("[data-view-option]").forEach((button) => {
+        const isActive = button.dataset.viewOption === view;
+        button.dataset.state = isActive ? "active" : "";
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+
+      positionViewIndicator(toggle, animate);
+
+      if (target) {
+        target.dataset.notesView = view;
+        if (animate) animateNotes(target);
+      }
+    });
+
+    if (persist) {
+      localStorage.setItem(NOTES_VIEW_STORAGE_KEY, view);
+    }
+  }
+
+  function restoreNotesView() {
+    const stored = localStorage.getItem(NOTES_VIEW_STORAGE_KEY) || DEFAULT_NOTES_VIEW;
+    applyNotesView(stored, false, false);
+  }
+
+  function setupNotesViewToggle() {
+    restoreNotesView();
+
+    document.querySelectorAll<HTMLButtonElement>("[data-view-option]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const view = button.dataset.viewOption;
+        if (view) applyNotesView(view);
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", setupNotesViewToggle);
+  document.addEventListener("astro:after-swap", restoreNotesView);
+</script>
