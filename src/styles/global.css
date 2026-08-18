@@ -460,7 +460,7 @@ pre button.rehype-pretty-copy.rehype-pretty-copied .success {
   text-align: center;
 }
 
-[data-notes-view="card"] .note-card__cover {
+[data-notes-view="card"] .note-card__thumbnail {
   display: none;
 }
 

@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { note, fadeNumber } = Astro.props as Props;
-const { title, description, pubDate, icon, accentColor, cover } = note.data;
+const { title, description, pubDate, icon, accentColor, thumbnail } = note.data;
 ---
 
 <li class="anim-fade-up" style={{ "--anim-delay": `${fadeNumber ?? 0.4}s` }}>
@@ -19,14 +19,14 @@ const { title, description, pubDate, icon, accentColor, cover } = note.data;
     <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/50 to-transparent"></div>
 
     {
-      cover && (
-        <div class="note-card__cover w-full max-w-36 overflow-hidden flex-none rounded-2xl group bg-primary">
-          <img src={cover} alt="" class="w-full max-w-full flex-none object-cover transition-transform duration-200 group-hover:scale-105" aria-hidden="true" />
+      thumbnail && (
+        <div class="note-card__thumbnail w-full max-w-36 overflow-hidden flex-none rounded-2xl group bg-primary">
+          <img src={thumbnail} alt="" class="w-full max-w-full flex-none object-cover transition-transform duration-200 group-hover:scale-105" aria-hidden="true" />
         </div>
       )
     }
 
-    <div class="note-card__body min-w-0 flex-1">
+    <div class="note-card__body min-w-0 flex-1 [&>h2]:font-medium">
       <p class="sr-only">{formatNoteDate(pubDate)}</p>
       <h2 class="font-medium tracking-tight text-black text-lg leading-[1.6] xl:text-xl">
         {title}

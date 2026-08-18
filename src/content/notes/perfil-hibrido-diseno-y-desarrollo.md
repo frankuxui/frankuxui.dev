@@ -4,7 +4,7 @@ description: "Por qué combino UX/UI, frontend, SEO técnico y automatización e
 pubDate: 2026-08-18
 icon: "🧩"
 accentColor: "#4a5a99"
-cover: "/notes/imagen-de-frankuxui.webp"
+thumbnail: "/notes/imagen-de-frankuxui.webp"
 tags: ["uxui", "frontend", "seo", "desarrollo web"]
 ---
 
@@ -15,10 +15,6 @@ Cuando alguien me pregunta qué hago, la respuesta corta —"diseñador UX/UI y 
 Esa es la frase que más repito cuando explico mi trabajo. Una interfaz puede tener una paleta preciosa y una tipografía cuidadísima y aun así fallar si no resuelve un problema real, si carga lento o si no la encuentra nadie en un buscador. Por eso mi proceso no separa "la parte bonita" de "la parte técnica": van juntas desde el primer boceto.
 
 Parto de entender las necesidades reales de las personas y las traduzco en interfaces claras, accesibles y funcionales. Pero esa traducción no termina en Figma: sigue hasta la arquitectura de componentes, los detalles de interacción y el rendimiento con el que todo eso llega al navegador.
-
-[
-<img src="/notes/imagen-de-frankuxui.webp" alt="Foto de Frank UXUI, con un fondo azul y un gesto pensativo" class="mx-auto w-full max-w-full rounded-2xl bg-primary" />
-](https://frankuxui.dev/)
 
 ## Las cuatro piezas que uso siempre
 

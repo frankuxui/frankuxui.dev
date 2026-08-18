@@ -4,6 +4,7 @@ description: "Cuatro días caminando entre Buda y Pest, entre castillos, baños 
 pubDate: 2026-08-19
 icon: "🌉"
 accentColor: "#6b4226"
+thumbnail: "/notes/fotografia-tomada-desde-una-ventana-en-el-bastion-de-los-pescadores.webp"
 cover: "/notes/fotografia-tomada-desde-el-bastion-de-los-pescadores.webp"
 tags: ["viajes", "budapest", "hungría", "arquitectura", "historia", "cultura", "europa"]
 ---

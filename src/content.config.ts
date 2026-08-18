@@ -11,6 +11,7 @@ const notes = defineCollection({
     updatedDate: z.coerce.date().optional(),
     icon: z.string(),
     accentColor: z.string().default("#145b5b"),
+    thumbnail: z.string().optional(),
     cover: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
