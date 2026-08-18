@@ -12,7 +12,7 @@ const pathname = Astro.url.pathname;
       </div>
 
       <ul
-        class="header-nav hidden md:flex relative flex-none items-center justify-center mx-auto gap-2 rounded-full p-4 transition-all duration-300 backdrop-blur-xl [&.nav-scrolled]:bg-white/70"
+        class="header-nav hidden md:flex relative flex-none items-center justify-center mx-auto gap-0 xl:gap-2 rounded-full p-3 xl:p-4 transition-all duration-300 backdrop-blur-xl [&.nav-scrolled]:bg-white/70"
         role="list"
       >
         <li class="header-indicator absolute rounded-full transition-all duration-300 ease-out" aria-hidden="true"></li>
@@ -20,10 +20,11 @@ const pathname = Astro.url.pathname;
           <button
             type="button"
             data-toggle="search-modal"
-            class="relative z-10 inline-flex items-center justify-center font-medium px-4 h-9 text-lg rounded-lg transition-colors duration-300 text-foreground hover:text-foreground/70 cursor-pointer select-none bg-white/30 hover:bg-white"
-            aria-label="Buscar notas"
+            class="relative z-10 inline-flex items-center justify-center font-medium px-3 h-9 text-sm rounded-lg transition-colors duration-300 text-foreground hover:text-foreground/70 cursor-pointer select-none bg-white/30 hover:bg-white"
+            aria-label="Buscar notas (Ctrl + K)"
+            title="Ctrl + K"
           >
-            <span class="font-mono tracking-tight font-black text-sm">/</span>
+            <span class="font-mono tracking-tight font-semibold text-xs">Ctrl + K</span>
           </button>
         </li>
         {
@@ -31,16 +32,15 @@ const pathname = Astro.url.pathname;
             { href: "/", label: "Inicio" },
             { href: "/sobre-mi", label: "Sobre mi" },
             { href: "/biografia", label: "Biografía" },
-            { href: "/notas", label: "Notas" },
-            { href: "/contacto", label: "Contacto" }
+            { href: "/notas", label: "Notas" }
           ].map(({ href, label }) => (
             <li role="listitem">
               <a
                 href={href}
                 data-toggle="header-link"
                 class:list={[
-                  "relative z-10 inline-flex items-center justify-center font-normal px-4 xl:px-6 h-12 text-base rounded-full transition-colors duration-300",
-                  pathname === href || (href !== "/" && pathname.startsWith(href)) ? "text-primary" : "text-foreground hover:text-foreground/70"
+                  "relative z-10 inline-flex items-center justify-center font-normal px-4 xl:px-6 h-10 xl:h-11 text-sm xl:text-base rounded-full transition-colors duration-300",
+                  pathname === href || (href !== "/" && pathname.startsWith(href)) ? "text-black" : "text-foreground hover:text-foreground/70"
                 ]}
                 data-state={pathname === href || (href !== "/" && pathname.startsWith(href)) ? "active" : ""}
                 aria-current={pathname === href || (href !== "/" && pathname.startsWith(href)) ? "page" : undefined}
@@ -50,22 +50,28 @@ const pathname = Astro.url.pathname;
             </li>
           ))
         }
+        <li>
+          <a
+            href="/contacto"
+            class="relative z-10 inline-flex items-center justify-center font-normal px-4 xl:px-6 h-10 xl:h-11 text-sm xl:text-base rounded-full transition-colors duration-300 text-foreground hover:text-foreground/70"
+            data-toggle="header-link"
+            data-state={pathname === "/contacto" ? "active" : ""}
+            aria-current={pathname === "/contacto" ? "page" : undefined}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none"></path>
+              <g fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="2">
+                <path stroke-linecap="round" d="m7 8.5l2.942 1.74c1.715 1.014 2.4 1.014 4.116 0L17 8.5"></path>
+                <path
+                  d="M2.016 13.476c.065 3.065.098 4.598 1.229 5.733c1.131 1.136 2.705 1.175 5.854 1.254c1.94.05 3.862.05 5.802 0c3.149-.079 4.723-.118 5.854-1.254c1.131-1.135 1.164-2.668 1.23-5.733c.02-.986.02-1.966 0-2.952c-.066-3.065-.099-4.598-1.23-5.733c-1.131-1.136-2.705-1.175-5.854-1.254a115 115 0 0 0-5.802 0c-3.149.079-4.723.118-5.854 1.254c-1.131 1.135-1.164 2.668-1.23 5.733a69 69 0 0 0 0 2.952Z"
+                ></path>
+              </g>
+            </svg>
+          </a>
+        </li>
       </ul>
 
       <div class="ml-auto flex flex-1 items-center justify-end gap-2">
-        <a
-          href="https://frankuxui.com/blog"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Blog (abre en nueva ventana)"
-          class="hidden sm:inline-flex items-center gap-1.5 h-12 px-4 rounded-full font-medium text-sm text-foreground hover:bg-white transition-colors duration-200"
-        >
-          Blog
-          <svg xmlns="http://www.w3.org/2000/svg" class="size-6 flex-none" viewBox="0 0 21 21" aria-hidden="true">
-            <path d="M0 0h21v21H0z" fill="none"></path>
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M14.5 13.5v-7h-7m7 0l-8 8"></path>
-          </svg>
-        </a>
         <button
           class="inline-flex flex-none size-12 items-center justify-center cursor-pointer rounded-full hover:bg-white transition-colors duration-200 focus:bg-white"
           type="button"

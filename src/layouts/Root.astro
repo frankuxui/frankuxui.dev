@@ -34,17 +34,16 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
     <script is:inline>
       (function () {
         try {
-          var raw = localStorage.getItem("frankuxui-palette-style");
           var id = localStorage.getItem("frankuxui-palette");
-          if (raw) {
-            var style = JSON.parse(raw);
-            var root = document.documentElement;
-            if (style.primary) root.style.setProperty("--primary", style.primary);
-            if (style.primaryForeground) root.style.setProperty("--primary-foreground", style.primaryForeground);
-          }
           if (id) document.documentElement.dataset.palette = id;
         } catch (e) {}
       })();
+      document.addEventListener("keydown", function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+          e.preventDefault();
+          window.dispatchEvent(new CustomEvent("frankuxui:search-toggle"));
+        }
+      });
     </script>
   </head>
   <body>
@@ -75,14 +74,22 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
     <MobileMenuPanel />
 
     <script>
-      import { getPaletteById, paletteStorageKey } from "@/lib/palettes";
-
       let plasmaAnimId: number | null = null;
 
       function hexToRgb(hex: string): [number, number, number] {
-        const clean = hex.replace("#", "");
+        const clean = hex.replace("#", "").trim();
         const value = parseInt(clean.length === 3 ? clean.replace(/./g, (c) => c + c) : clean, 16);
         return [(value >> 16) & 255, (value >> 8) & 255, value & 255];
+      }
+
+      function getGradientColorsFromCSS(): [number, number, number][] {
+        const styles = getComputedStyle(document.documentElement);
+        const colors: [number, number, number][] = [];
+        for (let i = 1; i <= 5; i++) {
+          const hex = styles.getPropertyValue(`--gradient-${i}`).trim();
+          if (hex) colors.push(hexToRgb(hex));
+        }
+        return colors;
       }
 
       function initBgGradient() {
@@ -99,15 +106,12 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
 
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        // Baja resolución interna: el CSS la escala a pantalla completa y el blur la suaviza.
         const COLS = 72;
         const ROWS = 46;
         canvas.width = COLS;
         canvas.height = ROWS;
 
-        const activePaletteId = document.documentElement.dataset.palette || localStorage.getItem(paletteStorageKey);
-        const activePalette = getPaletteById(activePaletteId);
-        const palette = activePalette.gradient.map(hexToRgb);
+        const palette = getGradientColorsFromCSS();
 
         const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
         const smoothstep = (t: number) => t * t * (3 - 2 * t);

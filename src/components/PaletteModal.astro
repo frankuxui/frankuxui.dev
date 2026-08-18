@@ -21,7 +21,7 @@ import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
       </div>
 
       <button
-        class="inline-flex size-11 flex-none cursor-pointer items-center justify-center rounded-full bg-secondary text-secondary-foreground transition-colors duration-200 hover:bg-foreground hover:text-background"
+        class="inline-flex size-11 flex-none cursor-pointer items-center justify-center rounded-full bg-white text-foreground transition-colors duration-200 hover:bg-white/50 hover:text-black"
         type="button"
         data-toggle="palette-modal-close"
         aria-label="Cerrar selector de paletas"
@@ -73,7 +73,7 @@ import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
 </div>
 
 <script>
-  import { defaultPaletteId, getPaletteById, paletteStorageKey, paletteStyleStorageKey } from "@/lib/palettes";
+  import { defaultPaletteId, paletteStorageKey } from "@/lib/palettes";
   import { trapFocus } from "@/lib/focus-trap";
 
   function getCurrentPalette() {
@@ -81,18 +81,14 @@ import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
   }
 
   function applyPalette(id: string, persist = true) {
-    const def = getPaletteById(id);
-    document.documentElement.dataset.palette = def.id;
-    document.documentElement.style.setProperty("--primary", def.primary);
-    document.documentElement.style.setProperty("--primary-foreground", def.primaryForeground);
+    document.documentElement.dataset.palette = id;
 
     if (persist) {
-      localStorage.setItem(paletteStorageKey, def.id);
-      localStorage.setItem(paletteStyleStorageKey, JSON.stringify({ primary: def.primary, primaryForeground: def.primaryForeground }));
+      localStorage.setItem(paletteStorageKey, id);
     }
 
-    updateSelectedPalette(def.id);
-    window.dispatchEvent(new CustomEvent("frankuxui:palette-change", { detail: def }));
+    updateSelectedPalette(id);
+    window.dispatchEvent(new CustomEvent("frankuxui:palette-change"));
   }
 
   // El SVG del check dibuja su animación (relleno + trazo) una sola vez al
@@ -131,12 +127,9 @@ import SvgSuccessAnimation from "@/components/SvgSuccessAnimation.astro";
   // localStorage right after each swap, before other `astro:page-load`
   // listeners (like the canvas gradient) read `data-palette`.
   function restorePaletteFromStorage() {
-    const storedId = localStorage.getItem(paletteStorageKey);
-    const def = getPaletteById(storedId);
-    document.documentElement.dataset.palette = def.id;
-    document.documentElement.style.setProperty("--primary", def.primary);
-    document.documentElement.style.setProperty("--primary-foreground", def.primaryForeground);
-    updateSelectedPalette(def.id);
+    const storedId = localStorage.getItem(paletteStorageKey) || defaultPaletteId;
+    document.documentElement.dataset.palette = storedId;
+    updateSelectedPalette(storedId);
   }
 
   document.addEventListener("astro:after-swap", restorePaletteFromStorage);
