@@ -30,7 +30,7 @@ const { page } = Astro.props as Props;
         </p>
       ) : (
         <div class="max-w-7xl mx-auto" data-notes-view-container data-target="notes-list">
-          <ul id="notes-list" class="flex flex-col gap-6 mx-auto data-[notes-view=list]:max-w-3xl" aria-label="Notas" data-notes-view="list">
+          <ul id="notes-list" class="flex flex-col gap-6 mx-auto data-[notes-view=list]:max-w-4xl" aria-label="Notas" data-notes-view="list">
             {page.data.map((note, index) => (
               <NoteCard note={note} fadeNumber={0.4 + index * 0.1} />
             ))}
