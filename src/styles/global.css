@@ -9,8 +9,7 @@
   --background: #ffffff;
   --background-card: #e8dfd2;
   --body-background: #f0e8dc;
-  --biografia-logo-box: #0a0a0a;
-  --biografia-logo-on-box: #ffffff;
+  --biografia-logo-on-dark: #ffffff;
   --biografia-stage-bg: #000000;
   --biografia-stage-card: #101010;
   --biografia-stage-card-raised: #171717;
@@ -42,6 +41,68 @@
   --font-h2-display: clamp(1.875rem, 1.301rem + 2vw, 3.95rem);
 }
 
+/* The header inherits one semantic contrast state from the surface beneath it. */
+[data-toggle="header"] {
+  --header-foreground: var(--foreground);
+  --header-active-foreground: var(--foreground);
+  --header-control-surface: color-mix(in srgb, var(--background) 30%, transparent);
+  --header-hover-surface: color-mix(in srgb, var(--background) 78%, transparent);
+  --header-nav-surface: color-mix(in srgb, var(--background) 64%, transparent);
+  --header-indicator-surface: var(--secondary);
+}
+
+[data-toggle="header"][data-contrast="dark"] {
+  --header-foreground: var(--biografia-stage-text);
+  --header-active-foreground: var(--biografia-stage-bg);
+  --header-control-surface: color-mix(in srgb, var(--biografia-stage-text) 10%, transparent);
+  --header-hover-surface: color-mix(in srgb, var(--biografia-stage-text) 17%, transparent);
+  --header-nav-surface: color-mix(in srgb, var(--biografia-stage-bg) 64%, transparent);
+  --header-indicator-surface: var(--biografia-stage-text);
+}
+
+.header-logo,
+.header-search,
+.header-link,
+.header-palette-toggle,
+.header-mobile-toggle {
+  color: var(--header-foreground);
+  transition:
+    color 220ms ease,
+    background-color 220ms ease;
+}
+
+.header-search {
+  background-color: var(--header-control-surface);
+}
+
+.header-search:hover,
+.header-search:focus-visible,
+.header-palette-toggle:hover,
+.header-palette-toggle:focus-visible,
+.header-mobile-toggle:hover,
+.header-mobile-toggle:focus-visible {
+  color: var(--header-foreground);
+  background-color: var(--header-hover-surface);
+}
+
+.header-link:hover {
+  color: color-mix(in srgb, var(--header-foreground) 70%, transparent);
+}
+
+.header-link[data-state="active"] {
+  color: var(--header-active-foreground);
+}
+
+.header-nav.nav-scrolled,
+[data-toggle="header"][data-contrast="dark"] .header-nav {
+  background-color: var(--header-nav-surface);
+}
+
+.header-indicator {
+  background-color: var(--header-indicator-surface);
+  opacity: 0;
+}
+
 /* Biografia: the same wordmark moves from cover to editorial signature. */
 #biografia-hero {
   isolation: isolate;
@@ -62,15 +123,7 @@
   padding: clamp(4.5rem, 12dvh, 8.125rem) clamp(8rem, 13vw, 16.25rem);
   border: 1px solid transparent;
   border-radius: clamp(4rem, 7vw, 8.75rem);
-  background-color: transparent;
-  transition:
-    background-color 0.4s ease,
-    border-color 0.4s ease;
   will-change: transform;
-}
-
-.biografia-logo-shell.is-boxed {
-  background-color: var(--biografia-logo-box);
 }
 
 .biografia-logo-svg {
@@ -81,11 +134,11 @@
 
 .bio-letter {
   fill: var(--primary);
-  transition: fill 0.4s ease;
+  transition: fill 160ms ease-out;
 }
 
 .biografia-logo-svg.is-white .bio-letter {
-  fill: var(--biografia-logo-on-box);
+  fill: var(--biografia-logo-on-dark);
 }
 
 .biografia-aside {
@@ -93,11 +146,12 @@
 }
 
 .biografia-aside-inner {
+  --biografia-hero-content-left: 2.5rem;
   width: min(48rem, 49vw);
   gap: clamp(0.75rem, 1.35dvh, 1.2rem);
   padding-right: 2rem;
-  padding-left: clamp(2.5rem, 7vw, 9rem);
-  transform-origin: left center;
+  padding-left: var(--biografia-hero-content-left);
+  transform-origin: var(--biografia-hero-content-left) center;
   will-change: transform;
 }
 
@@ -471,8 +525,8 @@
 
 @media (max-width: 1279px) {
   .biografia-intro-section {
-    height: 700vh;
-    height: 700dvh;
+    height: 650vh;
+    height: 650dvh;
   }
 
   .biografia-logo-layer,
@@ -517,7 +571,6 @@
   .biografia-aside-inner {
     width: min(44rem, 100%);
     padding-right: 2.5rem;
-    padding-left: 2.5rem;
   }
 
   .biografia-vertical-cards {
@@ -594,7 +647,6 @@
 
   .biografia-aside-inner {
     padding-right: 1.25rem;
-    padding-left: 1.25rem;
   }
 
   .biografia-vertical-cards {
@@ -705,8 +757,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bio-letter,
-  .biografia-logo-shell {
+  .bio-letter {
     transition-duration: 0.01ms;
   }
 

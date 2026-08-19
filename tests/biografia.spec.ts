@@ -1,12 +1,17 @@
 import { expect, test } from "@playwright/test";
 
+const SCROLL_DISTANCE_FACTOR = 0.9;
+
 async function waitForBiografiaIntro(page: import("@playwright/test").Page) {
   await page.waitForFunction(() => document.documentElement.style.overflow !== "hidden");
   await page.waitForTimeout(150);
 }
 
 async function scrollStoryTo(page: import("@playwright/test").Page, progress: number) {
-  await page.evaluate((value) => window.scrollTo(0, window.innerHeight * 9 * value), progress);
+  await page.evaluate(({ value, factor }) => window.scrollTo(0, window.innerHeight * 9 * factor * value), {
+    value: progress,
+    factor: SCROLL_DISTANCE_FACTOR
+  });
   await page.waitForTimeout(850);
 }
 
@@ -31,6 +36,7 @@ test.describe("Biografía motion narrative", () => {
     await expect(page.locator(".biografia-vertical-card")).toHaveCount(5);
     await expect(page.locator(".biografia-card")).toHaveCount(5);
     await waitForBiografiaIntro(page);
+    await expect(page.locator('[data-toggle="header"]')).not.toHaveAttribute("data-contrast", "dark");
 
     await scrollStoryTo(page, 0.105);
     const eyebrowStep = await page.evaluate(() => ({
@@ -56,16 +62,23 @@ test.describe("Biografía motion narrative", () => {
     const descriptionStep = await page.evaluate(() => {
       const logo = document.querySelector(".biografia-logo-svg")!.getBoundingClientRect();
       const eyebrow = document.querySelector(".biografia-eyebrow")!.getBoundingClientRect();
+      const headerLogo = document.querySelector('[data-toggle="header"] [data-testid="header-logo"]')!.getBoundingClientRect();
       return {
         desc: Number(getComputedStyle(document.querySelector(".biografia-desc")!).opacity),
         stageClip: getComputedStyle(document.querySelector(".biografia-vertical-stage")!).clipPath,
+        logoLetterFill: getComputedStyle(document.querySelector(".bio-letter")!).fill,
         horizontalAlignmentDelta: Math.abs(logo.left - eyebrow.left),
+        headerLogoAlignmentDelta: Math.abs(logo.left - headerLogo.left),
+        headerTextAlignmentDelta: Math.abs(eyebrow.left - headerLogo.left),
         logoToTextGap: eyebrow.top - logo.bottom
       };
     });
     expect(descriptionStep.desc).toBeGreaterThan(0.9);
     expect(descriptionStep.stageClip).toContain("100%");
+    expect(descriptionStep.logoLetterFill).toBe("rgb(20, 91, 91)");
     expect(descriptionStep.horizontalAlignmentDelta).toBeLessThan(3);
+    expect(descriptionStep.headerLogoAlignmentDelta).toBeLessThan(3);
+    expect(descriptionStep.headerTextAlignmentDelta).toBeLessThan(3);
     expect(descriptionStep.logoToTextGap).toBeGreaterThanOrEqual(-10);
     expect(descriptionStep.logoToTextGap).toBeLessThan(120);
     expect(errors).toEqual([]);
@@ -116,7 +129,12 @@ test.describe("Biografía motion narrative", () => {
       logoZIndex: Number(getComputedStyle(document.querySelector(".biografia-logo-layer")!).zIndex),
       photoZIndex: Number(getComputedStyle(document.querySelector(".biografia-photo-layer")!).zIndex),
       stageZIndex: Number(getComputedStyle(document.querySelector(".biografia-vertical-stage")!).zIndex),
-      visibleLogoLetters: Array.from(document.querySelectorAll(".bio-letter")).filter((letter) => Number(getComputedStyle(letter).opacity) > 0.9).length
+      visibleLogoLetters: Array.from(document.querySelectorAll(".bio-letter")).filter((letter) => Number(getComputedStyle(letter).opacity) > 0.9).length,
+      logoLetterFill: getComputedStyle(document.querySelector(".bio-letter")!).fill,
+      horizontalAlignmentDelta: Math.abs(
+        document.querySelector(".biografia-logo-svg")!.getBoundingClientRect().left -
+          document.querySelector(".biografia-eyebrow")!.getBoundingClientRect().left
+      )
     }));
     expect(transformedAside.eyebrowColor).toBe("rgb(245, 245, 240)");
     expect(transformedAside.titleColor).toBe("rgb(245, 245, 240)");
@@ -127,7 +145,11 @@ test.describe("Biografía motion narrative", () => {
     expect(transformedAside.logoZIndex).toBeGreaterThan(transformedAside.stageZIndex);
     expect(transformedAside.photoZIndex).toBeGreaterThan(transformedAside.logoZIndex);
     expect(transformedAside.visibleLogoLetters).toBeGreaterThan(0);
-
+    expect(transformedAside.logoLetterFill).toBe("rgb(255, 255, 255)");
+    expect(transformedAside.horizontalAlignmentDelta).toBeLessThan(3);
+    await expect(page.locator('[data-toggle="header"]')).toHaveAttribute("data-contrast", "dark");
+    await expect(page.locator('[data-toggle="header"] [data-testid="header-logo"]')).toHaveCSS("color", "rgb(245, 245, 240)");
+    await expect(page.locator('[data-toggle="palette-modal"]')).toHaveCSS("color", "rgb(245, 245, 240)");
     for (const [index, progress] of [0.44, 0.55, 0.66, 0.78, 0.92].entries()) {
       await scrollStoryTo(page, progress);
       const cardStates = await page.locator(".biografia-vertical-card").evaluateAll((cards) =>
@@ -153,7 +175,7 @@ test.describe("Biografía motion narrative", () => {
     expect(activeCardCenter).toBeGreaterThan(0.495);
     expect(activeCardCenter).toBeLessThan(0.505);
 
-    const storyEnd = 900 * 9;
+    const storyEnd = 900 * 9 * SCROLL_DISTANCE_FACTOR;
     await page.evaluate((top) => window.scrollTo(0, top + window.innerHeight * 0.75), storyEnd);
     await page.waitForTimeout(850);
     const naturalExit = await page.evaluate(() => ({
@@ -174,6 +196,8 @@ test.describe("Biografía motion narrative", () => {
     const horizontalStart = await page.locator(".biografia-horizontal-section").evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
     await page.evaluate((top) => window.scrollTo(0, top), horizontalStart);
     await page.waitForTimeout(1000);
+    await expect(page.locator('[data-toggle="header"]')).toHaveAttribute("data-contrast", "dark");
+    await expect(page.locator('[data-toggle="header"] [data-testid="header-logo"]')).toHaveCSS("color", "rgb(245, 245, 240)");
 
     await expect(page.locator(".biografia-horizontal-eyebrow")).toHaveText("Visión y proceso");
     await expect(page.locator("#biografia-horizontal-title")).toContainText("Diseño y desarrollo");
@@ -214,14 +238,14 @@ test.describe("Biografía motion narrative", () => {
     expect(horizontalGeometry.cardHeight / horizontalGeometry.cardWidth).toBeGreaterThan(1.45);
     expect(horizontalGeometry.pageScrollWidth).toBeLessThanOrEqual(1440);
 
-    const horizontalPinDistance = await page.locator(".biografia-horizontal-section").evaluate(() => {
+    const horizontalPinDistance = await page.locator(".biografia-horizontal-section").evaluate((_section, factor) => {
       const viewport = document.querySelector(".biografia-horizontal-viewport") as HTMLElement;
       const track = document.querySelector(".biografia-horizontal-track") as HTMLElement;
       const lastCard = document.querySelector(".biografia-card:last-child") as HTMLElement;
       const startX = viewport.clientWidth * (window.innerWidth < 1024 ? 0.88 : 0.78);
       const endX = lastCard ? -(lastCard.offsetLeft + lastCard.offsetWidth) : -track.scrollWidth;
-      return Math.round(Math.max(startX - endX, window.innerWidth));
-    });
+      return Math.max(Math.round(Math.max(startX - endX, window.innerWidth) * factor), window.innerWidth);
+    }, SCROLL_DISTANCE_FACTOR);
     await page.evaluate(({ top, distance }) => window.scrollTo(0, top + distance - 2), {
       top: horizontalStart,
       distance: horizontalPinDistance
@@ -248,11 +272,12 @@ test.describe("Biografía motion narrative", () => {
     await page.evaluate((top) => window.scrollTo(0, top), finalStart);
     await page.waitForTimeout(1000);
     await expect(page.locator(".biografia-final-section")).toHaveCSS("background-color", "rgb(0, 0, 0)");
+    await expect(page.locator('[data-toggle="header"]')).toHaveAttribute("data-contrast", "dark");
 
-    const finalPinDistance = await page.locator(".biografia-final-section").evaluate(() => {
+    const finalPinDistance = await page.locator(".biografia-final-section").evaluate((_section, factor) => {
       const chars = document.querySelectorAll(".biografia-final-char").length;
-      return Math.max(Math.round(window.innerHeight * 2.2), chars * 42);
-    });
+      return Math.round(Math.max(window.innerHeight * 2.2, chars * 42) * factor);
+    }, SCROLL_DISTANCE_FACTOR);
     await page.evaluate(({ top, distance }) => window.scrollTo(0, top + distance * 0.58), { top: finalStart, distance: finalPinDistance });
     await page.waitForTimeout(1000);
 
@@ -321,6 +346,8 @@ test.describe("Biografía motion narrative", () => {
     expect(mobileGeometry.verticalCards).toBe(5);
     expect(mobileGeometry.horizontalCards).toBe(5);
     expect(mobileGeometry.pageScrollWidth).toBeLessThanOrEqual(390);
+    await expect(page.locator('[data-toggle="header"]')).toHaveAttribute("data-contrast", "dark");
+    await expect(page.locator(".header-mobile-toggle")).toHaveCSS("color", "rgb(245, 245, 240)");
 
     const horizontalStart = await page.locator(".biografia-horizontal-section").evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
     await page.evaluate((top) => window.scrollTo(0, top), horizontalStart);

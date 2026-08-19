@@ -123,7 +123,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
     />
   </div>
 
-  <div class="biografia-vertical-stage absolute inset-0 pointer-events-none">
+  <div class="biografia-vertical-stage absolute inset-0 pointer-events-none" data-header-contrast="dark">
     <div class="biografia-vertical-cards">
       {
         verticalCards.map((card) => (
@@ -153,7 +153,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
   </div>
 </section>
 
-<section class="biografia-horizontal-section relative" aria-labelledby="biografia-horizontal-title">
+<section class="biografia-horizontal-section relative" data-header-contrast="dark" aria-labelledby="biografia-horizontal-title">
   <header class="biografia-horizontal-header">
     <div class="biografia-horizontal-heading">
       <p class="biografia-horizontal-eyebrow">Visión y proceso</p>
@@ -184,7 +184,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
   </div>
 </section>
 
-<section class="biografia-final-section relative" aria-labelledby="biografia-final-title">
+<section class="biografia-final-section relative" data-header-contrast="dark" aria-labelledby="biografia-final-title">
   <div class="biografia-final-viewport">
     <h2 id="biografia-final-title" class="biografia-final-title" aria-label={finalLines.join(" ")}>
       {
@@ -207,6 +207,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
   gsap.registerPlugin(ScrollTrigger);
 
   const FINAL_SCALE = 0.12;
+  const SCROLL_DISTANCE_FACTOR = 0.9;
 
   type BiografiaWindow = Window & {
     __biografiaCleanup?: () => void;
@@ -228,6 +229,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
     const photo = introSection.querySelector(".biografia-photo") as HTMLElement;
     const asideLayer = introSection.querySelector(".biografia-aside") as HTMLElement;
     const asideInner = introSection.querySelector(".biografia-aside-inner") as HTMLElement;
+    const headerContainer = document.querySelector("[data-header-container]") as HTMLElement | null;
     const eyebrow = introSection.querySelector(".biografia-eyebrow") as HTMLElement;
     const title = introSection.querySelector(".biografia-title") as HTMLElement;
     const desc = introSection.querySelector(".biografia-desc") as HTMLElement;
@@ -270,6 +272,29 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
     const previousOverscrollBehavior = document.documentElement.style.overscrollBehavior;
     let active = true;
 
+    function syncHeroContentLeft() {
+      if (!headerContainer) return;
+      const headerStyles = getComputedStyle(headerContainer);
+      const headerRect = headerContainer.getBoundingClientRect();
+      const headerContentLeft = headerRect.left + (Number.parseFloat(headerStyles.paddingLeft) || 0);
+      asideInner.style.setProperty("--biografia-hero-content-left", `${headerContentLeft}px`);
+    }
+
+    function syncLogoColorWithStage() {
+      const stageRect = verticalStage.getBoundingClientRect();
+      const logoRect = logoSvg.getBoundingClientRect();
+      const clipTop = getComputedStyle(verticalStage).clipPath.match(/^inset\(\s*(-?\d*\.?\d+)(%|px)?/i);
+      const clipValue = clipTop ? Number.parseFloat(clipTop[1]) : 0;
+      const clipOffset = clipTop?.[2] === "%" ? (clipValue / 100) * stageRect.height : clipValue;
+      const visibleStageTop = stageRect.top + clipOffset;
+      const logoCenterY = logoRect.top + logoRect.height / 2;
+      const isOverDarkStage = logoCenterY >= visibleStageTop && logoCenterY <= stageRect.bottom;
+
+      logoSvg.classList.toggle("is-white", isOverDarkStage);
+    }
+
+    syncHeroContentLeft();
+
     history.scrollRestoration = "manual";
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 
@@ -310,7 +335,6 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
     gsap.set(verticalCards, { yPercent: 112, scale: 0.985 });
     gsap.set(horizontalTrack, { autoAlpha: 1, scale: 1, transformOrigin: "50% 50%" });
     gsap.set(finalTextChars, { opacity: 0.14, yPercent: 30 });
-    logoShell.classList.remove("is-boxed");
     logoSvg.classList.remove("is-white");
 
     if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 24 });
@@ -348,6 +372,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
     };
 
     function computeTarget() {
+      syncHeroContentLeft();
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const finalScale = getFinalScale();
@@ -405,7 +430,11 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
         timeline.addLabel("asideTransform");
         timeline.to(asideInner, { scale: () => getCompactScale(), y: () => getCompactY(), duration: 0.62, ease: "power2.inOut" }, "asideTransform");
         timeline.to([eyebrow, title, desc], { color: "var(--biografia-stage-text)", duration: 0.62, ease: "none" }, "asideTransform");
-        timeline.to(verticalStage, { clipPath: "inset(0% 0 0)", duration: 0.62, ease: "power2.inOut" }, "asideTransform");
+        timeline.to(
+          verticalStage,
+          { clipPath: "inset(0% 0 0)", duration: 0.62, ease: "power2.inOut", onUpdate: syncLogoColorWithStage },
+          "asideTransform"
+        );
         timeline.to({}, { duration: 0.16 });
       }
 
@@ -433,18 +462,14 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
         const storyTrigger = ScrollTrigger.create({
           trigger: introSection,
           start: "top top",
-          end: () => `+=${Math.max(Math.round(window.innerHeight * 9), Math.round(storyTl.duration() * window.innerHeight))}`,
+          end: () =>
+            `+=${Math.round(Math.max(window.innerHeight * 9, storyTl.duration() * window.innerHeight) * SCROLL_DISTANCE_FACTOR)}`,
           pin: true,
           pinSpacing: "margin",
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          animation: storyTl,
-          onUpdate: () => {
-            const boxed = storyTl.time() >= 0.52;
-            logoShell.classList.toggle("is-boxed", boxed);
-            logoSvg.classList.toggle("is-white", boxed);
-          }
+          animation: storyTl
         });
         animations.push(storyTl);
         ownedTriggers.push(storyTrigger);
@@ -456,15 +481,11 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
         const portableHeroTrigger = ScrollTrigger.create({
           trigger: introSection,
           start: "top top",
-          end: () => `+=${Math.round(window.innerHeight * 0.28)}`,
+          end: () => `+=${Math.round(window.innerHeight * 0.28 * SCROLL_DISTANCE_FACTOR)}`,
           scrub: 0.7,
           invalidateOnRefresh: true,
           animation: portableHeroTl,
-          onUpdate: () => {
-            const boxed = portableHeroTl.time() >= 0.52;
-            logoShell.classList.toggle("is-boxed", boxed);
-            logoSvg.classList.toggle("is-white", boxed);
-          }
+          onUpdate: syncLogoColorWithStage
         });
 
         gsap.set(verticalStage, { clipPath: "inset(0% 0 0)" });
@@ -476,7 +497,8 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
           end: "bottom bottom",
           scrub: 1,
           invalidateOnRefresh: true,
-          animation: portableCardsTl
+          animation: portableCardsTl,
+          onUpdate: syncLogoColorWithStage
         });
 
         animations.push(portableHeroTl, portableCardsTl);
@@ -494,7 +516,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
         scrollTrigger: {
           trigger: horizontalSection,
           start: "top top",
-          end: () => `+=${Math.round(horizontalDistance())}`,
+          end: () => `+=${Math.max(Math.round(horizontalDistance() * SCROLL_DISTANCE_FACTOR), window.innerWidth)}`,
           pin: true,
           pinSpacing: "margin",
           scrub: 1,
@@ -511,7 +533,8 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
         scrollTrigger: {
           trigger: finalSection,
           start: "top top",
-          end: () => `+=${Math.max(Math.round(window.innerHeight * 2.2), finalTextChars.length * 42)}`,
+          end: () =>
+            `+=${Math.round(Math.max(window.innerHeight * 2.2, finalTextChars.length * 42) * SCROLL_DISTANCE_FACTOR)}`,
           pin: true,
           pinSpacing: "margin",
           scrub: 1,
@@ -537,7 +560,6 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
       active = false;
       ownedTriggers.forEach((trigger) => trigger.kill());
       animations.forEach((animation) => animation.kill());
-      logoShell.classList.remove("is-boxed");
       logoSvg.classList.remove("is-white");
       document.documentElement.style.overflow = previousHtmlOverflow;
       document.body.style.overflow = previousBodyOverflow;

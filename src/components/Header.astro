@@ -5,10 +5,10 @@ const pathname = Astro.url.pathname;
 ---
 
 <header class="fixed top-0 left-0 w-full h-24 sm:h-28 flex items-center justify-center z-50" data-toggle="header" transition:persist>
-  <div class="w-full max-w-12xl mx-auto px-10">
+  <div class="w-full max-w-12xl mx-auto px-10" data-header-container>
     <nav class="flex items-center justify-between w-full gap-8">
       <div class="mr-auto flex-1">
-        <Logo />
+        <Logo class="header-logo" />
       </div>
 
       <ul class="header-nav hidden md:flex relative flex-none items-center justify-center mx-auto gap-0 xl:gap-2 rounded-full p-3 xl:p-4 transition-all duration-300 backdrop-blur-xl" role="list">
@@ -17,7 +17,7 @@ const pathname = Astro.url.pathname;
           <button
             type="button"
             data-toggle="search-modal"
-            class="relative z-10 inline-flex items-center justify-center font-medium px-3 h-9 text-sm rounded-lg transition-colors duration-300 text-foreground hover:text-foreground/70 cursor-pointer select-none bg-white/30 hover:bg-white"
+            class="header-search relative z-10 inline-flex items-center justify-center font-medium px-3 h-9 text-sm rounded-lg transition-colors duration-300 cursor-pointer select-none"
             aria-label="Buscar notas (Ctrl + K)"
             title="Ctrl + K"
           >
@@ -35,10 +35,7 @@ const pathname = Astro.url.pathname;
               <a
                 href={href}
                 data-toggle="header-link"
-                class:list={[
-                  "relative z-10 inline-flex items-center justify-center font-normal px-4 xl:px-6 h-10 xl:h-11 text-sm xl:text-base rounded-full transition-colors duration-300",
-                  pathname === href || (href !== "/" && pathname.startsWith(href)) ? "text-black" : "text-foreground hover:text-foreground/70"
-                ]}
+                class="header-link relative z-10 inline-flex items-center justify-center font-normal px-4 xl:px-6 h-10 xl:h-11 text-sm xl:text-base rounded-full transition-colors duration-300"
                 data-state={pathname === href || (href !== "/" && pathname.startsWith(href)) ? "active" : ""}
                 aria-current={pathname === href || (href !== "/" && pathname.startsWith(href)) ? "page" : undefined}
               >
@@ -50,7 +47,7 @@ const pathname = Astro.url.pathname;
         <li>
           <a
             href="/contacto"
-            class="relative z-10 inline-flex items-center justify-center font-normal px-4 xl:px-6 h-10 xl:h-11 text-sm xl:text-base rounded-full transition-colors duration-300 text-foreground hover:text-foreground/70"
+            class="header-link relative z-10 inline-flex items-center justify-center font-normal px-4 xl:px-6 h-10 xl:h-11 text-sm xl:text-base rounded-full transition-colors duration-300"
             data-toggle="header-link"
             data-state={pathname === "/contacto" ? "active" : ""}
             aria-current={pathname === "/contacto" ? "page" : undefined}
@@ -70,7 +67,7 @@ const pathname = Astro.url.pathname;
 
       <div class="ml-auto flex flex-1 items-center justify-end gap-2">
         <button
-          class="inline-flex flex-none size-12 items-center justify-center cursor-pointer rounded-full hover:bg-white transition-colors duration-200 focus:bg-white"
+          class="header-palette-toggle inline-flex flex-none size-12 items-center justify-center cursor-pointer rounded-full transition-colors duration-200"
           type="button"
           data-toggle="palette-modal"
           aria-label="Cambiar tema de la web"
@@ -92,6 +89,14 @@ const pathname = Astro.url.pathname;
 </header>
 
 <script>
+  type HeaderWindow = Window & {
+    __headerCleanup?: () => void;
+    __headerPageLoadHandler?: () => void;
+    __headerAfterSwapHandler?: () => void;
+  };
+
+  const headerWindow = window as HeaderWindow;
+
   function positionIndicator() {
     const nav = document.querySelector(".header-nav");
     const indicator = document.querySelector(".header-indicator") as HTMLElement;
@@ -123,12 +128,10 @@ const pathname = Astro.url.pathname;
 
       if (isActive) {
         link.setAttribute("data-state", "active");
-        link.classList.remove("text-foreground", "hover:text-foreground/70");
-        link.classList.add("text-primary");
+        link.setAttribute("aria-current", "page");
       } else {
         link.removeAttribute("data-state");
-        link.classList.remove("text-primary");
-        link.classList.add("text-foreground", "hover:text-foreground/70");
+        link.removeAttribute("aria-current");
       }
     });
 
@@ -145,24 +148,72 @@ const pathname = Astro.url.pathname;
     }
   }
 
+  function resolveInset(value: string, size: number) {
+    const parsed = Number.parseFloat(value);
+    if (!Number.isFinite(parsed)) return 0;
+    return value.endsWith("%") ? (parsed / 100) * size : parsed;
+  }
+
+  function coversHeaderEdge(section: HTMLElement, probeX: number, probeY: number) {
+    const styles = getComputedStyle(section);
+    if (styles.display === "none" || styles.visibility === "hidden" || Number.parseFloat(styles.opacity) === 0) return false;
+
+    const rect = section.getBoundingClientRect();
+    let visibleTop = rect.top;
+    const topInset = styles.clipPath.match(/^inset\(\s*(-?\d*\.?\d+(?:e[-+]?\d+)?(?:%|px)?)/i)?.[1];
+    if (topInset) visibleTop += resolveInset(topInset, rect.height);
+
+    return probeX >= rect.left && probeX <= rect.right && probeY >= visibleTop && probeY <= rect.bottom;
+  }
+
+  function updateHeaderContrast() {
+    const header = document.querySelector('[data-toggle="header"]') as HTMLElement | null;
+    if (!header) return;
+
+    const headerRect = header.getBoundingClientRect();
+    const probeX = headerRect.left + headerRect.width / 2;
+    const probeY = Math.max(headerRect.top, headerRect.bottom - 1);
+    const darkSections = Array.from(document.querySelectorAll('[data-header-contrast="dark"]'));
+    const coverage = darkSections.map((section) => coversHeaderEdge(section as HTMLElement, probeX, probeY));
+    const hasDarkSurface = coverage.some(Boolean);
+
+    if (hasDarkSurface) header.setAttribute("data-contrast", "dark");
+    else header.removeAttribute("data-contrast");
+  }
+
   function setup() {
+    headerWindow.__headerCleanup?.();
     updateActiveLinks();
     onScroll();
+    updateHeaderContrast();
 
     let ticking = false;
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            onScroll();
-            ticking = false;
-          });
-          ticking = true;
-        }
-      },
-      { passive: true }
+    const scheduleUpdate = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        onScroll();
+        updateHeaderContrast();
+        // ScrollTrigger writes transforms and clip-paths on its own animation frame.
+        // Re-read once after that paint so the header sees the rendered surface.
+        requestAnimationFrame(() => {
+          updateHeaderContrast();
+          ticking = false;
+        });
+      });
+    };
+
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate, { passive: true });
+    const contrastObserver = new MutationObserver(scheduleUpdate);
+    document.querySelectorAll('[data-header-contrast="dark"]').forEach((section) =>
+      contrastObserver.observe(section, { attributes: true, attributeFilter: ["class", "style"] })
     );
+    headerWindow.__headerCleanup = () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      contrastObserver.disconnect();
+    };
   }
 
   if (document.readyState === "loading") {
@@ -171,13 +222,15 @@ const pathname = Astro.url.pathname;
     setup();
   }
 
-  document.addEventListener("astro:after-swap", updateActiveLinks);
-  document.addEventListener("astro:page-load", updateActiveLinks);
-</script>
+  if (headerWindow.__headerPageLoadHandler) document.removeEventListener("astro:page-load", headerWindow.__headerPageLoadHandler);
+  if (headerWindow.__headerAfterSwapHandler) document.removeEventListener("astro:after-swap", headerWindow.__headerAfterSwapHandler);
 
-<style>
-  .header-indicator {
-    background-color: var(--color-secondary);
-    opacity: 0;
-  }
-</style>
+  headerWindow.__headerPageLoadHandler = setup;
+  headerWindow.__headerAfterSwapHandler = () => {
+    updateActiveLinks();
+    updateHeaderContrast();
+  };
+
+  document.addEventListener("astro:page-load", headerWindow.__headerPageLoadHandler);
+  document.addEventListener("astro:after-swap", headerWindow.__headerAfterSwapHandler);
+</script>
