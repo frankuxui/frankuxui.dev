@@ -10,6 +10,15 @@ async function scrollStoryTo(page: import("@playwright/test").Page, progress: nu
   await page.waitForTimeout(850);
 }
 
+async function scrollPortableCardsTo(page: import("@playwright/test").Page, progress: number) {
+  const range = await page.locator(".biografia-vertical-stage").evaluate((stage) => ({
+    start: stage.getBoundingClientRect().top + window.scrollY,
+    distance: Math.max((stage as HTMLElement).offsetHeight - window.innerHeight, 1)
+  }));
+  await page.evaluate(({ start, distance, value }) => window.scrollTo(0, start + distance * value), { ...range, value: progress });
+  await page.waitForTimeout(850);
+}
+
 test.describe("Biografía motion narrative", () => {
   test("conserva la intro y revela eyebrow, title y description en orden", async ({ page }) => {
     const errors: string[] = [];
@@ -44,12 +53,21 @@ test.describe("Biografía motion narrative", () => {
     expect(titleStep.desc).toBeLessThan(0.1);
 
     await scrollStoryTo(page, 0.27);
-    const descriptionStep = await page.evaluate(() => ({
-      desc: Number(getComputedStyle(document.querySelector(".biografia-desc")!).opacity),
-      stageClip: getComputedStyle(document.querySelector(".biografia-vertical-stage")!).clipPath
-    }));
+    const descriptionStep = await page.evaluate(() => {
+      const logo = document.querySelector(".biografia-logo-svg")!.getBoundingClientRect();
+      const eyebrow = document.querySelector(".biografia-eyebrow")!.getBoundingClientRect();
+      return {
+        desc: Number(getComputedStyle(document.querySelector(".biografia-desc")!).opacity),
+        stageClip: getComputedStyle(document.querySelector(".biografia-vertical-stage")!).clipPath,
+        horizontalAlignmentDelta: Math.abs(logo.left - eyebrow.left),
+        logoToTextGap: eyebrow.top - logo.bottom
+      };
+    });
     expect(descriptionStep.desc).toBeGreaterThan(0.9);
     expect(descriptionStep.stageClip).toContain("100%");
+    expect(descriptionStep.horizontalAlignmentDelta).toBeLessThan(3);
+    expect(descriptionStep.logoToTextGap).toBeGreaterThanOrEqual(-10);
+    expect(descriptionStep.logoToTextGap).toBeLessThan(120);
     expect(errors).toEqual([]);
   });
 
@@ -246,12 +264,40 @@ test.describe("Biografía motion narrative", () => {
     expect(characterState.visible).toBeLessThan(characterState.total);
   });
 
+  test("libera el Hero antes de las cards y evita overflow en portátil", async ({ page }) => {
+    await page.setViewportSize({ width: 1180, height: 800 });
+    await page.goto("/biografia");
+    await waitForBiografiaIntro(page);
+
+    await scrollPortableCardsTo(page, 0.12);
+    const laptopState = await page.evaluate(() => {
+      const intro = document.querySelector("#biografia-hero")!;
+      const aside = document.querySelector(".biografia-aside")!.getBoundingClientRect();
+      const firstCard = document.querySelector(".biografia-vertical-card")!.getBoundingClientRect();
+      return {
+        introPosition: getComputedStyle(intro).position,
+        introHasPinSpacer: intro.parentElement?.classList.contains("pin-spacer") ?? false,
+        asideBottom: aside.bottom,
+        cardsPosition: getComputedStyle(document.querySelector(".biografia-vertical-cards")!).position,
+        firstCardCrossesCenter: firstCard.top <= window.innerHeight / 2 && firstCard.bottom >= window.innerHeight / 2,
+        scrollWidth: document.documentElement.scrollWidth,
+        viewportWidth: window.innerWidth
+      };
+    });
+    expect(laptopState.introPosition).not.toBe("fixed");
+    expect(laptopState.introHasPinSpacer).toBe(false);
+    expect(laptopState.asideBottom).toBeLessThanOrEqual(0);
+    expect(laptopState.cardsPosition).toBe("sticky");
+    expect(laptopState.firstCardCrossesCenter).toBe(true);
+    expect(laptopState.scrollWidth).toBeLessThanOrEqual(laptopState.viewportWidth);
+  });
+
   test("mantiene todas las fases y la composición dentro del viewport móvil", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/biografia");
     await waitForBiografiaIntro(page);
 
-    await scrollStoryTo(page, 0.92);
+    await scrollPortableCardsTo(page, 0.92);
     const mobileGeometry = await page.evaluate(() => {
       const aside = document.querySelector(".biografia-aside-inner")!.getBoundingClientRect();
       const activeCard = Array.from(document.querySelectorAll(".biografia-vertical-card")).at(-1)!.getBoundingClientRect();

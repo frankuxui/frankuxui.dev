@@ -145,7 +145,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
   </div>
 
   <div class="biografia-aside absolute inset-y-0 left-0 flex items-center pointer-events-none">
-    <div class="biografia-aside-inner flex flex-col gap-6">
+    <div class="biografia-aside-inner flex flex-col">
       <p class="biografia-eyebrow font-semibold uppercase">Biografía</p>
       <h1 class="biografia-title font-bold tracking-tight leading-[0.94]">Diseño, código<br />y evolución</h1>
       <p class="biografia-desc">Diseñador UX/UI y desarrollador Frontend con más de 7 años creando experiencias digitales.</p>
@@ -354,15 +354,15 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
       const scaledW = logoShell.offsetWidth * finalScale;
       const scaledH = logoShell.offsetHeight * finalScale;
 
-      // Align the logo box left edge with the aside text left edge.
+      // Align the visible wordmark edge with the actual text container edge.
       let targetLeft = Math.min(Math.max(vw * 0.07, 32), 144);
-      if (asideInner) {
-        const r = asideInner.getBoundingClientRect();
-        if (r.left > 0) targetLeft = r.left;
-      }
+      const textAnchor = eyebrow.getBoundingClientRect().left;
+      if (textAnchor >= 0) targetLeft = textAnchor;
+      const logoVisualInset = (Number.parseFloat(getComputedStyle(logoShell).paddingLeft) || 0) * finalScale;
+      const targetShellLeft = targetLeft - logoVisualInset;
       const targetTop = window.innerWidth < 1024 ? Math.max(vh * 0.08, 72) : Math.max(vh * 0.12, 92);
 
-      const targetCenterX = targetLeft + scaledW / 2;
+      const targetCenterX = targetShellLeft + scaledW / 2;
       const targetCenterY = targetTop + scaledH / 2;
 
       return { x: targetCenterX - vw / 2, y: targetCenterY - vh / 2 };
@@ -376,8 +376,6 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
       };
 
       const getCompactY = () => (window.innerWidth < 1024 ? -window.innerHeight * 0.16 : 0);
-      const storyTl = gsap.timeline({ paused: true });
-
       function addLogoTransition(timeline: gsap.core.Timeline) {
         timeline.addLabel("logoTransition", 0);
         timeline.to(photo, { filter: "blur(22px)", opacity: 0.42, duration: 0.52, ease: "none" }, "logoTransition");
@@ -425,29 +423,65 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
         });
       }
 
-      addLogoTransition(storyTl);
-      addAsideReveal(storyTl);
-      addAsideTransformation(storyTl);
-      addVerticalCards(storyTl);
+      if (window.innerWidth >= 1280) {
+        const storyTl = gsap.timeline({ paused: true });
+        addLogoTransition(storyTl);
+        addAsideReveal(storyTl);
+        addAsideTransformation(storyTl);
+        addVerticalCards(storyTl);
 
-      const storyTrigger = ScrollTrigger.create({
-        trigger: introSection,
-        start: "top top",
-        end: () => `+=${Math.max(Math.round(window.innerHeight * 9), Math.round(storyTl.duration() * window.innerHeight))}`,
-        pin: true,
-        pinSpacing: "margin",
-        scrub: 1,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        animation: storyTl,
-        onUpdate: () => {
-          const boxed = storyTl.time() >= 0.52;
-          logoShell.classList.toggle("is-boxed", boxed);
-          logoSvg.classList.toggle("is-white", boxed);
-        }
-      });
-      animations.push(storyTl);
-      ownedTriggers.push(storyTrigger);
+        const storyTrigger = ScrollTrigger.create({
+          trigger: introSection,
+          start: "top top",
+          end: () => `+=${Math.max(Math.round(window.innerHeight * 9), Math.round(storyTl.duration() * window.innerHeight))}`,
+          pin: true,
+          pinSpacing: "margin",
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          animation: storyTl,
+          onUpdate: () => {
+            const boxed = storyTl.time() >= 0.52;
+            logoShell.classList.toggle("is-boxed", boxed);
+            logoSvg.classList.toggle("is-white", boxed);
+          }
+        });
+        animations.push(storyTl);
+        ownedTriggers.push(storyTrigger);
+      } else {
+        const portableHeroTl = gsap.timeline({ paused: true });
+        addLogoTransition(portableHeroTl);
+        addAsideReveal(portableHeroTl);
+
+        const portableHeroTrigger = ScrollTrigger.create({
+          trigger: introSection,
+          start: "top top",
+          end: () => `+=${Math.round(window.innerHeight * 0.28)}`,
+          scrub: 0.7,
+          invalidateOnRefresh: true,
+          animation: portableHeroTl,
+          onUpdate: () => {
+            const boxed = portableHeroTl.time() >= 0.52;
+            logoShell.classList.toggle("is-boxed", boxed);
+            logoSvg.classList.toggle("is-white", boxed);
+          }
+        });
+
+        gsap.set(verticalStage, { clipPath: "inset(0% 0 0)" });
+        const portableCardsTl = gsap.timeline({ paused: true });
+        addVerticalCards(portableCardsTl);
+        const portableCardsTrigger = ScrollTrigger.create({
+          trigger: verticalStage,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+          invalidateOnRefresh: true,
+          animation: portableCardsTl
+        });
+
+        animations.push(portableHeroTl, portableCardsTl);
+        ownedTriggers.push(portableHeroTrigger, portableCardsTrigger);
+      }
 
       const horizontalStartX = () => horizontalViewport.clientWidth * (window.innerWidth < 1024 ? 0.88 : 0.78);
       const horizontalEndX = () => {

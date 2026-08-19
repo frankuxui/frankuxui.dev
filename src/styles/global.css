@@ -48,10 +48,10 @@
 }
 
 .biografia-intro-section {
-  width: 100vw;
-  inline-size: 100vw;
+  width: 100%;
+  inline-size: 100%;
   max-width: 100%;
-  max-inline-size: 100vw;
+  max-inline-size: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   overflow: clip;
@@ -94,6 +94,7 @@
 
 .biografia-aside-inner {
   width: min(48rem, 49vw);
+  gap: clamp(0.75rem, 1.35dvh, 1.2rem);
   padding-right: 2rem;
   padding-left: clamp(2.5rem, 7vw, 9rem);
   transform-origin: left center;
@@ -258,10 +259,10 @@
 .biografia-horizontal-section,
 .biografia-final-section {
   z-index: 20;
-  width: 100vw;
-  inline-size: 100vw;
+  width: 100%;
+  inline-size: 100%;
   max-width: 100%;
-  max-inline-size: 100vw;
+  max-inline-size: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   overflow: clip;
@@ -461,13 +462,56 @@
   }
 }
 
+@media (min-width: 1280px) {
+  .biografia-aside {
+    align-items: flex-start;
+    padding-top: clamp(13rem, 26dvh, 17rem);
+  }
+}
+
+@media (max-width: 1279px) {
+  .biografia-intro-section {
+    height: 700vh;
+    height: 700dvh;
+  }
+
+  .biografia-logo-layer,
+  .biografia-photo-layer {
+    inset: 0 0 auto;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .biografia-aside {
+    inset: 0 0 auto;
+    height: 100vh;
+    height: 100dvh;
+    align-items: flex-start;
+    padding-top: clamp(10.5rem, 22dvh, 13rem);
+  }
+
+  .biografia-vertical-stage {
+    inset: 100dvh 0 0;
+  }
+
+  .biografia-vertical-cards {
+    position: sticky;
+    inset: auto;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+  }
+}
+
 @media (max-width: 1023px) {
   .biografia-aside {
     position: absolute;
     inset: 0 0 auto;
-    height: auto;
+    height: 100vh;
+    height: 100dvh;
     align-items: flex-start;
-    padding-top: 26dvh;
+    padding-top: clamp(10rem, 22dvh, 12rem);
   }
 
   .biografia-aside-inner {
