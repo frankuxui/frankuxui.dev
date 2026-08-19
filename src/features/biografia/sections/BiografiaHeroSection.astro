@@ -1,11 +1,342 @@
 ---
-
+const loremBlocks = [
+  {
+    title: "Lorem ipsum dolor sit amet",
+    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisi vel consectetur euismod, nunc nisl aliquam nunc, eget aliquam nisl nunc vel nisl. Sed euismod, nisi vel consectetur euismod, nunc nisl aliquam nunc, eget aliquam nisl nunc vel nisl."
+  },
+  {
+    title: "Consectetur adipiscing elit",
+    body: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  },
+  {
+    title: "Sed do eiusmod tempor",
+    body: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+  },
+  {
+    title: "Incididunt ut labore",
+    body: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident."
+  },
+  {
+    title: "Magna aliqua ut enim",
+    body: "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam."
+  },
+  {
+    title: "Quis nostrud exercitation",
+    body: "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda."
+  },
+  {
+    title: "Ullamco laboris nisi",
+    body: "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    title: "Ut aliquip ex ea commodo",
+    body: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
+  }
+];
 ---
 
-<header class="w-full flex items-center justify-center pt-32 sm:pt-36 pb-16 lg:pb-24" style={{ "min-height": "100dvh" }}>
-  <div class="w-full xl:max-w-5xl 3xl:max-w-8xl mx-auto px-10 text-center">
-    <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted anim-fade-up" style={{ "--anim-delay": "0.1s" }}>Biografía</p>
-    <h1 class="mt-6 font-bold tracking-tight text-foreground anim-fade-up text-[clamp(3rem,6.5vw,8rem)] leading-[1.05]" style={{ "--anim-delay": "0.3s" }}>La historia de mi vida</h1>
-    <p class="mt-8 sm:max-w-3xl mx-auto text-foreground-muted leading-relaxed anim-fade-up" style={{ "font-size": "var(--font-h3)", "--anim-delay": "0.5s" }}>Proximamente</p>
+<section id="biografia-hero" class="relative w-full">
+
+  <!-- FIXED layer: SVG Logo (behind photo). Same logo shrinks to a top-left
+       black box and turns white ONLY when its animation fully completes.
+       Color uses var(--primary) so it reacts to palette changes. -->
+  <div class="biografia-logo-layer fixed inset-0 flex items-center justify-center pointer-events-none" style="z-index: 2;">
+    <div class="biografia-logo-shell" style="border-radius: 140px; padding: 130px 260px; will-change: transform;">
+      <svg
+        class="biografia-logo-svg block max-w-none select-none"
+        style="width: clamp(300px, 88vw, 1900px); will-change: transform;"
+        viewBox="0 0 4094 578"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path class="bio-letter" d="M0 569.242V8.75757H317.869V131.364H122.733V227.697H298.444V350.303H122.733V569.242H0Z"/>
+        <path class="bio-letter" d="M363.011 569.242V8.75757H558.147C591.7 8.75757 621.059 16.3292 646.224 31.4725C671.388 46.6158 690.961 68.4186 704.941 96.8807C718.921 125.343 725.912 159.461 725.912 199.235C725.912 239.374 718.701 273.218 704.279 300.768C690.004 328.318 669.917 349.117 644.016 363.166C618.263 377.214 588.168 384.239 553.732 384.239H437.18V266.011H529.009C543.431 266.011 555.719 263.822 565.873 259.443C576.175 254.882 584.048 247.675 589.493 237.823C595.085 227.971 597.881 215.108 597.881 199.235C597.881 183.179 595.085 170.134 589.493 160.099C584.048 149.882 576.175 142.402 565.873 137.658C555.719 132.732 543.431 130.269 529.009 130.269H485.744V569.242H363.011ZM627.902 311.989L740.922 569.242H607.594L497.222 311.989H627.902Z"/>
+        <path class="bio-letter" d="M895.663 569.242H763.217L912.439 8.75757H1080.2L1229.43 569.242H1096.98L998.087 163.11H994.555L895.663 569.242ZM870.939 348.114H1119.94V461.962H870.939V348.114Z"/>
+        <path class="bio-letter" d="M1664.12 8.75757V569.242H1561.7L1398.35 274.769H1395.7V569.242H1272.97V8.75757H1377.16L1537.86 302.136H1541.39V8.75757H1664.12Z"/>
+        <path class="bio-letter" d="M1722.18 569.242V8.75757H1844.91V235.36H1851.09L1987.07 8.75757H2130.11L1977.36 258.348L2133.64 569.242H1987.07L1885.53 359.061L1844.91 424.742V569.242H1722.18Z"/>
+        <path class="bio-letter" d="M2434.07 8.75757H2556.8V367.818C2556.8 410.511 2548.56 447.457 2532.08 478.656C2515.75 509.673 2492.94 533.665 2463.65 550.633C2434.37 567.418 2400.37 575.811 2361.67 575.811C2322.67 575.811 2288.53 567.418 2259.24 550.633C2229.96 533.665 2207.15 509.673 2190.81 478.656C2174.63 447.457 2166.53 410.511 2166.53 367.818V8.75757H2289.26V354.682C2289.26 372.015 2292.36 387.523 2298.54 401.206C2304.72 414.708 2313.25 425.29 2324.14 432.953C2335.18 440.616 2347.69 444.447 2361.67 444.447C2375.8 444.447 2388.3 440.616 2399.19 432.953C2410.08 425.29 2418.62 414.708 2424.8 401.206C2430.98 387.523 2434.07 372.015 2434.07 354.682V8.75757Z"/>
+        <path class="bio-letter" d="M2746.7 8.75757L2820.87 171.867H2824.4L2899.45 8.75757H3036.31L2901.22 289L3041.61 569.242H2901.22L2824.4 402.848H2820.87L2744.05 569.242H2604.54L2743.17 289L2608.96 8.75757H2746.7Z"/>
+        <path class="bio-letter" d="M3236.69 578C3204.32 578 3176.43 570.885 3153.03 556.653C3129.63 542.422 3111.68 523.356 3099.17 499.456C3086.66 475.555 3080.41 449.191 3080.41 420.364C3080.41 399.382 3083.64 380.863 3090.12 364.808C3096.59 348.57 3105.64 333.7 3117.27 320.199C3128.9 306.698 3142.51 293.379 3158.11 280.242L3260.53 201.424C3270.83 193.396 3277.82 185.095 3281.5 176.52C3285.18 167.762 3287.02 160.008 3287.02 153.258C3287.02 144.318 3284.37 136.381 3279.07 129.448C3273.78 122.515 3265.54 119.14 3254.35 119.322C3247.43 119.322 3241.47 120.964 3236.47 124.248C3231.47 127.35 3227.57 131.729 3224.77 137.384C3222.12 143.04 3220.8 149.791 3220.8 157.636C3220.8 168.401 3223.3 179.439 3228.3 190.751C3233.31 201.88 3240.15 213.922 3248.83 226.876C3257.51 239.83 3267.3 254.335 3278.19 270.39L3497.17 569.242H3375.32L3191.66 328.409C3182.68 316.55 3172.75 302.045 3161.86 284.895C3150.97 267.562 3141.55 248.04 3133.61 226.329C3125.81 204.617 3121.91 180.99 3121.91 155.447C3121.91 126.985 3127.42 100.986 3138.46 77.4498C3149.5 53.9138 3164.95 35.1215 3184.82 21.0729C3204.68 7.02431 3227.86 0 3254.35 0C3279.66 0 3301.44 6.47695 3319.69 19.4309C3338.09 32.3848 3352.21 49.6263 3362.07 71.1553C3372.08 92.6843 3377.08 116.403 3377.08 142.311C3377.08 168.401 3371.86 192.758 3361.41 215.382C3351.11 238.005 3336.32 257.801 3317.04 274.769L3223.45 356.871C3216.24 363.075 3209.98 370.19 3204.68 378.218C3199.53 386.246 3196.96 396.645 3196.96 409.417C3196.96 419.999 3198.94 429.03 3202.92 436.51C3206.89 443.991 3212.48 449.738 3219.69 453.752C3227.05 457.766 3235.66 459.773 3245.52 459.773C3260.53 459.773 3275.54 455.303 3290.55 446.363C3305.71 437.24 3319.54 424.56 3332.05 408.322C3344.56 391.902 3354.57 372.562 3362.07 350.303C3369.73 327.862 3373.55 303.414 3373.55 276.958H3469.8C3469.8 309.434 3467.07 340.724 3461.63 370.829C3456.18 400.933 3447.43 428.483 3435.36 453.478C3423.29 478.474 3407.4 499.547 3387.68 516.697C3381.5 520.528 3375.47 524.177 3369.58 527.644C3363.69 531.111 3357.66 534.76 3351.48 538.591C3333.38 553.004 3314.47 563.222 3294.75 569.242C3275.03 575.081 3255.68 578 3236.69 578Z"/>
+        <path class="bio-letter" d="M3790.2 8.75757H3912.94V367.818C3912.94 410.511 3904.7 447.457 3888.21 478.656C3871.88 509.673 3849.07 533.665 3819.78 550.633C3790.5 567.418 3756.5 575.811 3717.8 575.811C3678.8 575.811 3644.66 567.418 3615.38 550.633C3586.09 533.665 3563.28 509.673 3546.95 478.656C3530.76 447.457 3522.66 410.511 3522.66 367.818V8.75757H3645.4V354.682C3645.4 372.015 3648.49 387.523 3654.67 401.206C3660.85 414.708 3669.38 425.29 3680.27 432.953C3691.31 440.616 3703.82 444.447 3717.8 444.447C3731.93 444.447 3744.44 440.616 3755.33 432.953C3766.22 425.29 3774.75 414.708 3780.93 401.206C3787.11 387.523 3790.2 372.015 3790.2 354.682V8.75757Z"/>
+        <path class="bio-letter" d="M4094 8.75757V569.242H3971.27V8.75757H4094Z"/>
+      </svg>
+    </div>
   </div>
-</header>
+
+  <!-- FIXED layer: Photo (in front of logo, ALWAYS fixed, only blurs) -->
+  <div class="biografia-photo-layer fixed inset-0 flex items-end justify-center pointer-events-none" style="z-index: 3;">
+    <img
+      src="/imagen-biography-frankuxui.png"
+      alt="Frank Esteban"
+      class="biografia-photo block select-none"
+      style="height: clamp(72dvh, 96dvh, 1040px); aspect-ratio: 1/1; object-fit: cover; object-position: top center; will-change: filter, opacity;"
+    />
+  </div>
+
+  <!-- FIXED layer: Aside (left texts). Always visible; each text animates in
+       sequentially as you scroll, after the logo animation finishes. -->
+  <div class="biografia-aside fixed inset-y-0 left-0 flex items-center pointer-events-none" style="z-index: 4;">
+    <div class="biografia-aside-inner flex flex-col gap-6" style="padding-left: clamp(2rem, 7vw, 9rem); padding-right: 2rem; max-width: min(46rem, 52vw);">
+      <p class="biografia-eyebrow font-semibold uppercase" style="font-size: clamp(0.9rem, 1.1vw, 1.15rem); letter-spacing: 0.28em; color: var(--primary);">Biografía</p>
+      <h1 class="biografia-title font-bold tracking-tight leading-[0.98]" style="font-size: var(--font-h1); color: var(--foreground);">La historia<br />de mi vida</h1>
+      <p class="biografia-desc" style="font-size: clamp(1.15rem, 1.6vw, 1.6rem); line-height: 1.5; color: var(--foreground-muted); max-width: 34rem;">Diseñador UX/UI y desarrollador Frontend con más de 7 años creando experiencias digitales.</p>
+    </div>
+  </div>
+
+  <!-- Scroll region that drives the intro (logo shrink + photo blur) -->
+  <div class="biografia-hero-spacer w-full" style="height: 240vh;"></div>
+
+  <!-- Scroll region that drives the aside text reveal (one after another) -->
+  <div class="biografia-reveal w-full" style="height: 140vh;"></div>
+
+  <!-- Body: right content, centered in the space beside the fixed aside -->
+  <div class="biografia-body relative w-full" style="z-index: 20;">
+    <div class="biografia-content w-full">
+      <div class="biografia-lorem relative w-full max-w-2xl mx-auto rounded-4xl bg-background/20 backdrop-blur-2xl overflow-hidden transition-colors duration-200 border border-white/80 shadow-[1px_1px_87px_4px_color-mix(in_srgb,var(--color-primary)_10%,transparent)]">
+        <div class="flex flex-col gap-14 p-8 sm:p-12">
+          {loremBlocks.map((block) => (
+            <article class="flex flex-col gap-4">
+              <h3 class="font-semibold tracking-tight" style="font-size: var(--font-h3); color: var(--foreground);">{block.title}</h3>
+              <p style="font-size: var(--font-h5); line-height: 1.7; color: var(--foreground-muted);">{block.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<style>
+  /* Logo color follows the palette variable, so it updates live on palette
+     change. It only turns white once it has fully entered its box. */
+  .bio-letter {
+    fill: var(--primary);
+    transition: fill 0.4s ease;
+  }
+  .biografia-logo-svg.is-white .bio-letter {
+    fill: #ffffff;
+  }
+
+  .biografia-logo-shell {
+    background-color: transparent;
+    transition: background-color 0.4s ease;
+  }
+  .biografia-logo-shell.is-boxed {
+    background-color: #0a0a0a;
+  }
+
+  /* Center the right content in the space to the right of the fixed aside. */
+  .biografia-content {
+    padding: 12dvh 2.5rem 16dvh;
+  }
+  @media (min-width: 1024px) {
+    .biografia-content {
+      padding-left: 40vw;
+      padding-right: 4vw;
+      padding-top: 30dvh;
+      padding-bottom: 40dvh;
+    }
+  }
+
+  /* On small screens the aside is not a fixed side column: it stacks on top. */
+  @media (max-width: 1023px) {
+    .biografia-aside {
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: auto;
+      align-items: flex-start;
+      padding-top: 26dvh;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .biografia-photo {
+      height: 80dvh !important;
+    }
+  }
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .biografia-photo {
+      height: 90dvh !important;
+    }
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const FINAL_SCALE = 0.12;
+
+  function initBiografiaScroll() {
+    const section = document.querySelector("#biografia-hero");
+    if (!section) return;
+
+    const spacer = section.querySelector(".biografia-hero-spacer") as HTMLElement;
+    const reveal = section.querySelector(".biografia-reveal") as HTMLElement;
+    const logoShell = section.querySelector(".biografia-logo-shell") as HTMLElement;
+    const logoSvg = section.querySelector(".biografia-logo-svg") as HTMLElement;
+    const letters = section.querySelectorAll(".bio-letter");
+    const photoLayer = section.querySelector(".biografia-photo-layer") as HTMLElement;
+    const photo = section.querySelector(".biografia-photo") as HTMLElement;
+    const logoLayer = section.querySelector(".biografia-logo-layer") as HTMLElement;
+    const asideLayer = section.querySelector(".biografia-aside") as HTMLElement;
+    const asideInner = section.querySelector(".biografia-aside-inner") as HTMLElement;
+    const eyebrow = section.querySelector(".biografia-eyebrow") as HTMLElement;
+    const title = section.querySelector(".biografia-title") as HTMLElement;
+    const desc = section.querySelector(".biografia-desc") as HTMLElement;
+    const content = section.querySelector(".biografia-lorem") as HTMLElement;
+
+    if (!spacer || !reveal || !logoShell || !logoSvg || !photo || letters.length === 0) return;
+
+    // Clean previous triggers tied to this section.
+    ScrollTrigger.getAll().forEach((st) => {
+      const t = st.vars.trigger;
+      if (t === spacer || t === reveal || t === content) st.kill();
+    });
+
+    // Split the title into characters (once) so it can reveal left-to-right.
+    let titleChars: HTMLElement[] = [];
+    if (title) {
+      if (!title.dataset.split) {
+        const nodes = Array.from(title.childNodes);
+        title.innerHTML = "";
+        nodes.forEach((node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            for (const ch of node.textContent || "") {
+              const span = document.createElement("span");
+              span.textContent = ch;
+              span.style.display = "inline-block";
+              span.style.whiteSpace = "pre";
+              title.appendChild(span);
+            }
+          } else if (node.nodeName === "BR") {
+            title.appendChild(document.createElement("br"));
+          } else {
+            title.appendChild(node);
+          }
+        });
+        title.dataset.split = "true";
+      }
+      titleChars = Array.from(title.querySelectorAll("span")) as HTMLElement[];
+    }
+
+    // --- Phase 0: Intro (letter-by-letter reveal of the big logo) ---
+    document.documentElement.style.overflow = "hidden";
+
+    gsap.set(photo, { opacity: 0, y: 40, filter: "blur(0px)" });
+    gsap.set(logoShell, { scale: 1, x: 0, y: 0, transformOrigin: "50% 50%" });
+    gsap.set(letters, { opacity: 0, y: 30 });
+
+    // Aside texts start hidden; they animate in during the reveal scroll.
+    if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 24 });
+    if (titleChars.length) gsap.set(titleChars, { opacity: 0, x: -24 });
+    if (desc) gsap.set(desc, { opacity: 0, y: 24 });
+
+    const introTl = gsap.timeline({
+      onComplete: () => {
+        document.documentElement.style.overflow = "";
+        initScrollAnimations();
+      }
+    });
+
+    introTl.to(letters, {
+      opacity: 1,
+      y: 0,
+      duration: 0.12,
+      stagger: 0.07,
+      ease: "power1.out",
+      delay: 0.3
+    });
+
+    introTl.to(photo, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.25");
+
+    function computeTarget() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const shellRect = logoShell.getBoundingClientRect();
+      const scaledW = shellRect.width * FINAL_SCALE;
+      const scaledH = shellRect.height * FINAL_SCALE;
+
+      // Align the logo box left edge with the aside text left edge.
+      let targetLeft = Math.min(Math.max(vw * 0.07, 32), 144);
+      if (asideInner) {
+        const r = asideInner.getBoundingClientRect();
+        if (r.left > 0) targetLeft = r.left;
+      }
+      const targetTop = Math.max(vh * 0.12, 92);
+
+      const targetCenterX = targetLeft + scaledW / 2;
+      const targetCenterY = targetTop + scaledH / 2;
+
+      return { x: targetCenterX - vw / 2, y: targetCenterY - vh / 2 };
+    }
+
+    function initScrollAnimations() {
+      // --- Intro scroll: photo blurs, logo shrinks to the corner. The box +
+      // white color appear ONLY at the very end (>=95%), once fully shrunk. ---
+      const introScroll = gsap.timeline({
+        scrollTrigger: {
+          trigger: spacer,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const boxed = self.progress >= 0.95;
+            logoShell.classList.toggle("is-boxed", boxed);
+            logoSvg.classList.toggle("is-white", boxed);
+          }
+        }
+      });
+
+      introScroll.to(photo, { filter: "blur(22px)", opacity: 0.5, duration: 0.55, ease: "none" }, 0);
+      introScroll.to(
+        logoShell,
+        {
+          scale: FINAL_SCALE,
+          x: () => computeTarget().x,
+          y: () => computeTarget().y,
+          duration: 1,
+          ease: "power2.inOut"
+        },
+        0
+      );
+
+      // --- Reveal scroll: aside texts enter one after another as you scroll. ---
+      const revealTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: reveal,
+          start: "top bottom",
+          end: "bottom bottom",
+          scrub: 1,
+          invalidateOnRefresh: true
+        }
+      });
+
+      if (eyebrow) revealTl.to(eyebrow, { opacity: 1, y: 0, ease: "power2.out", duration: 0.6 }, 0.05);
+      if (titleChars.length)
+        revealTl.to(titleChars, { opacity: 1, x: 0, ease: "power2.out", duration: 0.6, stagger: 0.03 }, 0.3);
+      if (desc) revealTl.to(desc, { opacity: 1, y: 0, ease: "power2.out", duration: 0.6 }, 1.1);
+
+      // --- Fade the fixed layers out as the section ends (keeps footer clean). ---
+      if (content) {
+        gsap.to([photoLayer, logoLayer, asideLayer], {
+          autoAlpha: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: content,
+            start: "bottom 85%",
+            end: "bottom 35%",
+            scrub: true
+          }
+        });
+      }
+    }
+  }
+
+  document.addEventListener("astro:page-load", initBiografiaScroll);
+</script>
