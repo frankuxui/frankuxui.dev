@@ -70,13 +70,14 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
 
 <script is:inline>
   document.documentElement.classList.add("biografia-js");
-  if ("scrollRestoration" in history) {
+  const isMobileBiography = window.matchMedia("(max-width: 767px)").matches;
+  if (!isMobileBiography && "scrollRestoration" in history) {
     if (!("__biografiaPreviousScrollRestoration" in window)) {
       window.__biografiaPreviousScrollRestoration = history.scrollRestoration;
     }
     history.scrollRestoration = "manual";
   }
-  window.scrollTo(0, 0);
+  if (!isMobileBiography) window.scrollTo(0, 0);
 </script>
 
 <section id="biografia-hero" class="biografia-intro-section relative w-full">
@@ -115,12 +116,15 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
   </div>
 
   <div class="biografia-photo-layer absolute inset-0 flex items-end justify-center pointer-events-none" style="z-index: 26;">
-    <img
-      src="/imagen-biography-frankuxui.png"
-      alt="Frank Esteban"
-      class="biografia-photo block select-none"
-      style="height: clamp(72dvh, 90dvh, 1040px); aspect-ratio: 1/1; object-fit: cover; object-position: top center; will-change: filter, opacity;"
-    />
+    <picture class="contents">
+      <source srcset="/imagen-biography-frankuxui-mobile.png" media="(max-width: 767px)" />
+      <img
+        src="/imagen-biography-frankuxui.png"
+        alt="Frank Esteban"
+        class="biografia-photo block select-none"
+        style="height: clamp(72dvh, 90dvh, 1040px); aspect-ratio: 1/1; object-fit: cover; object-position: top center; will-change: filter, opacity;"
+      />
+    </picture>
   </div>
 
   <div class="biografia-vertical-stage absolute inset-0 pointer-events-none" data-header-contrast="dark">
@@ -204,10 +208,9 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-  gsap.registerPlugin(ScrollTrigger);
-
   const FINAL_SCALE = 0.12;
   const SCROLL_DISTANCE_FACTOR = 0.9;
+  const MOBILE_MEDIA_QUERY = "(max-width: 767px)";
 
   type BiografiaWindow = Window & {
     __biografiaCleanup?: () => void;
@@ -218,9 +221,65 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
 
   const biografiaWindow = window as BiografiaWindow;
 
+  function initMobileHorizontalScroll(): (() => void) | undefined {
+    const horizontalSection = document.querySelector(".biografia-horizontal-section") as HTMLElement;
+    const horizontalViewport = document.querySelector(".biografia-horizontal-viewport") as HTMLElement;
+    const horizontalTrack = document.querySelector(".biografia-horizontal-track") as HTMLElement;
+    const horizontalCards = Array.from(document.querySelectorAll(".biografia-card")) as HTMLElement[];
+
+    if (!horizontalSection || !horizontalViewport || !horizontalTrack || horizontalCards.length !== 5) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.set(horizontalTrack, { autoAlpha: 1, scale: 1, transformOrigin: "50% 50%" });
+
+    const horizontalStartX = () => horizontalViewport.clientWidth * 0.88;
+    const horizontalEndX = () => {
+      const lastCard = horizontalCards.at(-1);
+      return lastCard ? -(lastCard.offsetLeft + lastCard.offsetWidth) : -horizontalTrack.scrollWidth;
+    };
+    const horizontalDistance = () => Math.max(horizontalStartX() - horizontalEndX(), window.innerWidth);
+
+    const horizontalTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: horizontalSection,
+        start: "top top",
+        end: () => `+=${Math.max(Math.round(horizontalDistance() * SCROLL_DISTANCE_FACTOR), window.innerWidth)}`,
+        pin: true,
+        pinSpacing: "margin",
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true
+      }
+    });
+
+    horizontalTl.fromTo(horizontalTrack, { x: horizontalStartX }, { x: horizontalEndX, duration: 1, ease: "none" }, 0);
+    ScrollTrigger.refresh();
+
+    return () => {
+      horizontalTl.scrollTrigger?.kill();
+      horizontalTl.kill();
+      gsap.set(horizontalTrack, { clearProps: "transform" });
+    };
+  }
+
   function initBiografiaScroll(): (() => void) | undefined {
     const introSection = document.querySelector("#biografia-hero") as HTMLElement;
     if (!introSection) return;
+
+    // Hero and vertical cards stay in document flow on mobile. Only the
+    // already-established horizontal card narrative keeps its scroll motion.
+    if (window.matchMedia(MOBILE_MEDIA_QUERY).matches) {
+      if (biografiaWindow.__biografiaPreviousScrollRestoration) {
+        history.scrollRestoration = biografiaWindow.__biografiaPreviousScrollRestoration;
+        delete biografiaWindow.__biografiaPreviousScrollRestoration;
+      }
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      document.documentElement.style.overscrollBehavior = "";
+      return initMobileHorizontalScroll() ?? (() => undefined);
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
 
     const logoShell = introSection.querySelector(".biografia-logo-shell") as HTMLElement;
     const logoSvg = introSection.querySelector(".biografia-logo-svg") as HTMLElement;
@@ -430,11 +489,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
         timeline.addLabel("asideTransform");
         timeline.to(asideInner, { scale: () => getCompactScale(), y: () => getCompactY(), duration: 0.62, ease: "power2.inOut" }, "asideTransform");
         timeline.to([eyebrow, title, desc], { color: "var(--biografia-stage-text)", duration: 0.62, ease: "none" }, "asideTransform");
-        timeline.to(
-          verticalStage,
-          { clipPath: "inset(0% 0 0)", duration: 0.62, ease: "power2.inOut", onUpdate: syncLogoColorWithStage },
-          "asideTransform"
-        );
+        timeline.to(verticalStage, { clipPath: "inset(0% 0 0)", duration: 0.62, ease: "power2.inOut", onUpdate: syncLogoColorWithStage }, "asideTransform");
         timeline.to({}, { duration: 0.16 });
       }
 
@@ -462,8 +517,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
         const storyTrigger = ScrollTrigger.create({
           trigger: introSection,
           start: "top top",
-          end: () =>
-            `+=${Math.round(Math.max(window.innerHeight * 9, storyTl.duration() * window.innerHeight) * SCROLL_DISTANCE_FACTOR)}`,
+          end: () => `+=${Math.round(Math.max(window.innerHeight * 9, storyTl.duration() * window.innerHeight) * SCROLL_DISTANCE_FACTOR)}`,
           pin: true,
           pinSpacing: "margin",
           scrub: 1,
@@ -533,8 +587,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
         scrollTrigger: {
           trigger: finalSection,
           start: "top top",
-          end: () =>
-            `+=${Math.round(Math.max(window.innerHeight * 2.2, finalTextChars.length * 42) * SCROLL_DISTANCE_FACTOR)}`,
+          end: () => `+=${Math.round(Math.max(window.innerHeight * 2.2, finalTextChars.length * 42) * SCROLL_DISTANCE_FACTOR)}`,
           pin: true,
           pinSpacing: "margin",
           scrub: 1,

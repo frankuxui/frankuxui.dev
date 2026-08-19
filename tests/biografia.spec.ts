@@ -131,10 +131,7 @@ test.describe("Biografía motion narrative", () => {
       stageZIndex: Number(getComputedStyle(document.querySelector(".biografia-vertical-stage")!).zIndex),
       visibleLogoLetters: Array.from(document.querySelectorAll(".bio-letter")).filter((letter) => Number(getComputedStyle(letter).opacity) > 0.9).length,
       logoLetterFill: getComputedStyle(document.querySelector(".bio-letter")!).fill,
-      horizontalAlignmentDelta: Math.abs(
-        document.querySelector(".biografia-logo-svg")!.getBoundingClientRect().left -
-          document.querySelector(".biografia-eyebrow")!.getBoundingClientRect().left
-      )
+      horizontalAlignmentDelta: Math.abs(document.querySelector(".biografia-logo-svg")!.getBoundingClientRect().left - document.querySelector(".biografia-eyebrow")!.getBoundingClientRect().left)
     }));
     expect(transformedAside.eyebrowColor).toBe("rgb(245, 245, 240)");
     expect(transformedAside.titleColor).toBe("rgb(245, 245, 240)");
@@ -317,58 +314,132 @@ test.describe("Biografía motion narrative", () => {
     expect(laptopState.scrollWidth).toBeLessThanOrEqual(laptopState.viewportWidth);
   });
 
-  test("mantiene todas las fases y la composición dentro del viewport móvil", async ({ page }) => {
+  test("mantiene el Hero estático y recupera las cards horizontales animadas en móvil", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/biografia");
-    await waitForBiografiaIntro(page);
+    await page.waitForLoadState("domcontentloaded");
 
-    await scrollPortableCardsTo(page, 0.92);
     const mobileGeometry = await page.evaluate(() => {
+      const logo = document.querySelector(".biografia-logo-svg")!.getBoundingClientRect();
+      const logoLayer = document.querySelector(".biografia-logo-layer")!.getBoundingClientRect();
       const aside = document.querySelector(".biografia-aside-inner")!.getBoundingClientRect();
-      const activeCard = Array.from(document.querySelectorAll(".biografia-vertical-card")).at(-1)!.getBoundingClientRect();
+      const photo = document.querySelector(".biografia-photo-layer")!.getBoundingClientRect();
+      const photoImage = document.querySelector(".biografia-photo")!.getBoundingClientRect();
+      const stage = document.querySelector(".biografia-vertical-stage")!.getBoundingClientRect();
+      const cards = Array.from(document.querySelectorAll(".biografia-vertical-card"));
+      const cardRects = cards.map((card) => card.getBoundingClientRect());
+      const title = document.querySelector(".biografia-title") as HTMLElement;
       return {
+        htmlOverflow: document.documentElement.style.overflow,
+        bodyOverflow: document.body.style.overflow,
+        scrollY: window.scrollY,
+        titleWasSplit: title.dataset.split === "true",
+        titleCharacterSpans: title.querySelectorAll("span").length,
+        introHasPinSpacer: document.querySelector("#biografia-hero")?.parentElement?.classList.contains("pin-spacer") ?? false,
+        logoPosition: getComputedStyle(document.querySelector(".biografia-logo-layer")!).position,
+        asidePosition: getComputedStyle(document.querySelector(".biografia-aside")!).position,
+        cardsPosition: getComputedStyle(document.querySelector(".biografia-vertical-cards")!).position,
+        firstCardPosition: getComputedStyle(cards[0]).position,
+        logoOpacity: Number(getComputedStyle(document.querySelector(".bio-letter")!).opacity),
+        photoOpacity: Number(getComputedStyle(document.querySelector(".biografia-photo")!).opacity),
+        eyebrowOpacity: Number(getComputedStyle(document.querySelector(".biografia-eyebrow")!).opacity),
+        asideBeforePhoto: aside.bottom <= photo.top,
+        logoOverlapsPhoto: logo.top < photoImage.bottom && logo.bottom > photoImage.top,
+        logoBehindPhoto: Number(getComputedStyle(document.querySelector(".biografia-logo-layer")!).zIndex) < Number(getComputedStyle(document.querySelector(".biografia-photo-layer")!).zIndex),
+        photoStageGap: Math.abs(stage.top - photo.bottom),
+        compositionHeight: Math.abs(logoLayer.height - photo.height),
+        cardsInOrder: cardRects.every((rect, index) => index === 0 || rect.top > cardRects[index - 1].top),
         asideLeft: aside.left,
         asideRight: aside.right,
-        cardLeft: activeCard.left,
-        cardRight: activeCard.right,
-        cardBottom: activeCard.bottom,
-        viewportHeight: window.innerHeight,
-        verticalCards: document.querySelectorAll(".biografia-vertical-card").length,
+        cardsInsideViewport: cardRects.every((rect) => rect.left >= 0 && rect.right <= window.innerWidth),
+        verticalCards: cards.length,
         horizontalCards: document.querySelectorAll(".biografia-card").length,
         pageScrollWidth: document.documentElement.scrollWidth
       };
     });
+    expect(mobileGeometry.htmlOverflow).not.toBe("hidden");
+    expect(mobileGeometry.bodyOverflow).not.toBe("hidden");
+    expect(mobileGeometry.scrollY).toBe(0);
+    expect(mobileGeometry.titleWasSplit).toBe(false);
+    expect(mobileGeometry.titleCharacterSpans).toBe(0);
+    expect(mobileGeometry.introHasPinSpacer).toBe(false);
+    expect(mobileGeometry.logoPosition).toBe("relative");
+    expect(mobileGeometry.asidePosition).toBe("relative");
+    expect(mobileGeometry.cardsPosition).toBe("relative");
+    expect(mobileGeometry.firstCardPosition).toBe("relative");
+    expect(mobileGeometry.logoOpacity).toBe(1);
+    expect(mobileGeometry.photoOpacity).toBe(1);
+    expect(mobileGeometry.eyebrowOpacity).toBe(1);
+    expect(mobileGeometry.asideBeforePhoto).toBe(true);
+    expect(mobileGeometry.logoOverlapsPhoto).toBe(true);
+    expect(mobileGeometry.logoBehindPhoto).toBe(true);
+    expect(mobileGeometry.photoStageGap).toBeLessThanOrEqual(1);
+    expect(mobileGeometry.compositionHeight).toBeLessThanOrEqual(1);
+    expect(mobileGeometry.cardsInOrder).toBe(true);
     expect(mobileGeometry.asideLeft).toBeGreaterThanOrEqual(0);
     expect(mobileGeometry.asideRight).toBeLessThanOrEqual(390);
-    expect(mobileGeometry.cardLeft).toBeGreaterThanOrEqual(0);
-    expect(mobileGeometry.cardRight).toBeLessThanOrEqual(390);
-    expect(mobileGeometry.cardBottom).toBeLessThanOrEqual(mobileGeometry.viewportHeight);
+    expect(mobileGeometry.cardsInsideViewport).toBe(true);
     expect(mobileGeometry.verticalCards).toBe(5);
     expect(mobileGeometry.horizontalCards).toBe(5);
     expect(mobileGeometry.pageScrollWidth).toBeLessThanOrEqual(390);
-    await expect(page.locator('[data-toggle="header"]')).toHaveAttribute("data-contrast", "dark");
-    await expect(page.locator(".header-mobile-toggle")).toHaveCSS("color", "rgb(245, 245, 240)");
 
     const horizontalStart = await page.locator(".biografia-horizontal-section").evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
     await page.evaluate((top) => window.scrollTo(0, top), horizontalStart);
-    await page.waitForTimeout(900);
+    await page.waitForTimeout(300);
 
     const mobileHorizontal = await page.evaluate(() => {
       const heading = document.querySelector(".biografia-horizontal-heading")!.getBoundingClientRect();
       const intro = document.querySelector(".biografia-horizontal-intro")!.getBoundingClientRect();
       const card = document.querySelector(".biografia-card")!.getBoundingClientRect();
+      const viewport = document.querySelector(".biografia-horizontal-viewport") as HTMLElement;
+      const section = document.querySelector(".biografia-horizontal-section")!;
       return {
         headingBottom: heading.bottom,
         introTop: intro.top,
         introRight: intro.right,
         cardWidth: card.width,
         cardHeight: card.height,
+        viewportPosition: getComputedStyle(viewport).position,
+        viewportOverflowX: getComputedStyle(viewport).overflowX,
+        trackTransform: getComputedStyle(document.querySelector(".biografia-horizontal-track")!).transform,
+        sectionHasPinSpacer: section.parentElement?.classList.contains("pin-spacer") ?? false,
         scrollWidth: document.documentElement.scrollWidth
       };
     });
     expect(mobileHorizontal.introTop).toBeGreaterThanOrEqual(mobileHorizontal.headingBottom);
     expect(mobileHorizontal.introRight).toBeLessThanOrEqual(390);
     expect(mobileHorizontal.cardHeight).toBeGreaterThan(mobileHorizontal.cardWidth);
+    expect(mobileHorizontal.viewportPosition).toBe("absolute");
+    expect(mobileHorizontal.viewportOverflowX).toBe("clip");
+    expect(mobileHorizontal.trackTransform).not.toBe("none");
+    expect(mobileHorizontal.sectionHasPinSpacer).toBe(true);
     expect(mobileHorizontal.scrollWidth).toBeLessThanOrEqual(390);
+
+    const horizontalDistance = await page.locator(".biografia-horizontal-section").evaluate((_section, factor) => {
+      const viewport = document.querySelector(".biografia-horizontal-viewport") as HTMLElement;
+      const lastCard = document.querySelector(".biografia-card:last-child") as HTMLElement;
+      const startX = viewport.clientWidth * 0.88;
+      const endX = -(lastCard.offsetLeft + lastCard.offsetWidth);
+      return Math.max(Math.round(Math.max(startX - endX, window.innerWidth) * factor), window.innerWidth);
+    }, SCROLL_DISTANCE_FACTOR);
+    await page.evaluate(({ top, distance }) => window.scrollTo(0, top + distance * 0.5), {
+      top: horizontalStart,
+      distance: horizontalDistance
+    });
+    await page.waitForTimeout(700);
+    const middleTransform = await page.locator(".biografia-horizontal-track").evaluate((track) => getComputedStyle(track).transform);
+    expect(middleTransform).not.toBe(mobileHorizontal.trackTransform);
+
+    await expect(page.locator('[data-toggle="header"]')).toHaveAttribute("data-contrast", "dark");
+    await expect(page.locator(".header-mobile-toggle")).toHaveCSS("color", "rgb(245, 245, 240)");
+
+    const finalState = await page.locator(".biografia-final-section").evaluate((section) => ({
+      position: getComputedStyle(section).position,
+      hasPinSpacer: section.parentElement?.classList.contains("pin-spacer") ?? false,
+      visibleCharacters: Array.from(section.querySelectorAll(".biografia-final-char")).filter((character) => Number(getComputedStyle(character).opacity) > 0.9).length
+    }));
+    expect(finalState.position).not.toBe("fixed");
+    expect(finalState.hasPinSpacer).toBe(false);
+    expect(finalState.visibleCharacters).toBeGreaterThan(0);
   });
 });
