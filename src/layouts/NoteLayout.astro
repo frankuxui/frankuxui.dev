@@ -1,15 +1,23 @@
 ---
 import Root from "./Root.astro";
+import NoteToc from "@/components/NoteToc.astro";
 import { noteModalTransition } from "@/lib/transitions";
 import { formatNoteDate, slugifyTag } from "@/utils/notes";
 import type { CollectionEntry } from "astro:content";
 
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
 interface Props {
   note: CollectionEntry<"notes">;
   readingText: string;
+  headings?: Heading[];
 }
 
-const { note, readingText } = Astro.props as Props;
+const { note, readingText, headings = [] } = Astro.props as Props;
 const { title, description, pubDate, updatedDate, icon, accentColor, tags, cover } = note.data;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
@@ -43,8 +51,10 @@ const breadcrumbSchema = {
   <script type="application/ld+json" is:inline set:html={JSON.stringify(articleSchema)} />
   <script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
 
+  <NoteToc headings={headings} />
+
   <article
-    class="note-sheet relative w-full max-w-7xl mx-auto mt-24 sm:mt-28 mb-16 rounded-4xl bg-background/40 backdrop-blur-2xl overflow-hidden transition-colors duration-200 border border-white/80 shadow-[1px_1px_87px_4px_color-mix(in_srgb,var(--color-primary)_20%,transparent)]"
+    class="note-sheet relative w-full max-w-7xl mx-auto mt-24 sm:mt-28 mb-16 rounded-4xl bg-background/20 backdrop-blur-2xl overflow-hidden transition-colors duration-200 border border-white/80 shadow-[1px_1px_87px_4px_color-mix(in_srgb,var(--color-primary)_10%,transparent)]"
     aria-labelledby="note-title"
   >
     <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/60 to-transparent"></div>

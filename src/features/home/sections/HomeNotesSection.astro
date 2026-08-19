@@ -1,0 +1,52 @@
+---
+import { getCollection } from "astro:content";
+import { formatNoteDate } from "@/utils/notes";
+
+const notes = (await getCollection("notes", ({ data }) => (import.meta.env.PROD ? !data.draft : true))).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 3);
+---
+
+<section id="notas" class="scroll-mt-32 py-16 lg:py-24" aria-labelledby="home-notes-title">
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24 mx-auto max-w-6xl">
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Notas y apuntes</p>
+        <h2 id="home-notes-title" class="mt-4 font-medium tracking-tight text-foreground text-[clamp(1.5rem,4vw,4rem)] leading-[1.2]">Descubre mis últimas anotaciones.</h2>
+        <p class="mt-6 max-w-xl text-foreground-muted leading-relaxed text-lg xl:text-xl">
+          Reflexiones, aprendizajes y apuntes sobre diseño, desarrollo frontend y todo lo que me inspira en el camino.
+        </p>
+        <a href="/notas" class="mt-10 inline-flex items-center gap-2 font-medium h-12 bg-primary rounded-full text-primary-foreground px-8">
+          Ver todas las notas <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <ul class="flex flex-col gap-4">
+        {
+          notes.map((note, i) => (
+            <li class="anim-fade-up" style={{ "--anim-delay": `${0.1 + i * 0.1}s` }}>
+              <a
+                href={`/notas/${note.id}`}
+                class="group relative flex items-center gap-5 overflow-hidden rounded-3xl bg-background/40 backdrop-blur-xl p-6 xl:p-8 transition-colors duration-200 hover:bg-background/70"
+              >
+                <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/50 to-transparent" />
+                <span
+                  class="inline-flex size-14 flex-none items-center justify-center rounded-full text-2xl transition-transform duration-200 group-hover:scale-105"
+                  style={{ "background-color": note.data.accentColor }}
+                  aria-hidden="true"
+                >
+                  {note.data.icon}
+                </span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-medium tracking-tight text-foreground text-base xl:text-lg leading-snug">{note.data.title}</h3>
+                  <p class="mt-1 text-sm text-foreground-muted/70">{formatNoteDate(note.data.pubDate)}</p>
+                </div>
+                <span class="text-foreground-muted/40 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

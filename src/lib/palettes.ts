@@ -95,6 +95,48 @@ export const palettes: PaletteDefinition[] = [
     primary: "#077C78",
     primaryForeground: "#ffffff",
     gradient: ["#07BEB8", "#3DCCC7", "#68D8D6", "#9CEAEF", "#C4FFF9"]
+  },
+  {
+    id: "coral-reef",
+    name: "Coral Reef",
+    primary: "#5c2a2e",
+    primaryForeground: "#fff5f3",
+    gradient: ["#f8d5cc", "#d8efe6", "#fde8d5", "#f0ddd5", "#e0f0e8"]
+  },
+  {
+    id: "honey-dew",
+    name: "Honey Dew",
+    primary: "#3a3520",
+    primaryForeground: "#fdf8ef",
+    gradient: ["#f0e8c8", "#dde8d0", "#f8edd0", "#e5e0c8", "#e8f0d8"]
+  },
+  {
+    id: "midnight-lavender",
+    name: "Midnight Lavender",
+    primary: "#2e2350",
+    primaryForeground: "#f5f2fc",
+    gradient: ["#e4d9f5", "#d0e3f7", "#f5dff0", "#dce8f9", "#ece0fa"]
+  },
+  {
+    id: "citrus-grove",
+    name: "Citrus Grove",
+    primary: "#1f3d1a",
+    primaryForeground: "#f2fbef",
+    gradient: ["#f5f0c9", "#d9f0c0", "#fce8b8", "#e0f5d0", "#f0f7d8"]
+  },
+  {
+    id: "rose-quartz",
+    name: "Rose Quartz",
+    primary: "#4a1f30",
+    primaryForeground: "#fdf0f3",
+    gradient: ["#f7d9e0", "#f0e0e8", "#fce4d8", "#f5d5db", "#ede0e5"]
+  },
+  {
+    id: "arctic-frost",
+    name: "Arctic Frost",
+    primary: "#17293d",
+    primaryForeground: "#eef7fc",
+    gradient: ["#d5ecf7", "#e0f2fa", "#f0f9fc", "#d8e8f0", "#e8f5f9"]
   }
 ];
 

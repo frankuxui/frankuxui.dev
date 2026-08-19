@@ -20,10 +20,10 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { note } = Astro.props as Props;
-const { Content } = await render(note);
+const { Content, headings } = await render(note);
 const readingText = estimateReadingTime(note.body ?? "");
 ---
 
-<NoteLayout note={note} readingText={readingText}>
+<NoteLayout note={note} readingText={readingText} headings={headings}>
   <Content />
 </NoteLayout>
