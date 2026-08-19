@@ -9,6 +9,14 @@
   --background: #ffffff;
   --background-card: #e8dfd2;
   --body-background: #f0e8dc;
+  --biografia-logo-box: #0a0a0a;
+  --biografia-logo-on-box: #ffffff;
+  --biografia-stage-bg: #000000;
+  --biografia-stage-card: #101010;
+  --biografia-stage-card-raised: #171717;
+  --biografia-stage-text: #f5f5f0;
+  --biografia-stage-muted: #aaa9a3;
+  --biografia-stage-char-dim: #292929;
 
   --primary: #145b5b;
   --primary-foreground: #e1f8f8;
@@ -32,6 +40,637 @@
   --font-link: clamp(0.875rem, 0.7985rem + 0.3265vw, 1.125rem);
   --font-mini: clamp(0.875rem, 0.8367rem + 0.1633vw, 1rem);
   --font-h2-display: clamp(1.875rem, 1.301rem + 2vw, 3.95rem);
+}
+
+/* Biografia: the same wordmark moves from cover to editorial signature. */
+#biografia-hero {
+  isolation: isolate;
+}
+
+.biografia-intro-section {
+  width: 100vw;
+  inline-size: 100vw;
+  max-width: 100%;
+  max-inline-size: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: clip;
+  contain: paint;
+}
+
+.biografia-logo-shell {
+  padding: clamp(4.5rem, 12dvh, 8.125rem) clamp(8rem, 13vw, 16.25rem);
+  border: 1px solid transparent;
+  border-radius: clamp(4rem, 7vw, 8.75rem);
+  background-color: transparent;
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease;
+  will-change: transform;
+}
+
+.biografia-logo-shell.is-boxed {
+  background-color: var(--biografia-logo-box);
+}
+
+.biografia-logo-svg {
+  width: min(95vw, 2000px);
+  height: auto;
+  will-change: transform;
+}
+
+.bio-letter {
+  fill: var(--primary);
+  transition: fill 0.4s ease;
+}
+
+.biografia-logo-svg.is-white .bio-letter {
+  fill: var(--biografia-logo-on-box);
+}
+
+.biografia-aside {
+  z-index: 30;
+}
+
+.biografia-aside-inner {
+  width: min(48rem, 49vw);
+  padding-right: 2rem;
+  padding-left: clamp(2.5rem, 7vw, 9rem);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.biografia-eyebrow {
+  color: var(--primary);
+  font-size: clamp(0.9rem, 1.1vw, 1.15rem);
+  letter-spacing: 0.28em;
+  will-change: transform, opacity, color;
+}
+
+.biografia-title {
+  max-width: 100%;
+  color: var(--foreground);
+  font-size: clamp(2.8rem, 11.5vw, 4.75rem);
+  text-wrap: nowrap;
+  will-change: transform, opacity, color;
+}
+
+.biografia-desc {
+  max-width: 34rem;
+  color: var(--foreground-muted);
+  font-size: clamp(1.15rem, 1.6vw, 1.6rem);
+  line-height: 1.5;
+  will-change: transform, opacity, color;
+}
+
+.biografia-vertical-stage {
+  z-index: 10;
+  overflow: clip;
+  background: var(--biografia-stage-bg);
+  clip-path: inset(100% 0 0);
+  contain: paint;
+  will-change: clip-path;
+}
+
+.biografia-vertical-cards {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: clamp(2rem, 5vw, 6rem);
+  padding-left: min(45vw, 52rem);
+}
+
+.biografia-vertical-card {
+  position: absolute;
+  right: auto;
+  left: calc(50% - min(27vw, 31rem));
+  display: flex;
+  overflow: hidden;
+  width: min(54vw, 62rem);
+  height: clamp(34rem, 76dvh, 52rem);
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(2rem, 4vw, 4.75rem);
+  border-radius: clamp(0.35rem, 0.65vw, 0.75rem);
+  isolation: isolate;
+  will-change: transform;
+  background: black;
+}
+
+.biografia-vertical-card::before {
+  position: absolute;
+  z-index: 1;
+  inset: -1px;
+  background:
+    radial-gradient(
+      ellipse 76% 72% at 50% 50%,
+      transparent 18%,
+      color-mix(in srgb, var(--biografia-stage-bg) 16%, transparent) 48%,
+      color-mix(in srgb, var(--biografia-stage-bg) 72%, transparent) 78%,
+      var(--biografia-stage-bg) 100%
+    ),
+    linear-gradient(
+      90deg,
+      var(--biografia-stage-bg) 0%,
+      color-mix(in srgb, var(--biografia-stage-bg) 24%, transparent) 16%,
+      transparent 34% 66%,
+      color-mix(in srgb, var(--biografia-stage-bg) 24%, transparent) 84%,
+      var(--biografia-stage-bg) 100%
+    );
+  content: "";
+  pointer-events: none;
+}
+
+.biografia-vertical-card::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--biografia-stage-bg) 62%, transparent) 0%,
+    color-mix(in srgb, var(--biografia-stage-bg) 20%, transparent) 38%,
+    color-mix(in srgb, var(--biografia-stage-bg) 92%, transparent) 100%
+  );
+  content: "";
+  pointer-events: none;
+}
+
+.biografia-vertical-card-image {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.biografia-vertical-card:nth-child(even) {
+  background: var(--biografia-stage-card-raised);
+}
+
+.biografia-vertical-card-meta {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: auto minmax(2rem, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  color: var(--biografia-stage-muted);
+  font-size: clamp(0.75rem, 0.9vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.biografia-vertical-card-rule {
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.biografia-vertical-card-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 3dvh, 2.5rem);
+}
+
+.biografia-vertical-card-copy h2 {
+  max-width: 11ch;
+  color: var(--biografia-stage-text);
+  font-size: clamp(3.25rem, 5.5vw, 7rem);
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  line-height: 0.92;
+}
+
+.biografia-vertical-card-copy p {
+  max-width: 38rem;
+  color: var(--biografia-stage-muted);
+  font-size: clamp(1rem, 1.3vw, 1.35rem);
+  line-height: 1.55;
+}
+
+.biografia-horizontal-section,
+.biografia-final-section {
+  z-index: 20;
+  width: 100vw;
+  inline-size: 100vw;
+  max-width: 100%;
+  max-inline-size: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: clip;
+  contain: paint;
+  color: var(--biografia-stage-text);
+}
+
+.biografia-horizontal-section {
+  background: var(--primary);
+}
+
+.biografia-horizontal-header {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+  align-items: start;
+  gap: clamp(3rem, 8vw, 10rem);
+  padding: clamp(6.5rem, 11dvh, 8rem) clamp(2.5rem, 5vw, 6rem) 0;
+  color: var(--primary-foreground);
+  pointer-events: none;
+}
+
+.biografia-horizontal-heading {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.5dvh, 1.25rem);
+}
+
+.biografia-horizontal-eyebrow {
+  color: color-mix(in srgb, var(--primary-foreground) 76%, var(--primary));
+  font-size: clamp(0.7rem, 0.78vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.biografia-horizontal-heading h2 {
+  max-width: 22ch;
+  color: var(--primary-foreground);
+  font-size: clamp(2.8rem, 4.4vw, 5.8rem);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.biografia-horizontal-intro {
+  max-width: 33rem;
+  margin-top: clamp(1.75rem, 4dvh, 3rem);
+  color: color-mix(in srgb, var(--primary-foreground) 78%, var(--primary));
+  font-size: clamp(0.95rem, 1.15vw, 1.2rem);
+  line-height: 1.6;
+}
+
+.biografia-final-section {
+  background: var(--biografia-stage-bg);
+}
+
+.biografia-horizontal-viewport,
+.biografia-final-viewport {
+  position: absolute;
+  inset: 0;
+  max-width: 100%;
+  overflow: clip;
+  clip-path: inset(0);
+  contain: paint;
+}
+
+.biografia-horizontal-viewport {
+  inset: clamp(18rem, 34dvh, 25rem) 0 0;
+}
+
+.biografia-horizontal-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  align-items: center;
+  gap: clamp(1.75rem, 2.7vw, 3.5rem);
+  padding-left: 0;
+  padding-right: clamp(2rem, 6vw, 7rem);
+  will-change: transform, opacity;
+}
+
+.biografia-card {
+  display: flex;
+  height: min(60dvh, 42rem);
+  flex: 0 0 clamp(16.25rem, 24vw, 22.5rem);
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.75rem, 2.4vw, 2.75rem);
+  border-radius: clamp(1.25rem, 1.8vw, 2rem);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--primary-foreground) 6%, transparent), transparent 45%), var(--biografia-stage-card);
+}
+
+.biografia-card:nth-child(even) {
+  background: linear-gradient(145deg, color-mix(in srgb, var(--primary-foreground) 6%, transparent), transparent 45%), color-mix(in srgb, var(--primary) 82%, var(--biografia-stage-bg));
+}
+
+.biografia-card-meta {
+  display: grid;
+  grid-template-columns: auto minmax(1.5rem, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  color: color-mix(in srgb, var(--primary-foreground) 82%, var(--primary));
+  font-size: clamp(0.75rem, 0.9vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.biografia-card-rule {
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.biografia-card-label {
+  color: var(--biografia-stage-muted);
+}
+
+.biografia-card-copy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 2.5dvh, 2rem);
+}
+
+.biografia-card-copy h2 {
+  max-width: 10ch;
+  color: var(--biografia-stage-text);
+  font-size: clamp(2.25rem, 2.9vw, 3.6rem);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 0.96;
+}
+
+.biografia-card-copy p {
+  color: var(--biografia-stage-muted);
+  font-size: clamp(0.9rem, 1vw, 1.05rem);
+  line-height: 1.55;
+}
+
+.biografia-final-viewport {
+  display: flex;
+  align-items: center;
+  padding: clamp(2rem, 5vw, 6rem);
+}
+
+.biografia-final-title {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  color: var(--biografia-stage-char-dim);
+  font-size: clamp(4rem, 7.6vw, 10rem);
+  font-weight: 600;
+  letter-spacing: -0.065em;
+  line-height: 0.9;
+}
+
+.biografia-final-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.biografia-final-line-2 {
+  margin-left: 6%;
+}
+
+.biografia-final-line-3 {
+  margin-left: 1.5%;
+}
+
+.biografia-final-char {
+  display: inline-block;
+  color: var(--biografia-stage-char-dim);
+  will-change: transform, opacity;
+}
+
+.biografia-js #biografia-hero .bio-letter {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.biografia-js #biografia-hero .biografia-photo,
+.biografia-js #biografia-hero .biografia-eyebrow,
+.biografia-js #biografia-hero .biografia-title span,
+.biografia-js #biografia-hero .biografia-desc {
+  opacity: 0;
+}
+
+@media (min-width: 1024px) {
+  .biografia-title {
+    font-size: clamp(4rem, 6.35vw, 8.25rem);
+  }
+}
+
+@media (max-width: 1023px) {
+  .biografia-aside {
+    position: absolute;
+    inset: 0 0 auto;
+    height: auto;
+    align-items: flex-start;
+    padding-top: 26dvh;
+  }
+
+  .biografia-aside-inner {
+    width: min(44rem, 100%);
+    padding-right: 2.5rem;
+    padding-left: 2.5rem;
+  }
+
+  .biografia-vertical-cards {
+    align-items: flex-end;
+    padding: 32dvh 2.5rem 3dvh;
+  }
+
+  .biografia-vertical-card {
+    left: auto;
+    right: 2.5rem;
+    bottom: 3dvh;
+    width: calc(100vw - 5rem);
+    height: min(62dvh, 38rem);
+    padding: clamp(1.75rem, 5vw, 3rem);
+  }
+
+  .biografia-vertical-card-copy h2 {
+    font-size: clamp(2.7rem, 8vw, 4.75rem);
+  }
+
+  .biografia-horizontal-header {
+    grid-template-columns: minmax(0, 1.15fr) minmax(14rem, 0.85fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    padding: clamp(5.5rem, 10dvh, 7rem) 2.5rem 0;
+  }
+
+  .biografia-horizontal-heading h2 {
+    font-size: clamp(2.65rem, 5.8vw, 4.5rem);
+  }
+
+  .biografia-horizontal-intro {
+    margin-top: 1.5rem;
+    font-size: clamp(0.9rem, 1.7vw, 1.05rem);
+  }
+
+  .biografia-horizontal-viewport {
+    inset: clamp(19rem, 39dvh, 23rem) 0 0;
+  }
+
+  .biografia-horizontal-track {
+    gap: clamp(1.5rem, 3.5vw, 2.5rem);
+    padding-right: clamp(1rem, 5vw, 2.5rem);
+  }
+
+  .biografia-card {
+    height: min(56dvh, 34rem);
+    flex-basis: clamp(15rem, 37vw, 19rem);
+    padding: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .biografia-card-copy h2 {
+    font-size: clamp(2rem, 4.6vw, 3rem);
+  }
+
+  .biografia-final-viewport {
+    align-items: flex-start;
+    padding: clamp(2rem, 7dvh, 5rem) 2.5rem 2.5rem;
+  }
+
+  .biografia-final-title {
+    font-size: clamp(3.1rem, 9.5vw, 5.5rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .biografia-logo-shell {
+    padding-right: 8rem;
+    padding-left: 8rem;
+  }
+
+  .biografia-photo {
+    height: 80dvh !important;
+  }
+
+  .biografia-aside-inner {
+    padding-right: 1.25rem;
+    padding-left: 1.25rem;
+  }
+
+  .biografia-vertical-cards {
+    padding: 34dvh 1.25rem 2dvh;
+  }
+
+  .biografia-vertical-card {
+    right: 1.25rem;
+    bottom: 2dvh;
+    width: calc(100vw - 2.5rem);
+    height: min(61dvh, 32rem);
+    padding: 1.5rem;
+  }
+
+  .biografia-vertical-card-meta {
+    gap: 0.65rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+  }
+
+  .biografia-vertical-card-copy {
+    gap: 1rem;
+  }
+
+  .biografia-vertical-card-copy h2 {
+    font-size: clamp(2.35rem, 10.7vw, 3.25rem);
+  }
+
+  .biografia-vertical-card-copy p {
+    font-size: clamp(0.9rem, 3.8vw, 1.05rem);
+    line-height: 1.45;
+  }
+
+  .biografia-horizontal-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: clamp(4.75rem, 9dvh, 5.75rem) 1.25rem 0;
+  }
+
+  .biografia-horizontal-heading {
+    gap: 0.5rem;
+  }
+
+  .biografia-horizontal-heading h2 {
+    font-size: clamp(2.15rem, 10vw, 2.8rem);
+    line-height: 0.95;
+  }
+
+  .biografia-horizontal-intro {
+    max-width: 36rem;
+    margin-top: 0;
+    font-size: clamp(0.8rem, 3.25vw, 0.9rem);
+    line-height: 1.45;
+  }
+
+  .biografia-horizontal-viewport {
+    inset: clamp(20rem, 42dvh, 23rem) 0 0;
+  }
+
+  .biografia-horizontal-track {
+    gap: 1.25rem;
+  }
+
+  .biografia-card {
+    height: min(53dvh, 28rem);
+    flex-basis: clamp(15.5rem, 72vw, 18rem);
+    padding: 1.35rem;
+    border-radius: 1.25rem;
+  }
+
+  .biografia-card-copy {
+    gap: 1rem;
+  }
+
+  .biografia-card-copy h2 {
+    font-size: clamp(1.9rem, 8.5vw, 2.5rem);
+  }
+
+  .biografia-card-copy p {
+    font-size: clamp(0.82rem, 3.4vw, 0.95rem);
+    line-height: 1.45;
+  }
+
+  .biografia-card-label {
+    display: none;
+  }
+
+  .biografia-final-viewport {
+    padding: clamp(2rem, 8dvh, 4rem) 1.25rem 1.25rem;
+  }
+
+  .biografia-final-title {
+    font-size: clamp(2.75rem, 12.2vw, 3.4rem);
+    line-height: 0.94;
+  }
+
+  .biografia-final-line-2,
+  .biografia-final-line-3 {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .biografia-photo {
+    height: 90dvh !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bio-letter,
+  .biografia-logo-shell {
+    transition-duration: 0.01ms;
+  }
+
+  .biografia-final-char,
+  .biografia-vertical-card,
+  .biografia-vertical-stage {
+    will-change: auto;
+  }
 }
 
 [data-palette="refreshing-summer-fun"] {

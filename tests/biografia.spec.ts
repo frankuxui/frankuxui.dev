@@ -1,0 +1,301 @@
+import { expect, test } from "@playwright/test";
+
+async function waitForBiografiaIntro(page: import("@playwright/test").Page) {
+  await page.waitForFunction(() => document.documentElement.style.overflow !== "hidden");
+  await page.waitForTimeout(150);
+}
+
+async function scrollStoryTo(page: import("@playwright/test").Page, progress: number) {
+  await page.evaluate((value) => window.scrollTo(0, window.innerHeight * 9 * value), progress);
+  await page.waitForTimeout(850);
+}
+
+test.describe("Biografía motion narrative", () => {
+  test("conserva la intro y revela eyebrow, title y description en orden", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/biografia");
+
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+    await expect(page.locator(".biografia-vertical-card")).toHaveCount(5);
+    await expect(page.locator(".biografia-card")).toHaveCount(5);
+    await waitForBiografiaIntro(page);
+
+    await scrollStoryTo(page, 0.105);
+    const eyebrowStep = await page.evaluate(() => ({
+      eyebrow: Number(getComputedStyle(document.querySelector(".biografia-eyebrow")!).opacity),
+      visibleTitleChars: Array.from(document.querySelectorAll(".biografia-title span")).filter((char) => Number(getComputedStyle(char).opacity) > 0.5).length,
+      desc: Number(getComputedStyle(document.querySelector(".biografia-desc")!).opacity)
+    }));
+    expect(eyebrowStep.eyebrow).toBeGreaterThan(0.65);
+    expect(eyebrowStep.visibleTitleChars).toBeLessThan(4);
+    expect(eyebrowStep.desc).toBeLessThan(0.1);
+
+    await scrollStoryTo(page, 0.18);
+    const titleStep = await page.evaluate(() => ({
+      eyebrow: Number(getComputedStyle(document.querySelector(".biografia-eyebrow")!).opacity),
+      visibleTitleChars: Array.from(document.querySelectorAll(".biografia-title span")).filter((char) => Number(getComputedStyle(char).opacity) > 0.5).length,
+      desc: Number(getComputedStyle(document.querySelector(".biografia-desc")!).opacity)
+    }));
+    expect(titleStep.eyebrow).toBeGreaterThan(0.95);
+    expect(titleStep.visibleTitleChars).toBeGreaterThan(5);
+    expect(titleStep.desc).toBeLessThan(0.1);
+
+    await scrollStoryTo(page, 0.27);
+    const descriptionStep = await page.evaluate(() => ({
+      desc: Number(getComputedStyle(document.querySelector(".biografia-desc")!).opacity),
+      stageClip: getComputedStyle(document.querySelector(".biografia-vertical-stage")!).clipPath
+    }));
+    expect(descriptionStep.desc).toBeGreaterThan(0.9);
+    expect(descriptionStep.stageClip).toContain("100%");
+    expect(errors).toEqual([]);
+  });
+
+  test("transforma el aside y recorre las cinco tarjetas verticales", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/biografia");
+    await waitForBiografiaIntro(page);
+
+    await expect(page.locator(".biografia-vertical-card h2")).toHaveText(["Diseño con intención", "Experiencia primero", "Código sostenible", "Movimiento funcional", "Evolución constante"]);
+    await expect(page.locator(".biografia-vertical-card-image")).toHaveCount(5);
+    const verticalCardImages = await page.locator(".biografia-vertical-card-image").evaluateAll((images) =>
+      images.map((image) => ({
+        src: image.getAttribute("src"),
+        position: getComputedStyle(image).position,
+        zIndex: Number(getComputedStyle(image).zIndex)
+      }))
+    );
+    expect(verticalCardImages.map((image) => image.src)).toEqual([
+      "/biography-cards/card-01.webp",
+      "/biography-cards/card-02.webp",
+      "/biography-cards/card-03.webp",
+      "/biography-cards/card-04.webp",
+      "/biography-cards/card-05.webp"
+    ]);
+    expect(verticalCardImages.every((image) => image.position === "absolute" && image.zIndex === 0)).toBe(true);
+    await expect(page.locator(".biografia-vertical-card-copy").first()).toHaveCSS("z-index", "2");
+    const imageVignette = await page
+      .locator(".biografia-vertical-card")
+      .first()
+      .evaluate((card) => {
+        const style = getComputedStyle(card, "::before");
+        return { position: style.position, backgroundImage: style.backgroundImage };
+      });
+    expect(imageVignette.position).toBe("absolute");
+    expect(imageVignette.backgroundImage).toContain("radial-gradient");
+    expect(imageVignette.backgroundImage).toContain("linear-gradient");
+
+    await scrollStoryTo(page, 0.36);
+    const transformedAside = await page.evaluate(() => ({
+      eyebrowColor: getComputedStyle(document.querySelector(".biografia-eyebrow")!).color,
+      titleColor: getComputedStyle(document.querySelector(".biografia-title")!).color,
+      descColor: getComputedStyle(document.querySelector(".biografia-desc")!).color,
+      asideTransform: getComputedStyle(document.querySelector(".biografia-aside-inner")!).transform,
+      stageBackground: getComputedStyle(document.querySelector(".biografia-vertical-stage")!).backgroundColor,
+      stageClip: getComputedStyle(document.querySelector(".biografia-vertical-stage")!).clipPath,
+      logoZIndex: Number(getComputedStyle(document.querySelector(".biografia-logo-layer")!).zIndex),
+      photoZIndex: Number(getComputedStyle(document.querySelector(".biografia-photo-layer")!).zIndex),
+      stageZIndex: Number(getComputedStyle(document.querySelector(".biografia-vertical-stage")!).zIndex),
+      visibleLogoLetters: Array.from(document.querySelectorAll(".bio-letter")).filter((letter) => Number(getComputedStyle(letter).opacity) > 0.9).length
+    }));
+    expect(transformedAside.eyebrowColor).toBe("rgb(245, 245, 240)");
+    expect(transformedAside.titleColor).toBe("rgb(245, 245, 240)");
+    expect(transformedAside.descColor).toBe("rgb(245, 245, 240)");
+    expect(transformedAside.asideTransform).not.toBe("none");
+    expect(transformedAside.stageBackground).toBe("rgb(0, 0, 0)");
+    expect(transformedAside.stageClip).toContain("inset(0%");
+    expect(transformedAside.logoZIndex).toBeGreaterThan(transformedAside.stageZIndex);
+    expect(transformedAside.photoZIndex).toBeGreaterThan(transformedAside.logoZIndex);
+    expect(transformedAside.visibleLogoLetters).toBeGreaterThan(0);
+
+    for (const [index, progress] of [0.44, 0.55, 0.66, 0.78, 0.92].entries()) {
+      await scrollStoryTo(page, progress);
+      const cardStates = await page.locator(".biografia-vertical-card").evaluateAll((cards) =>
+        cards.map((card) => {
+          const rect = card.getBoundingClientRect();
+          return {
+            opacity: Number(getComputedStyle(card).opacity),
+            crossesViewportCenter: rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2
+          };
+        })
+      );
+      expect(cardStates[index].crossesViewportCenter).toBe(true);
+      expect(cardStates.every((card) => card.opacity === 1)).toBe(true);
+    }
+
+    const activeCardCenter = await page
+      .locator(".biografia-vertical-card")
+      .last()
+      .evaluate((card) => {
+        const rect = card.getBoundingClientRect();
+        return (rect.left + rect.width / 2) / window.innerWidth;
+      });
+    expect(activeCardCenter).toBeGreaterThan(0.495);
+    expect(activeCardCenter).toBeLessThan(0.505);
+
+    const storyEnd = 900 * 9;
+    await page.evaluate((top) => window.scrollTo(0, top + window.innerHeight * 0.75), storyEnd);
+    await page.waitForTimeout(850);
+    const naturalExit = await page.evaluate(() => ({
+      introTop: document.querySelector("#biografia-hero")!.getBoundingClientRect().top,
+      asideTop: document.querySelector(".biografia-aside")!.getBoundingClientRect().top,
+      stageTop: document.querySelector(".biografia-vertical-stage")!.getBoundingClientRect().top
+    }));
+    expect(naturalExit.introTop).toBeLessThan(0);
+    expect(naturalExit.asideTop).toBeLessThan(0);
+    expect(naturalExit.stageTop).toBeLessThan(0);
+  });
+
+  test("ocupa todo el viewport en horizontal, usa primary y termina antes del cierre negro", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/biografia");
+    await waitForBiografiaIntro(page);
+
+    const horizontalStart = await page.locator(".biografia-horizontal-section").evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+    await page.evaluate((top) => window.scrollTo(0, top), horizontalStart);
+    await page.waitForTimeout(1000);
+
+    await expect(page.locator(".biografia-horizontal-eyebrow")).toHaveText("Visión y proceso");
+    await expect(page.locator("#biografia-horizontal-title")).toContainText("Diseño y desarrollo");
+    await expect(page.locator(".biografia-horizontal-intro")).toContainText("Más de siete años construyendo experiencias digitales");
+
+    const horizontalGeometry = await page.evaluate(() => {
+      const section = document.querySelector(".biografia-horizontal-section")!;
+      const viewport = document.querySelector(".biografia-horizontal-viewport")!;
+      const heading = document.querySelector(".biografia-horizontal-heading")!.getBoundingClientRect();
+      const intro = document.querySelector(".biografia-horizontal-intro")!.getBoundingClientRect();
+      const card = document.querySelector(".biografia-card")!.getBoundingClientRect();
+      const viewportRect = viewport.getBoundingClientRect();
+      return {
+        sectionWidth: section.getBoundingClientRect().width,
+        sectionBackground: getComputedStyle(section).backgroundColor,
+        viewportLeft: viewportRect.left,
+        viewportWidth: viewportRect.width,
+        viewportTop: viewportRect.top,
+        headingLeft: heading.left,
+        headingRight: heading.right,
+        headingBottom: heading.bottom,
+        introLeft: intro.left,
+        introTop: intro.top,
+        introBottom: intro.bottom,
+        cardWidth: card.width,
+        cardHeight: card.height,
+        pageScrollWidth: document.documentElement.scrollWidth
+      };
+    });
+    expect(horizontalGeometry.sectionWidth).toBe(1440);
+    expect(horizontalGeometry.sectionBackground).toBe("rgb(20, 91, 91)");
+    expect(horizontalGeometry.viewportLeft).toBe(0);
+    expect(horizontalGeometry.viewportWidth).toBe(1440);
+    expect(horizontalGeometry.headingRight).toBeLessThan(horizontalGeometry.introLeft);
+    expect(horizontalGeometry.introTop).toBeLessThan(horizontalGeometry.viewportTop);
+    expect(Math.max(horizontalGeometry.headingBottom, horizontalGeometry.introBottom)).toBeLessThan(horizontalGeometry.viewportTop + 10);
+    expect(horizontalGeometry.cardWidth).toBeLessThanOrEqual(361);
+    expect(horizontalGeometry.cardHeight / horizontalGeometry.cardWidth).toBeGreaterThan(1.45);
+    expect(horizontalGeometry.pageScrollWidth).toBeLessThanOrEqual(1440);
+
+    const horizontalPinDistance = await page.locator(".biografia-horizontal-section").evaluate(() => {
+      const viewport = document.querySelector(".biografia-horizontal-viewport") as HTMLElement;
+      const track = document.querySelector(".biografia-horizontal-track") as HTMLElement;
+      const lastCard = document.querySelector(".biografia-card:last-child") as HTMLElement;
+      const startX = viewport.clientWidth * (window.innerWidth < 1024 ? 0.88 : 0.78);
+      const endX = lastCard ? -(lastCard.offsetLeft + lastCard.offsetWidth) : -track.scrollWidth;
+      return Math.round(Math.max(startX - endX, window.innerWidth));
+    });
+    await page.evaluate(({ top, distance }) => window.scrollTo(0, top + distance - 2), {
+      top: horizontalStart,
+      distance: horizontalPinDistance
+    });
+    await page.waitForTimeout(1200);
+
+    const lastCardRight = await page
+      .locator(".biografia-card")
+      .last()
+      .evaluate((card) => card.getBoundingClientRect().right);
+    expect(lastCardRight).toBeLessThanOrEqual(5);
+
+    const finalStart = await page.locator(".biografia-final-section").evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+    expect(finalStart).toBeGreaterThan(horizontalStart + horizontalPinDistance);
+
+    await page.evaluate(({ top, distance }) => window.scrollTo(0, top + distance + 120), {
+      top: horizontalStart,
+      distance: horizontalPinDistance
+    });
+    await page.waitForTimeout(700);
+    const finalEntryTop = await page.locator(".biografia-final-section").evaluate((element) => element.getBoundingClientRect().top);
+    expect(finalEntryTop).toBeLessThan(900);
+
+    await page.evaluate((top) => window.scrollTo(0, top), finalStart);
+    await page.waitForTimeout(1000);
+    await expect(page.locator(".biografia-final-section")).toHaveCSS("background-color", "rgb(0, 0, 0)");
+
+    const finalPinDistance = await page.locator(".biografia-final-section").evaluate(() => {
+      const chars = document.querySelectorAll(".biografia-final-char").length;
+      return Math.max(Math.round(window.innerHeight * 2.2), chars * 42);
+    });
+    await page.evaluate(({ top, distance }) => window.scrollTo(0, top + distance * 0.58), { top: finalStart, distance: finalPinDistance });
+    await page.waitForTimeout(1000);
+
+    const characterState = await page.locator(".biografia-final-char").evaluateAll((characters) => {
+      const visible = characters.filter((character) => Number(getComputedStyle(character).opacity) > 0.8).length;
+      return { visible, total: characters.length };
+    });
+    expect(characterState.visible).toBeGreaterThan(0);
+    expect(characterState.visible).toBeLessThan(characterState.total);
+  });
+
+  test("mantiene todas las fases y la composición dentro del viewport móvil", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/biografia");
+    await waitForBiografiaIntro(page);
+
+    await scrollStoryTo(page, 0.92);
+    const mobileGeometry = await page.evaluate(() => {
+      const aside = document.querySelector(".biografia-aside-inner")!.getBoundingClientRect();
+      const activeCard = Array.from(document.querySelectorAll(".biografia-vertical-card")).at(-1)!.getBoundingClientRect();
+      return {
+        asideLeft: aside.left,
+        asideRight: aside.right,
+        cardLeft: activeCard.left,
+        cardRight: activeCard.right,
+        cardBottom: activeCard.bottom,
+        viewportHeight: window.innerHeight,
+        verticalCards: document.querySelectorAll(".biografia-vertical-card").length,
+        horizontalCards: document.querySelectorAll(".biografia-card").length,
+        pageScrollWidth: document.documentElement.scrollWidth
+      };
+    });
+    expect(mobileGeometry.asideLeft).toBeGreaterThanOrEqual(0);
+    expect(mobileGeometry.asideRight).toBeLessThanOrEqual(390);
+    expect(mobileGeometry.cardLeft).toBeGreaterThanOrEqual(0);
+    expect(mobileGeometry.cardRight).toBeLessThanOrEqual(390);
+    expect(mobileGeometry.cardBottom).toBeLessThanOrEqual(mobileGeometry.viewportHeight);
+    expect(mobileGeometry.verticalCards).toBe(5);
+    expect(mobileGeometry.horizontalCards).toBe(5);
+    expect(mobileGeometry.pageScrollWidth).toBeLessThanOrEqual(390);
+
+    const horizontalStart = await page.locator(".biografia-horizontal-section").evaluate((element) => element.getBoundingClientRect().top + window.scrollY);
+    await page.evaluate((top) => window.scrollTo(0, top), horizontalStart);
+    await page.waitForTimeout(900);
+
+    const mobileHorizontal = await page.evaluate(() => {
+      const heading = document.querySelector(".biografia-horizontal-heading")!.getBoundingClientRect();
+      const intro = document.querySelector(".biografia-horizontal-intro")!.getBoundingClientRect();
+      const card = document.querySelector(".biografia-card")!.getBoundingClientRect();
+      return {
+        headingBottom: heading.bottom,
+        introTop: intro.top,
+        introRight: intro.right,
+        cardWidth: card.width,
+        cardHeight: card.height,
+        scrollWidth: document.documentElement.scrollWidth
+      };
+    });
+    expect(mobileHorizontal.introTop).toBeGreaterThanOrEqual(mobileHorizontal.headingBottom);
+    expect(mobileHorizontal.introRight).toBeLessThanOrEqual(390);
+    expect(mobileHorizontal.cardHeight).toBeGreaterThan(mobileHorizontal.cardWidth);
+    expect(mobileHorizontal.scrollWidth).toBeLessThanOrEqual(390);
+  });
+});
