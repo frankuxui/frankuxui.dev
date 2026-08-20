@@ -1,186 +1,29 @@
 ---
 const useCases = ["Sitios corporativos", "Blogs técnicos", "Portfolios", "Landing pages", "CMS Headless", "Aplicaciones optimizadas para SEO"];
 const title = "Arquitecturas modernas sin perder de vista el contenido.";
-const titleWords = title.split(" ");
 ---
 
-<section class="about-nextjs-fx scroll-mt-32 py-16 lg:py-24 w-full min-w-0 relative" aria-labelledby="about-nextjs-title">
-  <div class="fx-shell w-full max-w-5xl mx-auto">
-    <div class="fx-text px-6 sm:px-10">
-      <p class="fx-eyebrow text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Especialización en Next.js</p>
-      <h2
-        id="about-nextjs-title"
-        class="fx-title mt-4 font-bold tracking-tight text-foreground max-w-3xl text-[clamp(2.5rem,4vw,5rem)] leading-[1.15]"
-        aria-label={title}
-      >
-        {titleWords.map((word) => <span class="fx-word" aria-hidden="true">{word}</span>)}
-      </h2>
-      <p class="fx-body mt-8 max-w-2xl text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
-        Trabajo con App Router, Server Components, generación estática, renderizado híbrido e integraciones con Markdown y MDX para crear experiencias rápidas y preparadas para buscadores.
-      </p>
-    </div>
+<section class="scroll-mt-32 w-full min-w-0 py-16 lg:py-24" aria-labelledby="about-nextjs-title">
+  <div class="mx-auto w-full max-w-5xl px-10">
+    <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Especialización en Next.js</p>
+    <h2
+      id="about-nextjs-title"
+      class="mt-4 max-w-3xl text-[clamp(2.5rem,4vw,5rem)] font-bold leading-[1.15] tracking-tight text-foreground"
+    >
+      {title}
+    </h2>
+    <p class="mt-8 max-w-2xl leading-relaxed text-foreground-muted" style={{ "font-size": "var(--font-body)" }}>
+      Trabajo con App Router, Server Components, generación estática, renderizado híbrido e integraciones con Markdown y MDX para crear experiencias rápidas y preparadas para buscadores.
+    </p>
 
-    <!-- Scroll-driven horizontal drift: the row is wider than its clip, so the
-         page never scrolls sideways, only the track inside does. -->
-    <div class="fx-marquee mt-10" aria-hidden="false">
-      <ul class="fx-row" aria-label="Casos de uso">
-        {
-          useCases.map((useCase) => (
-            <li class="fx-chip inline-flex items-center justify-center whitespace-nowrap font-medium px-8 h-12 text-sm rounded-full bg-secondary text-secondary-foreground">
-              {useCase}
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+    <ul class="mt-10 flex flex-wrap gap-3" aria-label="Casos de uso">
+      {
+        useCases.map((useCase) => (
+          <li class="inline-flex h-12 items-center justify-center whitespace-nowrap rounded-full bg-secondary px-8 text-sm font-medium text-secondary-foreground">
+            {useCase}
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>
-
-<style>
-  .fx-word {
-    display: inline-block;
-    margin-right: 0.25em;
-  }
-  .fx-word:last-child {
-    margin-right: 0;
-  }
-
-  .fx-marquee {
-    overflow: hidden;
-    /* Bleed to the shell edges so chips slide off screen cleanly. */
-    padding-inline: 1.5rem;
-  }
-  @media (min-width: 640px) {
-    .fx-marquee {
-      padding-inline: 2.5rem;
-    }
-  }
-
-  .fx-row {
-    display: flex;
-    flex-wrap: nowrap;
-    width: max-content;
-    gap: 0.75rem;
-  }
-
-  .fx-eyebrow,
-  .fx-body,
-  .fx-word,
-  .fx-row {
-    will-change: transform, opacity;
-  }
-</style>
-
-<script>
-  import gsap from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  type FxWindow = Window & {
-    __aboutNextjsFxCleanup?: () => void;
-    __aboutNextjsFxLoad?: () => void;
-    __aboutNextjsFxSwap?: () => void;
-  };
-
-  const fxWindow = window as FxWindow;
-
-  function initAboutNextjsFx(): () => void {
-    const section = document.querySelector(".about-nextjs-fx") as HTMLElement | null;
-    if (!section) return () => undefined;
-
-    const eyebrow = section.querySelector(".fx-eyebrow");
-    const words = section.querySelectorAll(".fx-word");
-    const body = section.querySelector(".fx-body");
-    const marquee = section.querySelector(".fx-marquee") as HTMLElement | null;
-    const row = section.querySelector(".fx-row") as HTMLElement | null;
-    const chips = section.querySelectorAll(".fx-chip");
-    if (!eyebrow || !body || !marquee || !row || words.length === 0) return () => undefined;
-
-    const mm = gsap.matchMedia();
-
-    mm.add(
-      {
-        isDesktop: "(min-width: 768px)",
-        isMobile: "(max-width: 767px)",
-        reduced: "(prefers-reduced-motion: reduce)"
-      },
-      (context) => {
-        const { isDesktop, reduced } = context.conditions as { isDesktop: boolean; isMobile: boolean; reduced: boolean };
-
-        if (reduced) {
-          gsap.set([eyebrow, body], { opacity: 1, x: 0, y: 0, clipPath: "inset(0 0 0 0)" });
-          gsap.set(words, { opacity: 1, y: 0, filter: "blur(0px)" });
-          gsap.set(chips, { opacity: 1, y: 0, scale: 1 });
-          return;
-        }
-
-        const rise = isDesktop ? 34 : 20;
-
-        const entrance = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: isDesktop ? "top 78%" : "top 88%",
-            end: isDesktop ? "top 30%" : "top 42%",
-            scrub: 0.8,
-            invalidateOnRefresh: true
-          }
-        });
-
-        entrance
-          .fromTo(eyebrow, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.35, ease: "power2.out" }, 0)
-          .fromTo(
-            words,
-            { opacity: 0, y: rise, filter: "blur(6px)" },
-            { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "power3.out", stagger: 0.055 },
-            0.12
-          )
-          // Wipe reveal for the paragraph — a text-to-text transition rather
-          // than a plain fade.
-          .fromTo(
-            body,
-            { opacity: 0, y: rise * 0.6, clipPath: "inset(0 0 100% 0)" },
-            { opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)", duration: 0.5, ease: "power2.out" },
-            ">-0.25"
-          )
-          .fromTo(chips, { opacity: 0, y: rise * 0.5, scale: 0.92 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.6)", stagger: 0.05 }, ">-0.2");
-
-        // Horizontal scroll: the row translates by exactly its hidden overflow,
-        // so it stays edge-to-edge with no gaps at either end.
-        const overflow = () => Math.max(0, row.scrollWidth - marquee.clientWidth);
-        gsap.fromTo(
-          row,
-          { x: () => overflow() * 0.12 },
-          {
-            x: () => -overflow() * 0.9,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.6,
-              invalidateOnRefresh: true
-            }
-          }
-        );
-      }
-    );
-
-    return () => mm.revert();
-  }
-
-  if (fxWindow.__aboutNextjsFxLoad) document.removeEventListener("astro:page-load", fxWindow.__aboutNextjsFxLoad);
-  if (fxWindow.__aboutNextjsFxSwap) document.removeEventListener("astro:before-swap", fxWindow.__aboutNextjsFxSwap);
-
-  fxWindow.__aboutNextjsFxLoad = () => {
-    fxWindow.__aboutNextjsFxCleanup?.();
-    fxWindow.__aboutNextjsFxCleanup = initAboutNextjsFx();
-  };
-  fxWindow.__aboutNextjsFxSwap = () => {
-    fxWindow.__aboutNextjsFxCleanup?.();
-    fxWindow.__aboutNextjsFxCleanup = undefined;
-  };
-
-  document.addEventListener("astro:page-load", fxWindow.__aboutNextjsFxLoad);
-  document.addEventListener("astro:before-swap", fxWindow.__aboutNextjsFxSwap);
-</script>

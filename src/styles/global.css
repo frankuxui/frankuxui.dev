@@ -45,16 +45,30 @@
 
 /* The animated logo reads the semantic surface directly beneath its visible area. */
 #logo-intro {
+  --logo-intro-eye: var(--background);
+  --logo-intro-pupil: var(--surface-black);
   color: var(--primary);
   transition: color 180ms ease;
 }
 
 #logo-intro[data-contrast="dark"] {
+  --logo-intro-eye: var(--surface-black);
+  --logo-intro-pupil: var(--logo-intro-on-dark);
   color: var(--logo-intro-on-dark);
+}
+
+#logo-eyes ellipse,
+#logo-eyes circle {
+  transition: fill 180ms ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
   #logo-intro {
+    transition: none;
+  }
+
+  #logo-eyes ellipse,
+  #logo-eyes circle {
     transition: none;
   }
 }

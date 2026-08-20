@@ -50,24 +50,43 @@ const titleWords = title.split(" ");
     </div>
 
     <div class="fx-stack-library mt-16 lg:mt-24">
-      <div class="fx-stack-heading px-6 sm:px-10" aria-hidden="true">
-        <span>Stack y disciplinas</span>
-        <span>Desliza para explorar</span>
+      <div class="fx-stack-heading px-6 sm:px-10">
+        <div class="flex min-w-0 flex-col gap-1">
+          <span>Stack y disciplinas</span>
+          <span class="fx-stack-hint">Desliza para explorar</span>
+        </div>
+        <div class="flex flex-none items-center gap-3">
+          <button type="button" class="knowledge-prev" aria-label="Tecnología anterior">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <button type="button" class="knowledge-next" aria-label="Siguiente tecnología">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
       </div>
-      <div class="fx-stack-scroller" tabindex="0" role="region" aria-label="Stack y disciplinas. Desplázate horizontalmente para explorar.">
-        <ul class="fx-stack-track">
-        {
-          knowledgeTopics.map((topic) => (
-            <li class="fx-stack-card">
-              <article>
-                <p class="fx-stack-category">{topic.category}</p>
-                <h3 class="fx-stack-name">{topic.name}</h3>
-                <p class="fx-stack-description">{topic.description}</p>
-              </article>
-            </li>
-          ))
-        }
-        </ul>
+
+      <div class="knowledge-swiper-container">
+        <div class="knowledge-swiper" role="region" aria-roledescription="carrusel" aria-label="Stack y disciplinas">
+          <div class="swiper-wrapper">
+            {
+              knowledgeTopics.map((topic) => (
+                <div class="swiper-slide fx-stack-card">
+                  <article>
+                    <p class="fx-stack-category">{topic.category}</p>
+                    <h3 class="fx-stack-name">{topic.name}</h3>
+                    <p class="fx-stack-description">{topic.description}</p>
+                  </article>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        <div class="knowledge-swiper-pagination swiper-pagination"></div>
+        <p id="knowledge-swiper-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
       </div>
     </div>
   </div>
@@ -84,8 +103,9 @@ const titleWords = title.split(" ");
     --fx-card-surface-hover: rgba(245, 245, 240, 0.085);
     --fx-card-border: rgba(245, 245, 240, 0.16);
     --fx-card-border-hover: rgba(245, 245, 240, 0.3);
-    --fx-scroll-thumb: rgba(245, 245, 240, 0.32);
-    --fx-scroll-track: rgba(245, 245, 240, 0.08);
+    --swiper-pagination-color: var(--fx-on-dark);
+    --swiper-pagination-bullet-inactive-color: var(--fx-on-dark-muted);
+    --swiper-pagination-bullet-inactive-opacity: 0.38;
     overflow: clip;
     color: var(--fx-on-dark);
     background: var(--fx-surface-color);
@@ -156,48 +176,73 @@ const titleWords = title.split(" ");
     text-transform: uppercase;
   }
 
-  .fx-stack-scroller {
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    padding-inline: 1.5rem;
-    padding-bottom: 1.25rem;
-    scroll-padding-inline: 1.5rem;
-    scroll-snap-type: inline mandatory;
-    scrollbar-color: var(--fx-scroll-thumb) var(--fx-scroll-track);
-    scrollbar-width: thin;
+  .fx-stack-hint {
+    color: var(--fx-on-dark-muted);
+    font-size: 0.68rem;
   }
 
-  .fx-stack-scroller:focus-visible {
+  .knowledge-prev,
+  .knowledge-next {
+    display: inline-flex;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--fx-card-border);
+    border-radius: 9999px;
+    color: var(--fx-on-dark);
+    background: var(--fx-card-surface);
+    cursor: pointer;
+    transition: background-color 220ms ease, border-color 220ms ease, opacity 220ms ease;
+  }
+
+  .knowledge-prev:focus-visible,
+  .knowledge-next:focus-visible {
     outline: 2px solid var(--fx-on-dark);
-    outline-offset: 0.35rem;
+    outline-offset: 0.25rem;
+  }
+
+  .knowledge-prev.swiper-button-disabled,
+  .knowledge-next.swiper-button-disabled {
+    opacity: 0.32;
+    cursor: default;
+  }
+
+  .knowledge-swiper-container {
+    width: 100%;
+    overflow: hidden;
+    padding-inline: 1.5rem;
+  }
+
+  .knowledge-swiper {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .knowledge-swiper .swiper-wrapper {
+    display: flex;
+  }
+
+  .knowledge-swiper-pagination {
+    position: relative;
+    inset: auto;
+    margin-top: 2rem;
   }
 
   @media (min-width: 640px) {
-    .fx-stack-scroller {
+    .knowledge-swiper-container {
       padding-inline: 2.5rem;
-      scroll-padding-inline: 2.5rem;
     }
   }
 
-  .fx-stack-track {
-    display: flex;
-    flex-wrap: nowrap;
-    width: max-content;
-    gap: clamp(1rem, 2vw, 1.5rem);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
   .fx-stack-card {
-    width: clamp(18rem, 31vw, 28rem);
+    width: 100%;
     min-height: clamp(19rem, 34dvh, 23rem);
-    flex: none;
+    height: auto;
     padding: clamp(1.5rem, 3vw, 2.25rem);
     border: 1px solid var(--fx-card-border);
     border-radius: 1.75rem;
     background: var(--fx-card-surface);
-    scroll-snap-align: start;
     transition: background-color 220ms ease, border-color 220ms ease;
   }
 
@@ -235,6 +280,8 @@ const titleWords = title.split(" ");
   }
 
   @media (hover: hover) and (pointer: fine) {
+    .knowledge-prev:not(.swiper-button-disabled):hover,
+    .knowledge-next:not(.swiper-button-disabled):hover,
     .fx-stack-card:hover {
       border-color: var(--fx-card-border-hover);
       background: var(--fx-card-surface-hover);
@@ -252,6 +299,10 @@ const titleWords = title.split(" ");
 <script>
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import Swiper from "swiper";
+  import { A11y, Navigation, Pagination } from "swiper/modules";
+  import "swiper/css";
+  import "swiper/css/pagination";
 
   gsap.registerPlugin(ScrollTrigger);
 
@@ -262,6 +313,68 @@ const titleWords = title.split(" ");
   };
 
   const fxWindow = window as FxWindow;
+  let knowledgeSwiperInstance: Swiper | null = null;
+
+  function initAboutKnowledgeSwiper(): () => void {
+    knowledgeSwiperInstance?.destroy(true, true);
+    knowledgeSwiperInstance = null;
+
+    const el = document.querySelector(".knowledge-swiper") as HTMLElement | null;
+    const status = document.getElementById("knowledge-swiper-status");
+    if (!el) return () => undefined;
+
+    function announceActiveSlide() {
+      if (!status || !knowledgeSwiperInstance) return;
+      const activeSlide = knowledgeSwiperInstance.slides[knowledgeSwiperInstance.activeIndex];
+      const name = activeSlide?.querySelector(".fx-stack-name")?.textContent?.trim();
+      if (name) status.textContent = `Mostrando ${name}, elemento ${knowledgeSwiperInstance.activeIndex + 1} de ${knowledgeSwiperInstance.slides.length}`;
+    }
+
+    knowledgeSwiperInstance = new Swiper(el, {
+      modules: [Navigation, Pagination, A11y],
+      slidesPerView: 1.08,
+      centeredSlides: true,
+      spaceBetween: 14,
+      grabCursor: true,
+      watchOverflow: true,
+      speed: 550,
+      resistanceRatio: 0.85,
+      navigation: {
+        prevEl: ".knowledge-prev",
+        nextEl: ".knowledge-next"
+      },
+      pagination: {
+        el: ".knowledge-swiper-pagination",
+        clickable: true,
+        dynamicBullets: true
+      },
+      a11y: {
+        prevSlideMessage: "Tecnología anterior",
+        nextSlideMessage: "Siguiente tecnología",
+        firstSlideMessage: "Esta es la primera tecnología",
+        lastSlideMessage: "Esta es la última tecnología",
+        paginationBulletMessage: "Ir a la tecnología {{index}}"
+      },
+      breakpoints: {
+        640: { slidesPerView: 1.55, spaceBetween: 20, centeredSlides: false },
+        768: { slidesPerView: 2.15, spaceBetween: 24, centeredSlides: false },
+        1024: { slidesPerView: 2.8, spaceBetween: 24, centeredSlides: false },
+        1280: { slidesPerView: 3.35, spaceBetween: 24, centeredSlides: false },
+        1536: { slidesPerView: 4, spaceBetween: 24, centeredSlides: false },
+        1920: { slidesPerView: 4.5, spaceBetween: 24, centeredSlides: false },
+        2560: { slidesPerView: 6, spaceBetween: 24, centeredSlides: false }
+      },
+      on: {
+        slideChange: announceActiveSlide
+      }
+    });
+    announceActiveSlide();
+
+    return () => {
+      knowledgeSwiperInstance?.destroy(true, true);
+      knowledgeSwiperInstance = null;
+    };
+  }
 
   function initAboutKnowledgeFx(): () => void {
     const section = document.querySelector(".about-knowledge-fx") as HTMLElement | null;
@@ -273,7 +386,7 @@ const titleWords = title.split(" ");
     const body = section.querySelector(".fx-body") as HTMLElement | null;
     const stackLibrary = section.querySelector(".fx-stack-library") as HTMLElement | null;
     const stackHeading = section.querySelector(".fx-stack-heading") as HTMLElement | null;
-    const stackScroller = section.querySelector(".fx-stack-scroller") as HTMLElement | null;
+    const stackScroller = section.querySelector(".knowledge-swiper-container") as HTMLElement | null;
     const cards = Array.from(section.querySelectorAll(".fx-stack-card")) as HTMLElement[];
     if (!textBlock || !eyebrow || !body || !stackLibrary || !stackHeading || !stackScroller || characters.length === 0 || cards.length === 0) return () => undefined;
 
@@ -341,7 +454,12 @@ const titleWords = title.split(" ");
 
   fxWindow.__aboutKnowledgeFxLoad = () => {
     fxWindow.__aboutKnowledgeFxCleanup?.();
-    fxWindow.__aboutKnowledgeFxCleanup = initAboutKnowledgeFx();
+    const cleanupSwiper = initAboutKnowledgeSwiper();
+    const cleanupFx = initAboutKnowledgeFx();
+    fxWindow.__aboutKnowledgeFxCleanup = () => {
+      cleanupFx();
+      cleanupSwiper();
+    };
   };
   fxWindow.__aboutKnowledgeFxSwap = () => {
     fxWindow.__aboutKnowledgeFxCleanup?.();

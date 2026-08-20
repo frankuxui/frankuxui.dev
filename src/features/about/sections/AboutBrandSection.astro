@@ -590,6 +590,10 @@ const titleLeadWords = titleLead.split(" ");
             .to({}, { duration: index === cardParts.length - 1 ? 0.62 : 0.46 });
         });
 
+        if (previousIntroLogo) {
+          storyTl.to(previousIntroLogo, { opacity: 1, duration: 0.18, ease: "none" }, ">-0.18");
+        }
+
         // Render the contrast state after every child tween so the intro
         // animation cannot restore stale inline colors on the heading.
         storyTl.eventCallback("onUpdate", renderHeadingTone);
