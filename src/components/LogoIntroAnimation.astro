@@ -2,7 +2,7 @@
 
 ---
 
-<div id="logo-intro" class="fixed inset-0 z-[99999] flex items-center justify-center text-foreground pointer-events-none" transition:persist>
+<div id="logo-intro" class="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none" transition:persist>
   <button type="button" id="logo-intro-btn" class="z-999 pointer-events-none block appearance-none border-0 bg-transparent p-0 opacity-0" tabindex="-1" aria-hidden="true">
     <svg id="logo-intro-svg" class="block w-28 sm:w-36 md:w-44" style="overflow: visible;" viewBox="0 0 204 272" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M68 0H0V68H68V0Z" fill="currentColor"></path>
@@ -32,6 +32,97 @@
   import { gsap } from "gsap";
 
   const SIDE_KEY = "frankuxui-logo-side";
+
+  type LogoIntroWindow = Window & {
+    __logoIntroContrastCleanup?: () => void;
+    __logoIntroPageLoadHandler?: () => void;
+    __logoIntroAfterSwapHandler?: () => void;
+  };
+
+  const logoIntroWindow = window as LogoIntroWindow;
+
+  function resolveInset(value: string, size: number) {
+    const parsed = Number.parseFloat(value);
+    if (!Number.isFinite(parsed)) return 0;
+    return value.endsWith("%") ? (parsed / 100) * size : parsed;
+  }
+
+  function coversLogo(section: HTMLElement, probeX: number, probeY: number) {
+    const styles = getComputedStyle(section);
+    if (styles.display === "none" || styles.visibility === "hidden" || Number.parseFloat(styles.opacity) <= 0.01) return false;
+
+    const rect = section.getBoundingClientRect();
+    let visibleTop = rect.top;
+    let visibleRight = rect.right;
+    let visibleBottom = rect.bottom;
+    let visibleLeft = rect.left;
+    const insetMatch = styles.clipPath.match(/^inset\(\s*([^)]*?)(?:\s+round\s+[^)]*)?\s*\)$/i)?.[1];
+
+    if (insetMatch) {
+      const values = insetMatch.trim().split(/\s+/);
+      const top = values[0] ?? "0";
+      const right = values[1] ?? top;
+      const bottom = values[2] ?? top;
+      const left = values[3] ?? right;
+      visibleTop += resolveInset(top, rect.height);
+      visibleRight -= resolveInset(right, rect.width);
+      visibleBottom -= resolveInset(bottom, rect.height);
+      visibleLeft += resolveInset(left, rect.width);
+    }
+
+    return probeX >= visibleLeft && probeX <= visibleRight && probeY >= visibleTop && probeY <= visibleBottom;
+  }
+
+  function updateLogoContrast() {
+    const root = document.getElementById("logo-intro");
+    const btn = document.getElementById("logo-intro-btn");
+    if (!root || !btn) return;
+
+    const rect = btn.getBoundingClientRect();
+    const visibleLeft = Math.max(0, rect.left);
+    const visibleRight = Math.min(window.innerWidth, rect.right);
+    const visibleTop = Math.max(0, rect.top);
+    const visibleBottom = Math.min(window.innerHeight, rect.bottom);
+    const hasVisibleArea = visibleRight > visibleLeft && visibleBottom > visibleTop;
+    const probeX = hasVisibleArea ? (visibleLeft + visibleRight) / 2 : Math.min(Math.max(rect.left + rect.width / 2, 0), window.innerWidth - 1);
+    const probeY = hasVisibleArea ? (visibleTop + visibleBottom) / 2 : Math.min(Math.max(rect.top + rect.height / 2, 0), window.innerHeight - 1);
+    const contrastSurfaces = Array.from(document.querySelectorAll('[data-header-contrast="dark"]')) as HTMLElement[];
+    const needsLightLogo = contrastSurfaces.some((section) => coversLogo(section, probeX, probeY));
+
+    if (needsLightLogo) root.setAttribute("data-contrast", "dark");
+    else root.removeAttribute("data-contrast");
+  }
+
+  function setupLogoContrast() {
+    logoIntroWindow.__logoIntroContrastCleanup?.();
+    updateLogoContrast();
+
+    let ticking = false;
+    const scheduleUpdate = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateLogoContrast();
+        requestAnimationFrame(() => {
+          updateLogoContrast();
+          ticking = false;
+        });
+      });
+    };
+
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate, { passive: true });
+    const contrastObserver = new MutationObserver(scheduleUpdate);
+    document.querySelectorAll('[data-header-contrast="dark"]').forEach((section) =>
+      contrastObserver.observe(section, { attributes: true, attributeFilter: ["class", "style"] })
+    );
+
+    logoIntroWindow.__logoIntroContrastCleanup = () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      contrastObserver.disconnect();
+    };
+  }
 
   function initLogo() {
     const btn = document.getElementById("logo-intro-btn") as HTMLButtonElement | null;
@@ -215,8 +306,10 @@
       const steps = Math.max(3, Math.ceil(distance / hopDistance));
 
       const tl = gsap.timeline({
+        onUpdate: updateLogoContrast,
         onComplete: () => {
           gsap.set(btn, { left: target.left, top: target.top, y: 0, rotation: 0 });
+          updateLogoContrast();
           enterPeek(side);
         }
       });
@@ -350,9 +443,22 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initLogo);
-  } else {
+  function initializeLogoIntro() {
+    setupLogoContrast();
     initLogo();
   }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeLogoIntro, { once: true });
+  } else {
+    initializeLogoIntro();
+  }
+
+  if (logoIntroWindow.__logoIntroPageLoadHandler) document.removeEventListener("astro:page-load", logoIntroWindow.__logoIntroPageLoadHandler);
+  if (logoIntroWindow.__logoIntroAfterSwapHandler) document.removeEventListener("astro:after-swap", logoIntroWindow.__logoIntroAfterSwapHandler);
+
+  logoIntroWindow.__logoIntroPageLoadHandler = setupLogoContrast;
+  logoIntroWindow.__logoIntroAfterSwapHandler = updateLogoContrast;
+  document.addEventListener("astro:page-load", logoIntroWindow.__logoIntroPageLoadHandler);
+  document.addEventListener("astro:after-swap", logoIntroWindow.__logoIntroAfterSwapHandler);
 </script>

@@ -10,6 +10,7 @@
   --background-card: #e8dfd2;
   --body-background: #f0e8dc;
   --surface-black: #0b0b0b;
+  --logo-intro-on-dark: #ffffff;
   --biografia-logo-on-dark: #ffffff;
   --biografia-stage-bg: #000000;
   --biografia-stage-card: #101010;
@@ -40,6 +41,22 @@
   --font-link: clamp(0.875rem, 0.7985rem + 0.3265vw, 1.125rem);
   --font-mini: clamp(0.875rem, 0.8367rem + 0.1633vw, 1rem);
   --font-h2-display: clamp(1.875rem, 1.301rem + 2vw, 3.95rem);
+}
+
+/* The animated logo reads the semantic surface directly beneath its visible area. */
+#logo-intro {
+  color: var(--primary);
+  transition: color 180ms ease;
+}
+
+#logo-intro[data-contrast="dark"] {
+  color: var(--logo-intro-on-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #logo-intro {
+    transition: none;
+  }
 }
 
 /* The header inherits one semantic contrast state from the surface beneath it. */
