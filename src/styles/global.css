@@ -523,49 +523,34 @@
   }
 }
 
-@media (max-width: 1279px) {
-  .biografia-intro-section {
-    height: 650vh;
-    height: 650dvh;
-  }
-
-  .biografia-logo-layer,
-  .biografia-photo-layer {
-    inset: 0 0 auto;
-    height: 100vh;
-    height: 100dvh;
-  }
-
+/* Tablet and laptop share the pinned story architecture with the desktop
+   layout; only the vertical rhythm changes so the wordmark clears the header
+   and the aside copy keeps breathing room underneath it. */
+@media (min-width: 768px) and (max-width: 1279px) {
   .biografia-aside {
-    inset: 0 0 auto;
-    height: 100vh;
-    height: 100dvh;
     align-items: flex-start;
-    padding-top: clamp(10.5rem, 22dvh, 13rem);
+    padding-top: clamp(12rem, 27dvh, 16rem);
   }
+}
 
-  .biografia-vertical-stage {
-    inset: 100dvh 0 0;
-  }
-
+/* Laptop: anchor the cards to the right edge so they never collide with the
+   compacted aside copy sitting on the left. */
+@media (min-width: 1024px) and (max-width: 1279px) {
   .biografia-vertical-cards {
-    position: sticky;
-    inset: auto;
-    top: 0;
-    width: 100%;
-    height: 100vh;
-    height: 100dvh;
+    padding-left: clamp(20rem, 34vw, 26rem);
+  }
+
+  .biografia-vertical-card {
+    left: auto;
+    right: clamp(1.5rem, 3vw, 3rem);
+    width: min(60vw, 44rem);
   }
 }
 
 @media (max-width: 1023px) {
   .biografia-aside {
-    position: absolute;
-    inset: 0 0 auto;
-    height: 100vh;
-    height: 100dvh;
     align-items: flex-start;
-    padding-top: clamp(10rem, 22dvh, 12rem);
+    padding-top: clamp(11.5rem, 25dvh, 14.5rem);
   }
 
   .biografia-aside-inner {

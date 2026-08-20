@@ -401,8 +401,10 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
     if (desc) gsap.set(desc, { opacity: 0, y: 24 });
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let introFallbackId = 0;
     const introTl = gsap.timeline({
       onComplete: () => {
+        window.clearTimeout(introFallbackId);
         if (!active) return;
         document.documentElement.style.overflow = previousHtmlOverflow;
         document.body.style.overflow = previousBodyOverflow;
@@ -412,6 +414,13 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
       }
     });
     animations.push(introTl);
+
+    // The intro locks scrolling until it finishes, but rAF is throttled while
+    // the tab is backgrounded, which would leave the page unscrollable. Force
+    // the timeline to settle if it has not finished on its own in time.
+    introFallbackId = window.setTimeout(() => {
+      if (active && introTl.progress() < 1) introTl.progress(1);
+    }, 3200);
 
     introTl.to(letters, {
       opacity: 1,
@@ -444,7 +453,9 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
       if (textAnchor >= 0) targetLeft = textAnchor;
       const logoVisualInset = (Number.parseFloat(getComputedStyle(logoShell).paddingLeft) || 0) * finalScale;
       const targetShellLeft = targetLeft - logoVisualInset;
-      const targetTop = window.innerWidth < 1024 ? Math.max(vh * 0.08, 72) : Math.max(vh * 0.12, 92);
+      // Keep the shrunken wordmark clear of the fixed header (~112px tall)
+      // instead of letting it tuck under the nav on shorter viewports.
+      const targetTop = window.innerWidth < 1280 ? Math.max(vh * 0.13, 126) : Math.max(vh * 0.12, 92);
 
       const targetCenterX = targetShellLeft + scaledW / 2;
       const targetCenterY = targetTop + scaledH / 2;
@@ -507,57 +518,32 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
         });
       }
 
-      if (window.innerWidth >= 1280) {
-        const storyTl = gsap.timeline({ paused: true });
-        addLogoTransition(storyTl);
-        addAsideReveal(storyTl);
-        addAsideTransformation(storyTl);
-        addVerticalCards(storyTl);
+      // Tablet, laptop and desktop all run the same pinned story so the hero
+      // stays on screen for the whole reveal. Below 1280px the scroll budget is
+      // slightly longer per beat, because the shorter viewport makes every
+      // transition read faster.
+      const storyTl = gsap.timeline({ paused: true });
+      addLogoTransition(storyTl);
+      addAsideReveal(storyTl);
+      addAsideTransformation(storyTl);
+      addVerticalCards(storyTl);
 
-        const storyTrigger = ScrollTrigger.create({
-          trigger: introSection,
-          start: "top top",
-          end: () => `+=${Math.round(Math.max(window.innerHeight * 9, storyTl.duration() * window.innerHeight) * SCROLL_DISTANCE_FACTOR)}`,
-          pin: true,
-          pinSpacing: "margin",
-          scrub: 1,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          animation: storyTl
-        });
-        animations.push(storyTl);
-        ownedTriggers.push(storyTrigger);
-      } else {
-        const portableHeroTl = gsap.timeline({ paused: true });
-        addLogoTransition(portableHeroTl);
-        addAsideReveal(portableHeroTl);
-
-        const portableHeroTrigger = ScrollTrigger.create({
-          trigger: introSection,
-          start: "top top",
-          end: () => `+=${Math.round(window.innerHeight * 0.28 * SCROLL_DISTANCE_FACTOR)}`,
-          scrub: 0.7,
-          invalidateOnRefresh: true,
-          animation: portableHeroTl,
-          onUpdate: syncLogoColorWithStage
-        });
-
-        gsap.set(verticalStage, { clipPath: "inset(0% 0 0)" });
-        const portableCardsTl = gsap.timeline({ paused: true });
-        addVerticalCards(portableCardsTl);
-        const portableCardsTrigger = ScrollTrigger.create({
-          trigger: verticalStage,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1,
-          invalidateOnRefresh: true,
-          animation: portableCardsTl,
-          onUpdate: syncLogoColorWithStage
-        });
-
-        animations.push(portableHeroTl, portableCardsTl);
-        ownedTriggers.push(portableHeroTrigger, portableCardsTrigger);
-      }
+      const storyViewports = window.innerWidth < 1280 ? 10.5 : 9;
+      const storyTrigger = ScrollTrigger.create({
+        trigger: introSection,
+        start: "top top",
+        end: () =>
+          `+=${Math.round(Math.max(window.innerHeight * storyViewports, storyTl.duration() * window.innerHeight) * SCROLL_DISTANCE_FACTOR)}`,
+        pin: true,
+        pinSpacing: "margin",
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        animation: storyTl,
+        onUpdate: syncLogoColorWithStage
+      });
+      animations.push(storyTl);
+      ownedTriggers.push(storyTrigger);
 
       const horizontalStartX = () => horizontalViewport.clientWidth * (window.innerWidth < 1024 ? 0.88 : 0.78);
       const horizontalEndX = () => {
@@ -611,6 +597,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
 
     return () => {
       active = false;
+      window.clearTimeout(introFallbackId);
       ownedTriggers.forEach((trigger) => trigger.kill());
       animations.forEach((animation) => animation.kill());
       logoSvg.classList.remove("is-white");

@@ -5,7 +5,7 @@ import { formatNoteDate } from "@/utils/notes";
 const notes = (await getCollection("notes", ({ data }) => (import.meta.env.PROD ? !data.draft : true))).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0, 3);
 ---
 
-<section id="notas" class="scroll-mt-32 py-16 lg:py-24" aria-labelledby="home-notes-title">
+<section id="notas" class="scroll-mt-32 py-16 lg:py-24 w-full min-w-0" aria-labelledby="home-notes-title">
   <div class="w-full max-w-12xl mx-auto px-10">
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-24 mx-auto max-w-6xl">
       <div class="lg:sticky lg:top-28 lg:self-start">
