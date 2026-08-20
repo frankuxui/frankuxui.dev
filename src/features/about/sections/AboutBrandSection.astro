@@ -28,29 +28,49 @@ const socialProfiles = [
   { name: "Instagram", href: "https://www.instagram.com/frankuxui/" }
 ];
 
-const titleLead = "El significado de";
+const titleLead = "Decodificando mi marca personal";
 const titleLeadWords = titleLead.split(" ");
 ---
 
 <section class="about-brand-fx relative w-full" aria-labelledby="about-brand-title">
   <div class="fx-narrative">
+    <div class="fx-primary-wash" data-header-contrast="dark" aria-hidden="true"></div>
     <div class="fx-stage mx-auto w-full max-w-12xl px-6 sm:px-10">
       <div class="fx-heading text-left">
         <p class="fx-eyebrow text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Marca personal</p>
-        <h2 id="about-brand-title" class="fx-title mt-6 font-semibold leading-[0.94] tracking-[-0.055em] text-foreground" aria-label={`${titleLead} frankuxui`}>
+        <h2 id="about-brand-title" class="fx-title mt-6 font-semibold leading-[0.94] tracking-[-0.055em] text-foreground" aria-label={titleLead}>
+          <span class="fx-word" aria-hidden="true">{titleLeadWords[0]}</span>
+          <br />
           {
-            titleLeadWords.map((word) => (
+            titleLeadWords.slice(1).map((word) => (
               <span class="fx-word" aria-hidden="true">
                 {word}
               </span>
             ))
           }
-          <br />
-          <span class="fx-brand text-primary" aria-hidden="true">frankuxui</span>
         </h2>
         <p class="fx-lead mt-7 max-w-2xl text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-h5)" }}>
           El símbolo reúne mi identidad y las dos disciplinas que orientan mi forma de convertir ideas en productos digitales.
         </p>
+      </div>
+
+      <div class="fx-logo-scene" role="img" aria-label="Símbolo de Frankuxui">
+        <svg class="fx-logo-svg" viewBox="0 0 161 215" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g class="fx-logo-pieces">
+            <path class="fx-logo-piece" data-piece="1" d="M53.66 0H0V53.66H53.66V0Z" fill="currentColor"></path>
+            <path class="fx-logo-piece" data-piece="2" d="M53.66 53.6599H0V107.32H53.66V53.6599Z" fill="currentColor"></path>
+            <path class="fx-logo-piece" data-piece="3" d="M107.32 107.32H53.6599V160.98H107.32V107.32Z" fill="currentColor"></path>
+            <path class="fx-logo-piece" data-piece="4" d="M53.66 160.98H0V214.64H53.66V160.98Z" fill="currentColor"></path>
+            <path class="fx-logo-piece" data-piece="5" d="M107.32 0H53.6599V53.66H107.32V0Z" fill="currentColor"></path>
+            <path class="fx-logo-piece" data-piece="6" d="M160.98 0H107.32V53.66H160.98V0Z" fill="currentColor"></path>
+            <path
+              class="fx-logo-piece"
+              data-piece="7"
+              d="M147.56 214.63C154.966 214.63 160.97 208.626 160.97 201.22C160.97 193.814 154.966 187.81 147.56 187.81C140.154 187.81 134.15 193.814 134.15 201.22C134.15 208.626 140.154 214.63 147.56 214.63Z"
+              fill="currentColor"
+            ></path>
+          </g>
+        </svg>
       </div>
 
       <div class="fx-cards">
@@ -120,18 +140,34 @@ const titleLeadWords = titleLead.split(" ");
     position: relative;
   }
 
+  .fx-primary-wash {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    pointer-events: none;
+    background: var(--primary);
+    opacity: 0;
+  }
+
   .fx-stage {
+    z-index: 2;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
     padding-block: clamp(5rem, 12dvh, 8rem) clamp(2rem, 6dvh, 4rem);
   }
 
   .fx-heading {
+    position: relative;
+    z-index: 4;
     width: 100%;
     max-width: 46rem;
     margin: 0;
   }
 
   .fx-title {
-    font-size: clamp(3.25rem, 13vw, 6rem);
+    font-size: clamp(3.05rem, 12vw, 6rem);
     text-wrap: balance;
   }
 
@@ -140,14 +176,42 @@ const titleLeadWords = titleLead.split(" ");
     text-wrap: pretty;
   }
 
+  .fx-logo-scene {
+    position: absolute;
+    z-index: 3;
+    inset: 66% 1.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .fx-logo-svg {
+    width: clamp(7rem, min(34vw, 16dvh), 10rem);
+    height: auto;
+    overflow: visible;
+    color: var(--primary);
+    transform-origin: 50% 50%;
+    contain: layout style;
+  }
+
+  .fx-logo-piece {
+    transform-box: fill-box;
+    transform-origin: center;
+    will-change: transform, opacity;
+  }
+
   .fx-cards {
-    display: grid;
-    gap: 0;
-    margin-top: clamp(3rem, 8dvh, 5rem);
+    position: absolute;
+    z-index: 4;
+    inset: 0 1.5rem;
+    margin: 0;
   }
 
   .fx-card {
-    min-height: clamp(25rem, 68dvh, 38rem);
+    position: absolute;
+    inset: 0;
+    min-height: 0;
     justify-content: center;
     gap: clamp(1rem, 2.4dvh, 1.6rem);
     padding: 0;
@@ -160,6 +224,12 @@ const titleLeadWords = titleLead.split(" ");
     gap: 0.045em;
     color: var(--primary);
     font-size: clamp(1rem, 1.4vw, 1.25rem);
+  }
+
+  .fx-card:first-child .fx-card-key,
+  .fx-card:first-child .fx-card-title,
+  .fx-card:first-child .fx-card-body {
+    color: var(--primary-foreground);
   }
 
   .fx-card-title {
@@ -187,6 +257,14 @@ const titleLeadWords = titleLead.split(" ");
     .fx-stage {
       min-height: 100vh;
       min-height: 100dvh;
+    }
+
+    .fx-logo-scene {
+      inset: 0 0 0 50%;
+    }
+
+    .fx-logo-svg {
+      width: clamp(12rem, 18vw, 18rem);
     }
 
     .fx-stage {
@@ -248,13 +326,54 @@ const titleLeadWords = titleLead.split(" ");
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .fx-primary-wash {
+      display: none;
+    }
+
     .fx-stage {
+      min-height: auto;
+      display: block;
       padding-bottom: clamp(4rem, 8dvh, 7rem);
+    }
+
+    .fx-logo-scene {
+      position: relative;
+      inset: auto;
+      min-height: 10rem;
+      margin-block: clamp(3rem, 8dvh, 6rem);
+    }
+
+    .fx-logo-svg,
+    .fx-logo-piece {
+      opacity: 1;
+      transform: none;
+      will-change: auto;
+    }
+
+    .fx-cards,
+    .fx-card {
+      position: static;
+    }
+
+    .fx-cards {
+      display: grid;
     }
 
     .fx-card {
       min-height: auto;
       padding-block: clamp(2.5rem, 7dvh, 5rem);
+    }
+
+    .fx-card:first-child .fx-card-key {
+      color: var(--primary);
+    }
+
+    .fx-card:first-child .fx-card-title {
+      color: var(--foreground);
+    }
+
+    .fx-card:first-child .fx-card-body {
+      color: var(--foreground-muted);
     }
   }
 </style>
@@ -281,14 +400,19 @@ const titleLeadWords = titleLead.split(" ");
     const heading = section.querySelector(".fx-heading") as HTMLElement | null;
     const eyebrow = section.querySelector(".fx-eyebrow") as HTMLElement | null;
     const words = Array.from(section.querySelectorAll(".fx-word")) as HTMLElement[];
-    const brand = section.querySelector(".fx-brand") as HTMLElement | null;
     const lead = section.querySelector(".fx-lead") as HTMLElement | null;
+    const primaryWash = section.querySelector(".fx-primary-wash") as HTMLElement | null;
+    const logoScene = section.querySelector(".fx-logo-scene") as HTMLElement | null;
+    const logoSvg = section.querySelector(".fx-logo-svg") as SVGSVGElement | null;
+    const logoPieces = Array.from(section.querySelectorAll(".fx-logo-piece")) as SVGPathElement[];
     const cards = Array.from(section.querySelectorAll(".fx-card")) as HTMLElement[];
-    const introLogo = document.querySelector("#logo-intro-btn") as HTMLElement | null;
+    const previousIntroLogo = document.querySelector("#logo-intro-btn") as HTMLElement | null;
     const socials = section.querySelectorAll(".fx-social");
     const ctaPanel = section.querySelector(".fx-cta") as HTMLElement | null;
     const ctaButton = section.querySelector(".fx-cta-button") as HTMLElement | null;
-    if (!narrative || !heading || !eyebrow || !brand || !lead || !ctaPanel || cards.length !== 3) return () => undefined;
+    if (!narrative || !heading || !eyebrow || !lead || !primaryWash || !logoScene || !logoSvg || !ctaPanel || cards.length !== 3 || logoPieces.length !== 7) {
+      return () => undefined;
+    }
 
     const mm = gsap.matchMedia();
 
@@ -300,9 +424,10 @@ const titleLeadWords = titleLead.split(" ");
       },
       (context) => {
         const { isDesktop, reduced } = context.conditions as { isDesktop: boolean; isMobile: boolean; reduced: boolean };
-        const titleParts = [...words, brand];
+        const titleParts = words;
         const sectionStyles = getComputedStyle(section);
-        const backgroundColors = ["--gradient-1", "--gradient-2", "--gradient-3"].map(
+        const introBackground = sectionStyles.getPropertyValue("--gradient-1").trim();
+        const backgroundColors = ["--primary", "--gradient-2", "--gradient-3"].map(
           (token) => sectionStyles.getPropertyValue(token).trim()
         );
         const cardParts = cards.map((card) => ({
@@ -313,9 +438,11 @@ const titleLeadWords = titleLead.split(" ");
         }));
 
         if (reduced) {
-          gsap.set(section, { backgroundColor: backgroundColors[0] });
+          gsap.set(section, { backgroundColor: introBackground });
           gsap.set([heading, eyebrow, lead, ctaPanel, ctaButton], { clearProps: "all", opacity: 1, x: 0, y: 0 });
           gsap.set(titleParts, { clearProps: "all", opacity: 1, y: 0 });
+          gsap.set([logoScene, logoSvg, ...logoPieces], { clearProps: "all", opacity: 1, x: 0, y: 0, scale: 1, rotation: 0 });
+          gsap.set(primaryWash, { clearProps: "all", opacity: 0 });
           gsap.set(cards, { clearProps: "all", opacity: 1, x: 0, y: 0, scale: 1 });
           gsap.set(
             cardParts.flatMap(({ chars, title, body }) => [...chars, title, body]),
@@ -326,23 +453,68 @@ const titleLeadWords = titleLead.split(" ");
         }
 
         const rise = isDesktop ? 40 : 24;
+        const pieceVectors = [
+          { x: -0.16, y: -0.16, rotation: -4 },
+          { x: -0.18, y: 0, rotation: 3 },
+          { x: 0.06, y: 0.08, rotation: -3 },
+          { x: -0.15, y: 0.18, rotation: 4 },
+          { x: 0, y: -0.18, rotation: -2 },
+          { x: 0.18, y: -0.14, rotation: 3 },
+          { x: 0.18, y: 0.2, rotation: 0 }
+        ];
+        const getPieceExpansion = (piece: SVGPathElement, index: number) => {
+          const svgRect = logoSvg.getBoundingClientRect();
+          const box = piece.getBBox();
+          const pieceWidth = Math.max((box.width / 161) * svgRect.width, 1);
+          const pieceHeight = Math.max((box.height / 215) * svgRect.height, 1);
+          const centerX = svgRect.left + ((box.x + box.width / 2) / 161) * svgRect.width;
+          const centerY = svgRect.top + ((box.y + box.height / 2) / 215) * svgRect.height;
+          const vector = pieceVectors[index];
+          const x = vector.x * window.innerWidth * 0.8;
+          const y = vector.y * window.innerHeight * 0.8;
+          const targetCenterX = centerX + x;
+          const targetCenterY = centerY + y;
+          const requiredWidth = Math.max(targetCenterX, window.innerWidth - targetCenterX) * 2;
+          const requiredHeight = Math.max(targetCenterY, window.innerHeight - targetCenterY) * 2;
+
+          return {
+            x,
+            y,
+            scale: Math.max(requiredWidth / pieceWidth, requiredHeight / pieceHeight) * 1.1
+          };
+        };
         const storyTl = gsap.timeline({
           scrollTrigger: {
             trigger: narrative,
-            start: isDesktop ? "top top" : "top 82%",
-            end: isDesktop ? () => `+=${Math.round(window.innerHeight * 5.4)}` : "bottom 72%",
-            pin: isDesktop,
-            pinSpacing: isDesktop ? "margin" : false,
+            start: "top top",
+            end: () => `+=${Math.round(window.innerHeight * (isDesktop ? 8.4 : 8.9))}`,
+            pin: true,
+            pinSpacing: "margin",
             scrub: isDesktop ? 0.9 : 0.65,
-            anticipatePin: isDesktop ? 1 : 0,
+            anticipatePin: 1,
             invalidateOnRefresh: true
           }
         });
 
-        gsap.set(section, { backgroundColor: backgroundColors[0] });
+        gsap.set(section, { backgroundColor: introBackground });
+        gsap.set(primaryWash, { opacity: 0 });
         gsap.set(eyebrow, { opacity: 0, y: rise * 0.35 });
         gsap.set(titleParts, { opacity: 0, y: rise });
         gsap.set(lead, { opacity: 0, y: rise * 0.45 });
+        gsap.set(logoScene, { opacity: 0 });
+        logoPieces.forEach((piece, index) => {
+          const vector = pieceVectors[index];
+          const assemblyDistance = isDesktop ? 250 : 150;
+          gsap.set(piece, {
+            opacity: 0,
+            x: vector.x * assemblyDistance,
+            y: vector.y * assemblyDistance,
+            scale: 0.9,
+            rotation: vector.rotation,
+            transformOrigin: "50% 50%",
+            force3D: true
+          });
+        });
         gsap.set(cards, { opacity: 0, y: rise * 0.7 });
         cardParts.forEach(({ chars, title, body }) => {
           gsap.set(chars, { opacity: 0, y: 10 });
@@ -350,22 +522,58 @@ const titleLeadWords = titleLead.split(" ");
           gsap.set(body, { opacity: 0, y: 10 });
         });
 
+        if (previousIntroLogo) {
+          storyTl.to(previousIntroLogo, { opacity: 0, duration: 0.18, ease: "none" }, 0);
+        }
+
         storyTl
           .to(eyebrow, { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" }, 0)
           .to(titleParts, { opacity: 1, y: 0, duration: 0.5, stagger: 0.065, ease: "power3.out" }, 0.08)
           .to({}, { duration: 0.16 })
           .to(lead, { opacity: 1, y: 0, duration: 0.36, ease: "power2.out" })
-          .to({}, { duration: 0.32 });
-
-        if (introLogo) {
-          storyTl.to(introLogo, { opacity: 0, duration: 0.18, ease: "none" }, 0);
-        }
+          .to({}, { duration: 0.36 })
+          .to(logoScene, { opacity: 1, duration: 0.08, ease: "none" })
+          .to(logoPieces, { opacity: 1, x: 0, y: 0, scale: 1, rotation: 0, duration: 0.5, stagger: 0.065, ease: "power3.out" })
+          .to({}, { duration: 0.42 })
+          .addLabel("logoExpansion")
+          .to(heading, { opacity: 0, y: -24, duration: 0.58, ease: "power2.inOut" }, "logoExpansion")
+          .to(
+            logoPieces,
+            {
+              x: (index) => pieceVectors[index].x * Math.min(window.innerWidth, window.innerHeight) * 0.55,
+              y: (index) => pieceVectors[index].y * Math.min(window.innerWidth, window.innerHeight) * 0.55,
+              scale: 1.28,
+              rotation: (index) => pieceVectors[index].rotation * 0.65,
+              duration: 0.42,
+              stagger: 0.03,
+              ease: "power2.inOut"
+            },
+            "logoExpansion"
+          )
+          .to(logoPieces, {
+            x: (index, piece) => getPieceExpansion(piece as SVGPathElement, index).x,
+            y: (index, piece) => getPieceExpansion(piece as SVGPathElement, index).y,
+            scale: (index, piece) => getPieceExpansion(piece as SVGPathElement, index).scale,
+            rotation: 0,
+            duration: 1.15,
+            stagger: 0.035,
+            ease: "power2.inOut"
+          }, ">-0.08")
+          .to(primaryWash, { opacity: 1, duration: 0.24, ease: "none" }, ">-0.24")
+          .set(section, { backgroundColor: backgroundColors[0] })
+          .set(logoScene, { opacity: 0 })
+          .set(logoPieces, { x: 0, y: 0, scale: 1, rotation: 0 })
+          .to({}, { duration: 0.34 });
 
         cardParts.forEach(({ card, chars, title, body }, index) => {
           if (index > 0) {
             storyTl
               .to(cardParts[index - 1].card, { opacity: 0, y: -24, duration: 0.34, ease: "power2.inOut" })
               .to(section, { backgroundColor: backgroundColors[index], duration: 0.46, ease: "none" }, "<+0.08");
+
+            if (index === 1) {
+              storyTl.to(primaryWash, { opacity: 0, duration: 0.46, ease: "none" }, "<");
+            }
           }
 
           storyTl
