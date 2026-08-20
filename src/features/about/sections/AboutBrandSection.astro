@@ -20,14 +20,6 @@ const brandMeanings = [
   }
 ];
 
-const socialProfiles = [
-  { name: "GitHub", href: "https://github.com/frankuxui" },
-  { name: "LinkedIn", href: "https://www.linkedin.com/in/frankuxui/" },
-  { name: "Figma", href: "https://www.figma.com/@frankuxui" },
-  { name: "CodePen", href: "https://codepen.io/frankuxui" },
-  { name: "Instagram", href: "https://www.instagram.com/frankuxui/" }
-];
-
 const titleLead = "Decodificando mi marca personal";
 const titleLeadWords = titleLead.split(" ");
 ---
@@ -67,8 +59,7 @@ const titleLeadWords = titleLead.split(" ");
               class="fx-logo-piece"
               data-piece="7"
               d="M147.56 214.63C154.966 214.63 160.97 208.626 160.97 201.22C160.97 193.814 154.966 187.81 147.56 187.81C140.154 187.81 134.15 193.814 134.15 201.22C134.15 208.626 140.154 214.63 147.56 214.63Z"
-              fill="currentColor"
-            ></path>
+              fill="currentColor"></path>
           </g>
         </svg>
       </div>
@@ -97,34 +88,6 @@ const titleLeadWords = titleLead.split(" ");
     </div>
   </div>
 
-  <div class="fx-cta-wrap mx-auto w-full max-w-12xl px-6 sm:px-10">
-    <div class="fx-cta bg-background/60 mx-auto backdrop-blur-2xl rounded-4xl p-8 sm:p-12 lg:p-16">
-      <div class="w-full flex flex-col justify-between gap-6 md:flex-row md:items-center">
-        <ul class="flex flex-wrap gap-x-6 gap-y-3" aria-label="Perfiles sociales">
-          {
-            socialProfiles.map((profile) => (
-              <li class="fx-social">
-                <a
-                  href={profile.href}
-                  target="_blank"
-                  rel="me noopener noreferrer"
-                  class="text-sm text-foreground-muted underline decoration-foreground/20 underline-offset-8 hover:text-foreground transition-colors duration-200"
-                >
-                  {profile.name}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-        <a
-          href="/contacto"
-          class="fx-cta-button inline-flex items-center justify-center font-medium px-8 h-12 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity duration-200 flex-none"
-        >
-          Contactar
-        </a>
-      </div>
-    </div>
-  </div>
 </section>
 
 <style>
@@ -250,11 +213,6 @@ const titleLeadWords = titleLead.split(" ");
     font-size: clamp(1rem, 2vw, 1.25rem) !important;
     line-height: 1.62;
     text-wrap: pretty;
-  }
-
-  .fx-cta-wrap {
-    margin-top: 0;
-    padding-block: clamp(2rem, 6dvh, 5rem) clamp(5rem, 10dvh, 8rem);
   }
 
   @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
@@ -414,10 +372,7 @@ const titleLeadWords = titleLead.split(" ");
     const logoPieces = Array.from(section.querySelectorAll(".fx-logo-piece")) as SVGPathElement[];
     const cards = Array.from(section.querySelectorAll(".fx-card")) as HTMLElement[];
     const previousIntroLogo = document.querySelector("#logo-intro-btn") as HTMLElement | null;
-    const socials = section.querySelectorAll(".fx-social");
-    const ctaPanel = section.querySelector(".fx-cta") as HTMLElement | null;
-    const ctaButton = section.querySelector(".fx-cta-button") as HTMLElement | null;
-    if (!narrative || !stage || !heading || !eyebrow || !title || !lead || !primaryWash || !logoScene || !logoSvg || !ctaPanel || cards.length !== 3 || logoPieces.length !== 7) {
+    if (!narrative || !stage || !heading || !eyebrow || !title || !lead || !primaryWash || !logoScene || !logoSvg || cards.length !== 3 || logoPieces.length !== 7) {
       return () => undefined;
     }
 
@@ -437,9 +392,7 @@ const titleLeadWords = titleLead.split(" ");
         const foreground = sectionStyles.getPropertyValue("--foreground").trim();
         const foregroundMuted = sectionStyles.getPropertyValue("--foreground-muted").trim();
         const primaryForeground = sectionStyles.getPropertyValue("--primary-foreground").trim();
-        const backgroundColors = ["--primary", "--gradient-2", "--gradient-3"].map(
-          (token) => sectionStyles.getPropertyValue(token).trim()
-        );
+        const backgroundColors = ["--primary", "--gradient-2", "--gradient-3"].map((token) => sectionStyles.getPropertyValue(token).trim());
         const headingTone = { value: 0 };
         const titleTone = gsap.utils.interpolate(foreground, primaryForeground);
         const copyTone = gsap.utils.interpolate(foregroundMuted, primaryForeground);
@@ -457,7 +410,7 @@ const titleLeadWords = titleLead.split(" ");
 
         if (reduced) {
           gsap.set(section, { backgroundColor: introBackground });
-          gsap.set([heading, eyebrow, lead, ctaPanel, ctaButton], { clearProps: "all", opacity: 1, x: 0, y: 0 });
+          gsap.set([heading, eyebrow, lead], { clearProps: "all", opacity: 1, x: 0, y: 0 });
           gsap.set(titleParts, { clearProps: "all", opacity: 1, y: 0 });
           gsap.set([logoScene, logoSvg, ...logoPieces], { clearProps: "all", opacity: 1, x: 0, y: 0, scale: 1, rotation: 0 });
           gsap.set(primaryWash, { clearProps: "all", opacity: 0 });
@@ -466,7 +419,6 @@ const titleLeadWords = titleLead.split(" ");
             cardParts.flatMap(({ chars, title, body }) => [...chars, title, body]),
             { clearProps: "all", opacity: 1, y: 0 }
           );
-          gsap.set(socials, { opacity: 1, y: 0 });
           return;
         }
 
@@ -587,28 +539,14 @@ const titleLeadWords = titleLead.split(" ");
 
         assemblyOrder.forEach((pieceIndex, sequenceIndex) => {
           const state = assemblyStates[pieceIndex];
-          storyTl.to(
-            logoPieces[pieceIndex],
-            { opacity: 1, x: 0, y: 0, scale: 1, rotation: 0, duration: state.duration, ease: "power3.out" },
-            `logoAssembly+=${assemblyStarts[sequenceIndex]}`
-          );
+          storyTl.to(logoPieces[pieceIndex], { opacity: 1, x: 0, y: 0, scale: 1, rotation: 0, duration: state.duration, ease: "power3.out" }, `logoAssembly+=${assemblyStarts[sequenceIndex]}`);
         });
 
         storyTl.to({}, { duration: 0.5 }).addLabel("logoExpansion");
 
         storyTl
-          .fromTo(
-            heading,
-            { x: () => getIntroLayout().headingX },
-            { x: 0, duration: 1.08, ease: "power2.inOut", immediateRender: true },
-            "logoExpansion"
-          )
-          .fromTo(
-            logoSvg,
-            { x: () => getIntroLayout().logoX },
-            { x: 0, duration: 0.96, ease: "power2.inOut", immediateRender: true },
-            "logoExpansion"
-          );
+          .fromTo(heading, { x: () => getIntroLayout().headingX }, { x: 0, duration: 1.08, ease: "power2.inOut", immediateRender: true }, "logoExpansion")
+          .fromTo(logoSvg, { x: () => getIntroLayout().logoX }, { x: 0, duration: 0.96, ease: "power2.inOut", immediateRender: true }, "logoExpansion");
 
         logoPieces.forEach((piece, index) => {
           storyTl.to(
@@ -640,9 +578,7 @@ const titleLeadWords = titleLead.split(" ");
               .to(section, { backgroundColor: backgroundColors[index], duration: 0.46, ease: "none" }, "<+0.08");
 
             if (index === 1) {
-              storyTl
-                .to(primaryWash, { opacity: 0, duration: 0.46, ease: "none" }, "<")
-                .to(headingTone, { value: 0, duration: 0.36, ease: "none" }, "<");
+              storyTl.to(primaryWash, { opacity: 0, duration: 0.46, ease: "none" }, "<").to(headingTone, { value: 0, duration: 0.36, ease: "none" }, "<");
             }
           }
 
@@ -658,24 +594,6 @@ const titleLeadWords = titleLead.split(" ");
         // animation cannot restore stale inline colors on the heading.
         storyTl.eventCallback("onUpdate", renderHeadingTone);
         renderHeadingTone();
-
-        const ctaTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: ctaPanel,
-            start: isDesktop ? "top 92%" : "top 96%",
-            end: isDesktop ? "top 62%" : "top 72%",
-            scrub: 0.8,
-            invalidateOnRefresh: true
-          }
-        });
-
-        ctaTl
-          .fromTo(ctaPanel, { opacity: 0, y: rise }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0)
-          .fromTo(socials, { opacity: 0, y: rise * 0.4 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out", stagger: 0.06 }, 0.1);
-
-        if (ctaButton) {
-          ctaTl.fromTo(ctaButton, { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, ">-0.12");
-        }
 
         requestAnimationFrame(() => ScrollTrigger.refresh());
 

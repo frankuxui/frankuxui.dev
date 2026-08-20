@@ -1,0 +1,45 @@
+---
+const socialProfiles = [
+  { name: "GitHub", href: "https://github.com/frankuxui" },
+  { name: "LinkedIn", href: "https://www.linkedin.com/in/frankuxui/" },
+  { name: "Figma", href: "https://www.figma.com/@frankuxui" },
+  { name: "CodePen", href: "https://codepen.io/frankuxui" },
+  { name: "Instagram", href: "https://www.instagram.com/frankuxui/" }
+];
+---
+
+<section
+  id="about-brand-cta"
+  class="w-full py-16 sm:py-20 lg:py-24"
+  style={{ background: "var(--surface-black)" }}
+  data-header-contrast="dark"
+  aria-label="Contacto y perfiles sociales"
+>
+  <div class="mx-auto w-full max-w-4xl px-6 sm:px-10">
+    <div class="flex w-full flex-col justify-between gap-8 border-y border-background/15 py-8 sm:py-10 md:flex-row md:items-center">
+      <ul class="flex flex-wrap gap-x-6 gap-y-3" aria-label="Perfiles sociales">
+        {
+          socialProfiles.map((profile) => (
+            <li>
+              <a
+                href={profile.href}
+                target="_blank"
+                rel="me noopener noreferrer"
+                class="text-sm text-background/65 underline decoration-background/25 underline-offset-8 transition-none hover:text-background"
+              >
+                {profile.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <a
+        href="/contacto"
+        class="inline-flex h-12 flex-none items-center justify-center rounded-full bg-background px-8 font-medium text-foreground transition-none hover:bg-background/90"
+      >
+        Contactar
+      </a>
+    </div>
+  </div>
+</section>

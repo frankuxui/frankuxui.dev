@@ -1,8 +1,9 @@
 ---
+
 ---
 
-<div id="logo-intro" class="fixed inset-0 z-999 flex items-center justify-center text-foreground pointer-events-none" transition:persist>
-  <button type="button" id="logo-intro-btn" class="pointer-events-none block appearance-none border-0 bg-transparent p-0 opacity-0" tabindex="-1" aria-hidden="true">
+<div id="logo-intro" class="fixed inset-0 z-[99999] flex items-center justify-center text-foreground pointer-events-none" transition:persist>
+  <button type="button" id="logo-intro-btn" class="z-999 pointer-events-none block appearance-none border-0 bg-transparent p-0 opacity-0" tabindex="-1" aria-hidden="true">
     <svg id="logo-intro-svg" class="block w-28 sm:w-36 md:w-44" style="overflow: visible;" viewBox="0 0 204 272" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M68 0H0V68H68V0Z" fill="currentColor"></path>
       <path d="M68 68H0V136H68V68Z" fill="currentColor"></path>
@@ -330,7 +331,9 @@
           opacity: 1,
           duration: 0.25,
           ease: "power1.out",
-          onComplete: () => { gazeTrackingEnabled = true; }
+          onComplete: () => {
+            gazeTrackingEnabled = true;
+          }
         });
         gsap.delayedCall(0.45, () => walkTo("right"));
       }

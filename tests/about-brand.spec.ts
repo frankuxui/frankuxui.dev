@@ -72,7 +72,9 @@ test.describe("About brand scroll narrative", () => {
 
     await scrollBrandStory(page, 1);
     expect(await page.locator(".fx-card-body").evaluateAll((bodies) => bodies.every((body) => Number(getComputedStyle(body).opacity) > 0.9))).toBe(true);
-    expect(await page.locator(".fx-cta").evaluate((cta) => cta.closest(".pin-spacer") === null)).toBe(true);
+    expect(
+      await page.locator("#about-brand-cta").evaluate((cta) => cta.closest(".pin-spacer") === null && cta.closest(".about-brand-fx") === null)
+    ).toBe(true);
   });
 
   test("simplifica móvil y reduced-motion sin pin prolongado", async ({ browser }) => {

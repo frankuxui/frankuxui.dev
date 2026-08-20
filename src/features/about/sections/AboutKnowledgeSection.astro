@@ -1,75 +1,94 @@
 ---
 const knowledgeTopics = [
-  "Next.js",
-  "Tailwind CSS",
-  "React",
-  "UX/UI",
-  "SEO",
-  "n8n",
-  "Docker",
-  "Markdown",
-  "MDX",
-  "Automatización de contenidos",
-  "Integraciones API",
-  "Tanstack",
-  "Astro",
-  "Svelte",
-  "Vite",
-  "JavaScript",
-  "TypeScript",
-  "HTML5",
-  "CSS3",
-  "PM2",
-  "Traefik"
+  { name: "Next.js", category: "Framework", description: "Aplicaciones React con renderizado híbrido, rutas modernas y una arquitectura preparada para crecer." },
+  { name: "Tailwind CSS", category: "Sistema visual", description: "Interfaces consistentes construidas desde tokens, composición responsive y utilidades mantenibles." },
+  { name: "React", category: "Interfaz", description: "Componentes reutilizables, estados predecibles y experiencias interactivas centradas en el producto." },
+  { name: "UX/UI", category: "Diseño de producto", description: "Investigación, arquitectura y diseño visual conectados para resolver necesidades reales con claridad." },
+  { name: "SEO", category: "Descubrimiento", description: "Estructura, contenido y rendimiento técnico orientados a mejorar la visibilidad orgánica." },
+  { name: "n8n", category: "Automatización", description: "Flujos que conectan herramientas, eliminan tareas repetitivas y mantienen los procesos observables." },
+  { name: "Docker", category: "Infraestructura", description: "Entornos reproducibles para desarrollar, probar y desplegar servicios con mayor seguridad." },
+  { name: "Markdown", category: "Contenido", description: "Documentación ligera y portable que mantiene el conocimiento fácil de escribir y versionar." },
+  { name: "MDX", category: "Contenido interactivo", description: "Narrativas técnicas que combinan documentación estructurada con componentes dinámicos." },
+  { name: "Automatización de contenidos", category: "Flujo editorial", description: "Sistemas que transforman, validan y publican contenido sin perder control editorial." },
+  { name: "Integraciones API", category: "Sistemas conectados", description: "Conexiones robustas entre productos, servicios y datos mediante contratos bien definidos." },
+  { name: "TanStack", category: "Datos y estado", description: "Herramientas especializadas para consultar, ordenar y presentar información compleja con precisión." },
+  { name: "Astro", category: "Framework web", description: "Sitios rápidos y orientados al contenido con JavaScript enviado solo cuando aporta valor." },
+  { name: "Svelte", category: "Interfaz", description: "Experiencias reactivas con componentes concisos y una huella mínima en el navegador." },
+  { name: "Vite", category: "Tooling", description: "Entornos de desarrollo rápidos y configuraciones de build simples para proyectos modernos." },
+  { name: "JavaScript", category: "Lenguaje", description: "Lógica de interacción, comportamiento en cliente e integración de experiencias web completas." },
+  { name: "TypeScript", category: "Lenguaje tipado", description: "Contratos explícitos que reducen errores y hacen más segura la evolución del producto." },
+  { name: "HTML5", category: "Web semántica", description: "Estructuras accesibles que comunican correctamente el propósito de cada contenido." },
+  { name: "CSS3", category: "Diseño visual", description: "Layouts, tipografía y movimiento responsive ejecutados directamente en la plataforma web." },
+  { name: "PM2", category: "Operación", description: "Gestión y supervisión de procesos Node.js para mantener servicios disponibles y controlados." },
+  { name: "Traefik", category: "Infraestructura web", description: "Enrutamiento dinámico, certificados y exposición segura de servicios en producción." }
 ];
-
-// Two nowrap rows that will travel in opposite directions on scroll.
-const rowOne = knowledgeTopics.filter((_, index) => index % 2 === 0);
-const rowTwo = knowledgeTopics.filter((_, index) => index % 2 === 1);
 
 const title = "Conocimiento práctico para diseñadores y desarrolladores.";
 const titleWords = title.split(" ");
 ---
 
-<section class="about-knowledge-fx scroll-mt-32 py-16 lg:py-24 w-full min-w-0 relative isolate" aria-labelledby="about-knowledge-title">
-  <!-- Full-bleed panel that rises from the bottom edge and flips the section to
-       its dark treatment. Carries the header-contrast hook. -->
+<section class="about-knowledge-fx scroll-mt-32 py-16 lg:py-40 w-full min-w-0 relative isolate" aria-labelledby="about-knowledge-title">
   <div class="fx-surface" data-header-contrast="dark" aria-hidden="true"></div>
 
-  <div class="fx-content w-full max-w-5xl mx-auto">
+  <div class="fx-content w-full max-w-12xl mx-auto">
     <div class="fx-text px-6 sm:px-10">
-      <p class="fx-eyebrow text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Divulgación técnica</p>
-      <h2
-        id="about-knowledge-title"
-        class="fx-title mt-4 font-bold tracking-tight text-foreground max-w-3xl text-[clamp(2.5rem,4vw,5rem)] leading-[1.15]"
-        aria-label={title}
-      >
-        {titleWords.map((word) => <span class="fx-word" aria-hidden="true">{word}</span>)}
+      <p class="fx-eyebrow text-center text-sm font-medium uppercase tracking-[0.22em]">Divulgación técnica</p>
+      <h2 id="about-knowledge-title" class="fx-title mt-6 w-full max-w-6xl mx-auto text-center font-semibold tracking-[-0.055em]" aria-label={title}>
+        {
+          titleWords.map((word) => (
+            <span class="fx-word" aria-hidden="true">
+              {Array.from(word).map((character) => (
+                <span class="fx-char">{character}</span>
+              ))}
+            </span>
+          ))
+        }
       </h2>
-      <p class="fx-body mt-8 max-w-2xl text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+      <p class="fx-body mt-10 max-w-2xl mx-auto text-center leading-relaxed" style={{ "font-size": "var(--font-h5)" }}>
         Además de construir productos digitales, documento procesos, soluciones y aprendizajes mediante artículos y tutoriales que otras personas puedan aplicar directamente en sus proyectos.
       </p>
     </div>
 
-    <div class="fx-marquee mt-10" aria-label="Temas de divulgación">
-      <ul class="fx-row fx-row-1">
-        {rowOne.map((topic) => <li class="fx-chip inline-flex items-center justify-center whitespace-nowrap font-medium px-8 h-12 text-sm rounded-full bg-secondary text-secondary-foreground">{topic}</li>)}
-      </ul>
-      <ul class="fx-row fx-row-2 mt-3">
-        {rowTwo.map((topic) => <li class="fx-chip inline-flex items-center justify-center whitespace-nowrap font-medium px-8 h-12 text-sm rounded-full bg-secondary text-secondary-foreground">{topic}</li>)}
-      </ul>
+    <div class="fx-stack-library mt-16 lg:mt-24">
+      <div class="fx-stack-heading px-6 sm:px-10" aria-hidden="true">
+        <span>Stack y disciplinas</span>
+        <span>Desliza para explorar</span>
+      </div>
+      <div class="fx-stack-scroller" tabindex="0" role="region" aria-label="Stack y disciplinas. Desplázate horizontalmente para explorar.">
+        <ul class="fx-stack-track">
+        {
+          knowledgeTopics.map((topic) => (
+            <li class="fx-stack-card">
+              <article>
+                <p class="fx-stack-category">{topic.category}</p>
+                <h3 class="fx-stack-name">{topic.name}</h3>
+                <p class="fx-stack-description">{topic.description}</p>
+              </article>
+            </li>
+          ))
+        }
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .about-knowledge-fx {
-    /* Dark-chapter palette, resolved in JS so GSAP can tween towards it. */
     --fx-surface-color: #0b0b0b;
     --fx-on-dark: #f5f5f0;
     --fx-on-dark-muted: #a5a49e;
-    --fx-chip-surface: rgba(245, 245, 240, 0.09);
-    --fx-chip-border: rgba(245, 245, 240, 0.22);
+    --fx-on-dark-soft: rgba(245, 245, 240, 0.56);
+    --fx-on-dark-subtle: rgba(245, 245, 240, 0.48);
+    --fx-card-surface: rgba(245, 245, 240, 0.055);
+    --fx-card-surface-hover: rgba(245, 245, 240, 0.085);
+    --fx-card-border: rgba(245, 245, 240, 0.16);
+    --fx-card-border-hover: rgba(245, 245, 240, 0.3);
+    --fx-scroll-thumb: rgba(245, 245, 240, 0.32);
+    --fx-scroll-track: rgba(245, 245, 240, 0.08);
+    overflow: clip;
+    color: var(--fx-on-dark);
+    background: var(--fx-surface-color);
   }
 
   .fx-surface {
@@ -77,7 +96,6 @@ const titleWords = title.split(" ");
     z-index: 0;
     inset: 0;
     background: var(--fx-surface-color);
-    clip-path: inset(100% 0 0);
     pointer-events: none;
   }
 
@@ -86,41 +104,148 @@ const titleWords = title.split(" ");
     z-index: 1;
   }
 
+  .fx-text {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .fx-eyebrow {
+    color: var(--fx-on-dark-soft);
+  }
+
+  .fx-title {
+    color: var(--fx-on-dark);
+    font-size: clamp(3.2rem, 8vw, 9rem);
+    line-height: 0.94;
+    text-wrap: balance;
+  }
+
   .fx-word {
     display: inline-block;
     margin-right: 0.25em;
   }
+
+  .fx-char {
+    display: inline-block;
+    opacity: 0.14;
+    will-change: opacity;
+  }
+
   .fx-word:last-child {
     margin-right: 0;
   }
 
-  .fx-marquee {
-    overflow: hidden;
-    padding-inline: 1.5rem;
+  .fx-body {
+    color: var(--fx-on-dark-soft);
+    text-wrap: pretty;
   }
+
+  .fx-stack-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    color: var(--fx-on-dark-subtle);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .fx-stack-scroller {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding-inline: 1.5rem;
+    padding-bottom: 1.25rem;
+    scroll-padding-inline: 1.5rem;
+    scroll-snap-type: inline mandatory;
+    scrollbar-color: var(--fx-scroll-thumb) var(--fx-scroll-track);
+    scrollbar-width: thin;
+  }
+
+  .fx-stack-scroller:focus-visible {
+    outline: 2px solid var(--fx-on-dark);
+    outline-offset: 0.35rem;
+  }
+
   @media (min-width: 640px) {
-    .fx-marquee {
+    .fx-stack-scroller {
       padding-inline: 2.5rem;
+      scroll-padding-inline: 2.5rem;
     }
   }
 
-  .fx-row {
+  .fx-stack-track {
     display: flex;
     flex-wrap: nowrap;
     width: max-content;
-    gap: 0.75rem;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  /* Transparent border keeps chip metrics steady while GSAP tweens the colour. */
-  .fx-chip {
-    border: 1px solid transparent;
+  .fx-stack-card {
+    width: clamp(18rem, 31vw, 28rem);
+    min-height: clamp(19rem, 34dvh, 23rem);
+    flex: none;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border: 1px solid var(--fx-card-border);
+    border-radius: 1.75rem;
+    background: var(--fx-card-surface);
+    scroll-snap-align: start;
+    transition: background-color 220ms ease, border-color 220ms ease;
   }
 
-  .fx-eyebrow,
-  .fx-body,
-  .fx-word,
-  .fx-row {
-    will-change: transform, opacity;
+  .fx-stack-card article {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fx-stack-category {
+    color: var(--fx-on-dark-subtle);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .fx-stack-name {
+    margin-top: auto;
+    color: var(--fx-on-dark);
+    font-size: clamp(2rem, 3.25vw, 3.75rem);
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+
+  .fx-stack-description {
+    max-width: 34ch;
+    margin-top: 1.25rem;
+    color: var(--fx-on-dark-muted);
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .fx-stack-card:hover {
+      border-color: var(--fx-card-border-hover);
+      background: var(--fx-card-surface-hover);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-char {
+      opacity: 1;
+      will-change: auto;
+    }
   }
 </style>
 
@@ -142,21 +267,15 @@ const titleWords = title.split(" ");
     const section = document.querySelector(".about-knowledge-fx") as HTMLElement | null;
     if (!section) return () => undefined;
 
-    const surface = section.querySelector(".fx-surface") as HTMLElement | null;
+    const textBlock = section.querySelector(".fx-text") as HTMLElement | null;
     const eyebrow = section.querySelector(".fx-eyebrow") as HTMLElement | null;
-    const words = section.querySelectorAll(".fx-word");
+    const characters = Array.from(section.querySelectorAll(".fx-char")) as HTMLElement[];
     const body = section.querySelector(".fx-body") as HTMLElement | null;
-    const marquee = section.querySelector(".fx-marquee") as HTMLElement | null;
-    const rowOne = section.querySelector(".fx-row-1") as HTMLElement | null;
-    const rowTwo = section.querySelector(".fx-row-2") as HTMLElement | null;
-    const chips = section.querySelectorAll(".fx-chip");
-    if (!surface || !eyebrow || !body || !marquee || !rowOne || !rowTwo || words.length === 0) return () => undefined;
-
-    const styles = getComputedStyle(section);
-    const onDark = styles.getPropertyValue("--fx-on-dark").trim() || "#f5f5f0";
-    const onDarkMuted = styles.getPropertyValue("--fx-on-dark-muted").trim() || "#a5a49e";
-    const chipSurface = styles.getPropertyValue("--fx-chip-surface").trim() || "rgba(245,245,240,0.09)";
-    const chipBorder = styles.getPropertyValue("--fx-chip-border").trim() || "rgba(245,245,240,0.22)";
+    const stackLibrary = section.querySelector(".fx-stack-library") as HTMLElement | null;
+    const stackHeading = section.querySelector(".fx-stack-heading") as HTMLElement | null;
+    const stackScroller = section.querySelector(".fx-stack-scroller") as HTMLElement | null;
+    const cards = Array.from(section.querySelectorAll(".fx-stack-card")) as HTMLElement[];
+    if (!textBlock || !eyebrow || !body || !stackLibrary || !stackHeading || !stackScroller || characters.length === 0 || cards.length === 0) return () => undefined;
 
     const mm = gsap.matchMedia();
 
@@ -170,84 +289,47 @@ const titleWords = title.split(" ");
         const { isDesktop, reduced } = context.conditions as { isDesktop: boolean; isMobile: boolean; reduced: boolean };
 
         if (reduced) {
-          gsap.set(surface, { clipPath: "inset(0% 0 0)" });
-          gsap.set(eyebrow, { opacity: 1, y: 0, color: onDarkMuted });
-          gsap.set(words, { opacity: 1, y: 0, color: onDark });
-          gsap.set(body, { opacity: 1, y: 0, color: onDarkMuted });
-          gsap.set(chips, { opacity: 1, y: 0, scale: 1, backgroundColor: chipSurface, borderColor: chipBorder, color: onDark });
+          gsap.set([eyebrow, body, stackHeading, stackScroller, ...characters, ...cards], { clearProps: "all", opacity: 1, x: 0, y: 0 });
           return;
         }
 
-        const rise = isDesktop ? 34 : 20;
-
-        // Entrance: panel first (so colour changes land on dark), then text.
-        const entrance = gsap.timeline({
+        const titleReveal = gsap.timeline({
           scrollTrigger: {
-            trigger: section,
-            start: isDesktop ? "top 82%" : "top 90%",
-            end: isDesktop ? "top 24%" : "top 32%",
-            scrub: 0.8,
+            trigger: textBlock,
+            start: "top top",
+            end: () => `+=${Math.round(window.innerHeight * (isDesktop ? 1.55 : 1.35))}`,
+            pin: true,
+            pinSpacing: true,
+            scrub: isDesktop ? 0.55 : 0.4,
+            anticipatePin: 1,
             invalidateOnRefresh: true
           }
         });
 
-        entrance
-          .fromTo(surface, { clipPath: "inset(100% 0 0)" }, { clipPath: "inset(0% 0 0)", duration: 0.55, ease: "power2.inOut" }, 0)
-          .to(eyebrow, { color: onDarkMuted, duration: 0.35, ease: "none" }, 0.2)
-          .to(words, { color: onDark, duration: 0.35, ease: "none" }, 0.2)
-          .to(body, { color: onDarkMuted, duration: 0.35, ease: "none" }, 0.2)
-          .fromTo(eyebrow, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 0.15)
+        titleReveal
+          .fromTo(eyebrow, { opacity: 0.28 }, { opacity: 1, duration: 0.3, ease: "none" }, 0)
+          .fromTo(characters, { opacity: 0.14 }, { opacity: 1, duration: 0.08, stagger: 0.025, ease: "none" }, 0.06)
+          .fromTo(body, { opacity: 0.2, y: isDesktop ? 20 : 14 }, { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" }, 1.1);
+
+        const cardsReveal = gsap.timeline({
+          scrollTrigger: {
+            trigger: stackLibrary,
+            start: isDesktop ? "top 88%" : "top 92%",
+            end: isDesktop ? "top 56%" : "top 62%",
+            scrub: 0.45,
+            invalidateOnRefresh: true
+          }
+        });
+
+        cardsReveal
+          .fromTo(stackHeading, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }, 0)
+          .fromTo(stackScroller, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 0.04)
           .fromTo(
-            words,
-            { opacity: 0, y: rise, filter: "blur(6px)" },
-            { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "power3.out", stagger: 0.045 },
-            0.25
-          )
-          .fromTo(
-            body,
-            { opacity: 0, y: rise * 0.6, clipPath: "inset(0 0 100% 0)" },
-            { opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)", duration: 0.45, ease: "power2.out" },
-            ">-0.2"
-          )
-          .fromTo(
-            chips,
-            { opacity: 0, y: rise * 0.5, scale: 0.9 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              backgroundColor: chipSurface,
-              borderColor: chipBorder,
-              color: onDark,
-              duration: 0.4,
-              ease: "back.out(1.5)",
-              stagger: { each: 0.025, from: "start" }
-            },
-            ">-0.15"
+            cards,
+            { opacity: 0, y: isDesktop ? 26 : 18 },
+            { opacity: 1, y: 0, duration: 0.42, ease: "power3.out", stagger: 0.025 },
+            0.08
           );
-
-        // Opposite-direction horizontal scroll for the two rows.
-        const overflowOne = () => Math.max(0, rowOne.scrollWidth - marquee.clientWidth);
-        const overflowTwo = () => Math.max(0, rowTwo.scrollWidth - marquee.clientWidth);
-
-        gsap.fromTo(
-          rowOne,
-          { x: () => -overflowOne() * 0.9 },
-          {
-            x: () => -overflowOne() * 0.05,
-            ease: "none",
-            scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: 0.6, invalidateOnRefresh: true }
-          }
-        );
-        gsap.fromTo(
-          rowTwo,
-          { x: () => -overflowTwo() * 0.05 },
-          {
-            x: () => -overflowTwo() * 0.9,
-            ease: "none",
-            scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: 0.6, invalidateOnRefresh: true }
-          }
-        );
       }
     );
 

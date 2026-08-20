@@ -9,6 +9,7 @@
   --background: #ffffff;
   --background-card: #e8dfd2;
   --body-background: #f0e8dc;
+  --surface-black: #0b0b0b;
   --biografia-logo-on-dark: #ffffff;
   --biografia-stage-bg: #000000;
   --biografia-stage-card: #101010;
@@ -1015,10 +1016,6 @@
   max-width: 42rem;
 }
 
-.about-brand-fx .fx-cta-wrap {
-  margin-top: 1.5rem;
-}
-
 .about-brand-fx .fx-eyebrow,
 .about-brand-fx .fx-heading,
 .about-brand-fx .fx-word,
@@ -1027,10 +1024,7 @@
 .about-brand-fx .fx-card,
 .about-brand-fx .fx-card-char,
 .about-brand-fx .fx-card-title,
-.about-brand-fx .fx-card-body,
-.about-brand-fx .fx-social,
-.about-brand-fx .fx-cta,
-.about-brand-fx .fx-cta-button {
+.about-brand-fx .fx-card-body {
   will-change: transform, opacity;
 }
 
@@ -1085,9 +1079,6 @@
     line-height: 1.5;
   }
 
-  .about-brand-fx .fx-cta-wrap {
-    margin-top: clamp(1.5rem, 4dvh, 3rem);
-  }
 }
 
 @media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
@@ -1105,10 +1096,7 @@
   .about-brand-fx .fx-card,
   .about-brand-fx .fx-card-char,
   .about-brand-fx .fx-card-title,
-  .about-brand-fx .fx-card-body,
-  .about-brand-fx .fx-social,
-  .about-brand-fx .fx-cta,
-  .about-brand-fx .fx-cta-button {
+  .about-brand-fx .fx-card-body {
     will-change: auto;
   }
 }
