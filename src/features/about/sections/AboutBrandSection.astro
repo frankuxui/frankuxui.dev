@@ -160,7 +160,7 @@ const titleLeadWords = titleLead.split(" ");
 
   .fx-heading {
     position: relative;
-    z-index: 4;
+    z-index: 5;
     width: 100%;
     max-width: 46rem;
     margin: 0;
@@ -179,11 +179,16 @@ const titleLeadWords = titleLead.split(" ");
   .fx-logo-scene {
     position: absolute;
     z-index: 3;
-    inset: 66% 1.5rem 0;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
     pointer-events: none;
+    transform: translate(-50%, -50%);
   }
 
   .fx-logo-svg {
@@ -257,10 +262,6 @@ const titleLeadWords = titleLead.split(" ");
     .fx-stage {
       min-height: 100vh;
       min-height: 100dvh;
-    }
-
-    .fx-logo-scene {
-      inset: 0 0 0 50%;
     }
 
     .fx-logo-svg {
@@ -338,9 +339,13 @@ const titleLeadWords = titleLead.split(" ");
 
     .fx-logo-scene {
       position: relative;
-      inset: auto;
+      top: auto;
+      left: auto;
+      width: auto;
+      height: auto;
       min-height: 10rem;
       margin-block: clamp(3rem, 8dvh, 6rem);
+      transform: none;
     }
 
     .fx-logo-svg,
@@ -399,6 +404,7 @@ const titleLeadWords = titleLead.split(" ");
     const narrative = section.querySelector(".fx-narrative") as HTMLElement | null;
     const heading = section.querySelector(".fx-heading") as HTMLElement | null;
     const eyebrow = section.querySelector(".fx-eyebrow") as HTMLElement | null;
+    const title = section.querySelector(".fx-title") as HTMLElement | null;
     const words = Array.from(section.querySelectorAll(".fx-word")) as HTMLElement[];
     const lead = section.querySelector(".fx-lead") as HTMLElement | null;
     const primaryWash = section.querySelector(".fx-primary-wash") as HTMLElement | null;
@@ -410,7 +416,7 @@ const titleLeadWords = titleLead.split(" ");
     const socials = section.querySelectorAll(".fx-social");
     const ctaPanel = section.querySelector(".fx-cta") as HTMLElement | null;
     const ctaButton = section.querySelector(".fx-cta-button") as HTMLElement | null;
-    if (!narrative || !heading || !eyebrow || !lead || !primaryWash || !logoScene || !logoSvg || !ctaPanel || cards.length !== 3 || logoPieces.length !== 7) {
+    if (!narrative || !heading || !eyebrow || !title || !lead || !primaryWash || !logoScene || !logoSvg || !ctaPanel || cards.length !== 3 || logoPieces.length !== 7) {
       return () => undefined;
     }
 
@@ -427,9 +433,20 @@ const titleLeadWords = titleLead.split(" ");
         const titleParts = words;
         const sectionStyles = getComputedStyle(section);
         const introBackground = sectionStyles.getPropertyValue("--gradient-1").trim();
+        const foreground = sectionStyles.getPropertyValue("--foreground").trim();
+        const foregroundMuted = sectionStyles.getPropertyValue("--foreground-muted").trim();
+        const primaryForeground = sectionStyles.getPropertyValue("--primary-foreground").trim();
         const backgroundColors = ["--primary", "--gradient-2", "--gradient-3"].map(
           (token) => sectionStyles.getPropertyValue(token).trim()
         );
+        const headingTone = { value: 0 };
+        const titleTone = gsap.utils.interpolate(foreground, primaryForeground);
+        const copyTone = gsap.utils.interpolate(foregroundMuted, primaryForeground);
+        const renderHeadingTone = () => {
+          title.style.color = titleTone(headingTone.value);
+          eyebrow.style.color = copyTone(headingTone.value);
+          lead.style.color = copyTone(headingTone.value);
+        };
         const cardParts = cards.map((card) => ({
           card,
           chars: Array.from(card.querySelectorAll(".fx-card-char")) as HTMLElement[],
@@ -460,8 +477,20 @@ const titleLeadWords = titleLead.split(" ");
           { x: -0.15, y: 0.18, rotation: 4 },
           { x: 0, y: -0.18, rotation: -2 },
           { x: 0.18, y: -0.14, rotation: 3 },
-          { x: 0.18, y: 0.2, rotation: 0 }
+          { x: 0.22, y: 0.24, rotation: 0 }
         ];
+        const assemblyStates = [
+          { x: -0.075, y: -0.055, scale: 0.91, rotation: -3.5, duration: 0.62 },
+          { x: -0.09, y: 0.01, scale: 0.94, rotation: 2.5, duration: 0.57 },
+          { x: 0.045, y: 0.065, scale: 0.89, rotation: -2.5, duration: 0.66 },
+          { x: -0.055, y: 0.09, scale: 0.93, rotation: 3, duration: 0.6 },
+          { x: 0.015, y: -0.085, scale: 0.92, rotation: -2, duration: 0.68 },
+          { x: 0.085, y: -0.045, scale: 0.9, rotation: 2.5, duration: 0.64 },
+          { x: 0.08, y: 0.105, scale: 0.86, rotation: 0, duration: 0.72 }
+        ];
+        const assemblyOrder = [4, 0, 1, 2, 5, 3, 6];
+        const assemblyStarts = [0, 0.055, 0.13, 0.2, 0.27, 0.34, 0.43];
+        const departureStarts = [0, 0.035, 0.085, 0.13, 0.06, 0.11, 0.17];
         const getPieceExpansion = (piece: SVGPathElement, index: number) => {
           const svgRect = logoSvg.getBoundingClientRect();
           const box = piece.getBBox();
@@ -503,14 +532,14 @@ const titleLeadWords = titleLead.split(" ");
         gsap.set(lead, { opacity: 0, y: rise * 0.45 });
         gsap.set(logoScene, { opacity: 0 });
         logoPieces.forEach((piece, index) => {
-          const vector = pieceVectors[index];
-          const assemblyDistance = isDesktop ? 250 : 150;
+          const state = assemblyStates[index];
+          const assemblyDistance = Math.min(window.innerWidth, window.innerHeight);
           gsap.set(piece, {
             opacity: 0,
-            x: vector.x * assemblyDistance,
-            y: vector.y * assemblyDistance,
-            scale: 0.9,
-            rotation: vector.rotation,
+            x: state.x * assemblyDistance,
+            y: state.y * assemblyDistance,
+            scale: state.scale,
+            rotation: state.rotation,
             transformOrigin: "50% 50%",
             force3D: true
           });
@@ -533,33 +562,37 @@ const titleLeadWords = titleLead.split(" ");
           .to(lead, { opacity: 1, y: 0, duration: 0.36, ease: "power2.out" })
           .to({}, { duration: 0.36 })
           .to(logoScene, { opacity: 1, duration: 0.08, ease: "none" })
-          .to(logoPieces, { opacity: 1, x: 0, y: 0, scale: 1, rotation: 0, duration: 0.5, stagger: 0.065, ease: "power3.out" })
-          .to({}, { duration: 0.42 })
-          .addLabel("logoExpansion")
-          .to(heading, { opacity: 0, y: -24, duration: 0.58, ease: "power2.inOut" }, "logoExpansion")
-          .to(
-            logoPieces,
+          .addLabel("logoAssembly");
+
+        assemblyOrder.forEach((pieceIndex, sequenceIndex) => {
+          const state = assemblyStates[pieceIndex];
+          storyTl.to(
+            logoPieces[pieceIndex],
+            { opacity: 1, x: 0, y: 0, scale: 1, rotation: 0, duration: state.duration, ease: "power3.out" },
+            `logoAssembly+=${assemblyStarts[sequenceIndex]}`
+          );
+        });
+
+        storyTl.to({}, { duration: 0.5 }).addLabel("logoExpansion");
+
+        logoPieces.forEach((piece, index) => {
+          storyTl.to(
+            piece,
             {
-              x: (index) => pieceVectors[index].x * Math.min(window.innerWidth, window.innerHeight) * 0.55,
-              y: (index) => pieceVectors[index].y * Math.min(window.innerWidth, window.innerHeight) * 0.55,
-              scale: 1.28,
-              rotation: (index) => pieceVectors[index].rotation * 0.65,
-              duration: 0.42,
-              stagger: 0.03,
-              ease: "power2.inOut"
+              x: () => getPieceExpansion(piece, index).x,
+              y: () => getPieceExpansion(piece, index).y,
+              scale: () => getPieceExpansion(piece, index).scale,
+              rotation: index === 6 ? 0 : pieceVectors[index].rotation * 0.35,
+              duration: index === 6 ? 1.62 : 1.48,
+              ease: index === 6 ? "sine.inOut" : "power1.inOut"
             },
-            "logoExpansion"
-          )
-          .to(logoPieces, {
-            x: (index, piece) => getPieceExpansion(piece as SVGPathElement, index).x,
-            y: (index, piece) => getPieceExpansion(piece as SVGPathElement, index).y,
-            scale: (index, piece) => getPieceExpansion(piece as SVGPathElement, index).scale,
-            rotation: 0,
-            duration: 1.15,
-            stagger: 0.035,
-            ease: "power2.inOut"
-          }, ">-0.08")
-          .to(primaryWash, { opacity: 1, duration: 0.24, ease: "none" }, ">-0.24")
+            `logoExpansion+=${departureStarts[index]}`
+          );
+        });
+
+        storyTl
+          .to(headingTone, { value: 1, duration: 0.34, ease: "none" }, "logoExpansion+=0.62")
+          .to(primaryWash, { opacity: 1, duration: 0.24, ease: "none" }, "logoExpansion+=1.55")
           .set(section, { backgroundColor: backgroundColors[0] })
           .set(logoScene, { opacity: 0 })
           .set(logoPieces, { x: 0, y: 0, scale: 1, rotation: 0 })
@@ -572,7 +605,9 @@ const titleLeadWords = titleLead.split(" ");
               .to(section, { backgroundColor: backgroundColors[index], duration: 0.46, ease: "none" }, "<+0.08");
 
             if (index === 1) {
-              storyTl.to(primaryWash, { opacity: 0, duration: 0.46, ease: "none" }, "<");
+              storyTl
+                .to(primaryWash, { opacity: 0, duration: 0.46, ease: "none" }, "<")
+                .to(headingTone, { value: 0, duration: 0.36, ease: "none" }, "<");
             }
           }
 
@@ -583,6 +618,11 @@ const titleLeadWords = titleLead.split(" ");
             .to(body, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, ">+0.04")
             .to({}, { duration: index === cardParts.length - 1 ? 0.62 : 0.46 });
         });
+
+        // Render the contrast state after every child tween so the intro
+        // animation cannot restore stale inline colors on the heading.
+        storyTl.eventCallback("onUpdate", renderHeadingTone);
+        renderHeadingTone();
 
         const ctaTl = gsap.timeline({
           scrollTrigger: {
@@ -603,6 +643,12 @@ const titleLeadWords = titleLead.split(" ");
         }
 
         requestAnimationFrame(() => ScrollTrigger.refresh());
+
+        return () => {
+          title.style.removeProperty("color");
+          eyebrow.style.removeProperty("color");
+          lead.style.removeProperty("color");
+        };
       }
     );
 
