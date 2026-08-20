@@ -3,17 +3,20 @@ const brandMeanings = [
   {
     key: "Frank",
     title: "La persona detrás de la marca",
-    description: "Mi nombre convierte cada proyecto en un compromiso personal con la calidad, la claridad y el detalle."
+    description:
+      "Mi nombre convierte cada proyecto en un compromiso personal con la calidad, la claridad y el detalle. Frank representa la parte humana de la marca, la responsabilidad detrás de cada decisión y la implicación directa en cada producto que diseño y desarrollo."
   },
   {
     key: "UX",
     title: "Experiencia de usuario",
-    description: "Representa entender a las personas, ordenar la complejidad y diseñar recorridos que se sientan naturales."
+    description:
+      "Representa entender a las personas, ordenar la complejidad y diseñar recorridos que se sientan naturales. UX es la parte que convierte necesidades, comportamientos y problemas reales en experiencias claras, intuitivas y pensadas para facilitar cada interacción."
   },
   {
     key: "UI",
     title: "Interfaz de usuario",
-    description: "Expresa la parte visual y tangible: sistemas coherentes, interacción precisa y una identidad reconocible."
+    description:
+      "Expresa la parte visual y tangible del producto: sistemas coherentes, interacción precisa y una identidad reconocible. UI transforma la estrategia y la experiencia en interfaces cuidadas, consistentes y capaces de comunicar con claridad en cada detalle."
   }
 ];
 
@@ -24,45 +27,63 @@ const socialProfiles = [
   { name: "CodePen", href: "https://codepen.io/frankuxui" },
   { name: "Instagram", href: "https://www.instagram.com/frankuxui/" }
 ];
+
+const titleLead = "El significado de";
+const titleLeadWords = titleLead.split(" ");
 ---
 
-<section class="w-full py-16 lg:py-24" aria-labelledby="about-brand-title">
-  <div class="w-full max-w-5xl mx-auto px-10">
-    <div class="text-center max-w-3xl mx-auto">
-      <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Marca personal</p>
-      <h2 id="about-brand-title" class="mt-6 font-semibold tracking-tight leading-tight text-foreground text-[clamp(2rem,5vw,6rem)]">
-        El significado de <br />
-        <span class="text-primary">frankuxui</span>
-      </h2>
-      <p class="mt-7 max-w-2xl mx-auto text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-h5)" }}>
-        El símbolo reúne mi identidad y las dos disciplinas que orientan mi forma de convertir ideas en productos digitales.
-      </p>
-    </div>
+<section class="about-brand-fx relative w-full" aria-labelledby="about-brand-title">
+  <div class="fx-narrative">
+    <div class="fx-stage mx-auto w-full max-w-12xl px-6 sm:px-10">
+      <div class="fx-heading text-left">
+        <p class="fx-eyebrow text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Marca personal</p>
+        <h2 id="about-brand-title" class="fx-title mt-6 font-semibold leading-[0.94] tracking-[-0.055em] text-foreground" aria-label={`${titleLead} frankuxui`}>
+          {
+            titleLeadWords.map((word) => (
+              <span class="fx-word" aria-hidden="true">
+                {word}
+              </span>
+            ))
+          }
+          <br />
+          <span class="fx-brand text-primary" aria-hidden="true">frankuxui</span>
+        </h2>
+        <p class="fx-lead mt-7 max-w-2xl text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-h5)" }}>
+          El símbolo reúne mi identidad y las dos disciplinas que orientan mi forma de convertir ideas en productos digitales.
+        </p>
+      </div>
 
-    <div class="mt-12 flex flex-col gap-6">
-      {
-        brandMeanings.map((item) => (
-          <article class="flex flex-col gap-6 bg-background/30 backdrop-blur-2xl rounded-4xl p-8 sm:p-16 text-center relative overflow-hidden">
-            <div aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/50 to-transparent" />
-            <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-linear-to-b from-white/10 via-transparent to-transparent" />
-            <span class="text-base font-semibold uppercase tracking-[0.22em] text-foreground-muted">{item.key}</span>
-            <h3 class="font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h3)" }}>
-              {item.title}
-            </h3>
-            <p class="text-foreground-muted leading-relaxed w-full max-w-2xl mx-auto" style={{ "font-size": "var(--font-h5)" }}>
-              {item.description}
-            </p>
-          </article>
-        ))
-      }
+      <div class="fx-cards">
+        {
+          brandMeanings.map((item) => (
+            <article class="fx-card flex flex-col">
+              <span class="fx-card-key text-base font-semibold uppercase tracking-[0.22em] text-foreground-muted" aria-label={item.key}>
+                {Array.from(item.key).map((character) => (
+                  <span class="fx-card-char" aria-hidden="true">
+                    {character}
+                  </span>
+                ))}
+              </span>
+              <h3 class="fx-card-title font-semibold tracking-tight text-foreground" style={{ "font-size": "var(--font-h3)" }}>
+                {item.title}
+              </h3>
+              <p class="fx-card-body w-full text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-h5)" }}>
+                {item.description}
+              </p>
+            </article>
+          ))
+        }
+      </div>
     </div>
+  </div>
 
-    <div class="mt-6 bg-background/60 mx-auto backdrop-blur-2xl rounded-4xl p-8 sm:p-12 lg:p-16">
+  <div class="fx-cta-wrap mx-auto w-full max-w-12xl px-6 sm:px-10">
+    <div class="fx-cta bg-background/60 mx-auto backdrop-blur-2xl rounded-4xl p-8 sm:p-12 lg:p-16">
       <div class="w-full flex flex-col justify-between gap-6 md:flex-row md:items-center">
         <ul class="flex flex-wrap gap-x-6 gap-y-3" aria-label="Perfiles sociales">
           {
             socialProfiles.map((profile) => (
-              <li>
+              <li class="fx-social">
                 <a
                   href={profile.href}
                   target="_blank"
@@ -77,7 +98,7 @@ const socialProfiles = [
         </ul>
         <a
           href="/contacto"
-          class="inline-flex items-center justify-center font-medium px-8 h-12 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity duration-200 flex-none"
+          class="fx-cta-button inline-flex items-center justify-center font-medium px-8 h-12 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition-opacity duration-200 flex-none"
         >
           Contactar
         </a>
@@ -85,3 +106,313 @@ const socialProfiles = [
     </div>
   </div>
 </section>
+
+<style>
+  .about-brand-fx {
+    isolation: isolate;
+    overflow: clip;
+    padding-block: 0;
+    background: var(--gradient-1);
+  }
+
+  .fx-narrative,
+  .fx-stage {
+    position: relative;
+  }
+
+  .fx-stage {
+    padding-block: clamp(5rem, 12dvh, 8rem) clamp(2rem, 6dvh, 4rem);
+  }
+
+  .fx-heading {
+    width: 100%;
+    max-width: 46rem;
+    margin: 0;
+  }
+
+  .fx-title {
+    font-size: clamp(3.25rem, 13vw, 6rem);
+    text-wrap: balance;
+  }
+
+  .fx-lead {
+    max-width: 38rem;
+    text-wrap: pretty;
+  }
+
+  .fx-cards {
+    display: grid;
+    gap: 0;
+    margin-top: clamp(3rem, 8dvh, 5rem);
+  }
+
+  .fx-card {
+    min-height: clamp(25rem, 68dvh, 38rem);
+    justify-content: center;
+    gap: clamp(1rem, 2.4dvh, 1.6rem);
+    padding: 0;
+    text-align: left;
+  }
+
+  .fx-card-key {
+    display: flex;
+    min-height: 1.25em;
+    gap: 0.045em;
+    color: var(--primary);
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+  }
+
+  .fx-card-title {
+    max-width: 12ch;
+    font-size: clamp(2.65rem, 10vw, 5.5rem) !important;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+  }
+
+  .fx-card-body {
+    max-width: 42rem;
+    font-size: clamp(1rem, 2vw, 1.25rem) !important;
+    line-height: 1.62;
+    text-wrap: pretty;
+  }
+
+  .fx-cta-wrap {
+    margin-top: 0;
+    padding-block: clamp(2rem, 6dvh, 5rem) clamp(5rem, 10dvh, 8rem);
+  }
+
+  @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+    .fx-narrative,
+    .fx-stage {
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    .fx-stage {
+      display: grid;
+      grid-template-columns: minmax(0, 0.96fr) minmax(0, 1.04fr);
+      align-items: center;
+      gap: clamp(2rem, 6vw, 8rem);
+      padding-block: 0;
+    }
+
+    .fx-heading {
+      width: auto;
+      max-width: 46rem;
+    }
+
+    .fx-title {
+      font-size: clamp(3.5rem, 5.3vw, 7rem);
+    }
+
+    .fx-cards {
+      position: relative;
+      top: auto;
+      right: auto;
+      width: auto;
+      height: min(68dvh, 48rem);
+      margin: 0;
+      translate: none;
+    }
+
+    .fx-card {
+      position: absolute;
+      inset: 0;
+      min-height: 0;
+      padding: 0;
+    }
+
+    .fx-card-title {
+      font-size: clamp(3rem, 4.45vw, 5.9rem) !important;
+    }
+
+    .fx-card-body {
+      font-size: clamp(1rem, 1.25vw, 1.3rem) !important;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1099px) and (prefers-reduced-motion: no-preference) {
+    .fx-stage {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .fx-title {
+      font-size: clamp(3.35rem, 6vw, 5rem);
+    }
+
+    .fx-card-title {
+      font-size: clamp(2.9rem, 5vw, 4.4rem) !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-stage {
+      padding-bottom: clamp(4rem, 8dvh, 7rem);
+    }
+
+    .fx-card {
+      min-height: auto;
+      padding-block: clamp(2.5rem, 7dvh, 5rem);
+    }
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  type FxWindow = Window & {
+    __aboutBrandFxCleanup?: () => void;
+    __aboutBrandFxLoad?: () => void;
+    __aboutBrandFxSwap?: () => void;
+  };
+
+  const fxWindow = window as FxWindow;
+
+  function initAboutBrandFx(): () => void {
+    const section = document.querySelector(".about-brand-fx") as HTMLElement | null;
+    if (!section) return () => undefined;
+
+    const narrative = section.querySelector(".fx-narrative") as HTMLElement | null;
+    const heading = section.querySelector(".fx-heading") as HTMLElement | null;
+    const eyebrow = section.querySelector(".fx-eyebrow") as HTMLElement | null;
+    const words = Array.from(section.querySelectorAll(".fx-word")) as HTMLElement[];
+    const brand = section.querySelector(".fx-brand") as HTMLElement | null;
+    const lead = section.querySelector(".fx-lead") as HTMLElement | null;
+    const cards = Array.from(section.querySelectorAll(".fx-card")) as HTMLElement[];
+    const introLogo = document.querySelector("#logo-intro-btn") as HTMLElement | null;
+    const socials = section.querySelectorAll(".fx-social");
+    const ctaPanel = section.querySelector(".fx-cta") as HTMLElement | null;
+    const ctaButton = section.querySelector(".fx-cta-button") as HTMLElement | null;
+    if (!narrative || !heading || !eyebrow || !brand || !lead || !ctaPanel || cards.length !== 3) return () => undefined;
+
+    const mm = gsap.matchMedia();
+
+    mm.add(
+      {
+        isDesktop: "(min-width: 768px)",
+        isMobile: "(max-width: 767px)",
+        reduced: "(prefers-reduced-motion: reduce)"
+      },
+      (context) => {
+        const { isDesktop, reduced } = context.conditions as { isDesktop: boolean; isMobile: boolean; reduced: boolean };
+        const titleParts = [...words, brand];
+        const sectionStyles = getComputedStyle(section);
+        const backgroundColors = ["--gradient-1", "--gradient-2", "--gradient-3"].map(
+          (token) => sectionStyles.getPropertyValue(token).trim()
+        );
+        const cardParts = cards.map((card) => ({
+          card,
+          chars: Array.from(card.querySelectorAll(".fx-card-char")) as HTMLElement[],
+          title: card.querySelector(".fx-card-title") as HTMLElement,
+          body: card.querySelector(".fx-card-body") as HTMLElement
+        }));
+
+        if (reduced) {
+          gsap.set(section, { backgroundColor: backgroundColors[0] });
+          gsap.set([heading, eyebrow, lead, ctaPanel, ctaButton], { clearProps: "all", opacity: 1, x: 0, y: 0 });
+          gsap.set(titleParts, { clearProps: "all", opacity: 1, y: 0 });
+          gsap.set(cards, { clearProps: "all", opacity: 1, x: 0, y: 0, scale: 1 });
+          gsap.set(
+            cardParts.flatMap(({ chars, title, body }) => [...chars, title, body]),
+            { clearProps: "all", opacity: 1, y: 0 }
+          );
+          gsap.set(socials, { opacity: 1, y: 0 });
+          return;
+        }
+
+        const rise = isDesktop ? 40 : 24;
+        const storyTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: narrative,
+            start: isDesktop ? "top top" : "top 82%",
+            end: isDesktop ? () => `+=${Math.round(window.innerHeight * 5.4)}` : "bottom 72%",
+            pin: isDesktop,
+            pinSpacing: isDesktop ? "margin" : false,
+            scrub: isDesktop ? 0.9 : 0.65,
+            anticipatePin: isDesktop ? 1 : 0,
+            invalidateOnRefresh: true
+          }
+        });
+
+        gsap.set(section, { backgroundColor: backgroundColors[0] });
+        gsap.set(eyebrow, { opacity: 0, y: rise * 0.35 });
+        gsap.set(titleParts, { opacity: 0, y: rise });
+        gsap.set(lead, { opacity: 0, y: rise * 0.45 });
+        gsap.set(cards, { opacity: 0, y: rise * 0.7 });
+        cardParts.forEach(({ chars, title, body }) => {
+          gsap.set(chars, { opacity: 0, y: 10 });
+          gsap.set(title, { opacity: 0, y: 16 });
+          gsap.set(body, { opacity: 0, y: 10 });
+        });
+
+        storyTl
+          .to(eyebrow, { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" }, 0)
+          .to(titleParts, { opacity: 1, y: 0, duration: 0.5, stagger: 0.065, ease: "power3.out" }, 0.08)
+          .to({}, { duration: 0.16 })
+          .to(lead, { opacity: 1, y: 0, duration: 0.36, ease: "power2.out" })
+          .to({}, { duration: 0.32 });
+
+        if (introLogo) {
+          storyTl.to(introLogo, { opacity: 0, duration: 0.18, ease: "none" }, 0);
+        }
+
+        cardParts.forEach(({ card, chars, title, body }, index) => {
+          if (index > 0) {
+            storyTl
+              .to(cardParts[index - 1].card, { opacity: 0, y: -24, duration: 0.34, ease: "power2.inOut" })
+              .to(section, { backgroundColor: backgroundColors[index], duration: 0.46, ease: "none" }, "<+0.08");
+          }
+
+          storyTl
+            .to(card, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, index > 0 ? ">-0.08" : ">")
+            .to(chars, { opacity: 1, y: 0, duration: 0.16, stagger: 0.045, ease: "power2.out" }, ">-0.04")
+            .to(title, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }, ">+0.04")
+            .to(body, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, ">+0.04")
+            .to({}, { duration: index === cardParts.length - 1 ? 0.62 : 0.46 });
+        });
+
+        const ctaTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ctaPanel,
+            start: isDesktop ? "top 92%" : "top 96%",
+            end: isDesktop ? "top 62%" : "top 72%",
+            scrub: 0.8,
+            invalidateOnRefresh: true
+          }
+        });
+
+        ctaTl
+          .fromTo(ctaPanel, { opacity: 0, y: rise }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 0)
+          .fromTo(socials, { opacity: 0, y: rise * 0.4 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out", stagger: 0.06 }, 0.1);
+
+        if (ctaButton) {
+          ctaTl.fromTo(ctaButton, { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, ">-0.12");
+        }
+
+        requestAnimationFrame(() => ScrollTrigger.refresh());
+      }
+    );
+
+    return () => mm.revert();
+  }
+
+  if (fxWindow.__aboutBrandFxLoad) document.removeEventListener("astro:page-load", fxWindow.__aboutBrandFxLoad);
+  if (fxWindow.__aboutBrandFxSwap) document.removeEventListener("astro:before-swap", fxWindow.__aboutBrandFxSwap);
+
+  fxWindow.__aboutBrandFxLoad = () => {
+    fxWindow.__aboutBrandFxCleanup?.();
+    fxWindow.__aboutBrandFxCleanup = initAboutBrandFx();
+  };
+  fxWindow.__aboutBrandFxSwap = () => {
+    fxWindow.__aboutBrandFxCleanup?.();
+    fxWindow.__aboutBrandFxCleanup = undefined;
+  };
+
+  document.addEventListener("astro:page-load", fxWindow.__aboutBrandFxLoad);
+  document.addEventListener("astro:before-swap", fxWindow.__aboutBrandFxSwap);
+</script>

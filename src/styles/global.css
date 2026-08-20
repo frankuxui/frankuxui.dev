@@ -942,6 +942,177 @@
   }
 }
 
+/* About brand: one scroll-led editorial narrative, followed by a normal-flow CTA. */
+.about-brand-fx {
+  overflow: clip;
+  padding-block: 4rem;
+}
+
+.about-brand-fx .fx-narrative,
+.about-brand-fx .fx-stage {
+  position: relative;
+}
+
+.about-brand-fx .fx-stage {
+  padding-block: clamp(4rem, 10dvh, 7rem);
+}
+
+.about-brand-fx .fx-heading {
+  width: 100%;
+  max-width: 50rem;
+  margin-inline: auto;
+}
+
+.about-brand-fx .fx-title {
+  font-size: clamp(2.75rem, 12vw, 5rem);
+}
+
+.about-brand-fx .fx-word,
+.about-brand-fx .fx-brand,
+.about-brand-fx .fx-card-char {
+  display: inline-block;
+}
+
+.about-brand-fx .fx-word {
+  margin-right: 0.25em;
+}
+
+.about-brand-fx .fx-word:last-of-type {
+  margin-right: 0;
+}
+
+.about-brand-fx .fx-lead {
+  text-wrap: balance;
+}
+
+.about-brand-fx .fx-cards {
+  display: grid;
+  gap: 1rem;
+  margin-top: clamp(3rem, 8dvh, 5rem);
+}
+
+.about-brand-fx .fx-card {
+  gap: 0.9rem;
+  text-align: left;
+  transform-origin: 50% 50%;
+}
+
+.about-brand-fx .fx-card-key {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 1.5em;
+  gap: 0.06em;
+}
+
+.about-brand-fx .fx-card-title,
+.about-brand-fx .fx-card-body {
+  position: relative;
+  z-index: 1;
+}
+
+.about-brand-fx .fx-card-body {
+  max-width: 42rem;
+}
+
+.about-brand-fx .fx-cta-wrap {
+  margin-top: 1.5rem;
+}
+
+.about-brand-fx .fx-eyebrow,
+.about-brand-fx .fx-heading,
+.about-brand-fx .fx-word,
+.about-brand-fx .fx-brand,
+.about-brand-fx .fx-lead,
+.about-brand-fx .fx-card,
+.about-brand-fx .fx-card-char,
+.about-brand-fx .fx-card-title,
+.about-brand-fx .fx-card-body,
+.about-brand-fx .fx-social,
+.about-brand-fx .fx-cta,
+.about-brand-fx .fx-cta-button {
+  will-change: transform, opacity;
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .about-brand-fx {
+    padding-top: 0;
+    padding-bottom: clamp(5rem, 10dvh, 8rem);
+  }
+
+  .about-brand-fx .fx-narrative,
+  .about-brand-fx .fx-stage {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .about-brand-fx .fx-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: 0;
+  }
+
+  .about-brand-fx .fx-heading {
+    position: relative;
+    width: min(44vw, 48rem);
+    max-width: none;
+    margin: 0;
+  }
+
+  .about-brand-fx .fx-title {
+    font-size: clamp(3rem, 5.7vw, 7.2rem);
+  }
+
+  .about-brand-fx .fx-cards {
+    position: absolute;
+    top: 50%;
+    right: 2.5rem;
+    width: min(45vw, 52rem);
+    gap: clamp(0.75rem, 1.5dvh, 1.25rem);
+    margin: 0;
+    translate: 0 -50%;
+  }
+
+  .about-brand-fx .fx-card {
+    min-height: 0;
+    gap: clamp(0.55rem, 1.2dvh, 0.9rem);
+    padding: clamp(1.25rem, 2.5dvh, 2.25rem);
+  }
+
+  .about-brand-fx .fx-card-body {
+    font-size: clamp(0.9rem, 1.2vw, 1.15rem) !important;
+    line-height: 1.5;
+  }
+
+  .about-brand-fx .fx-cta-wrap {
+    margin-top: clamp(1.5rem, 4dvh, 3rem);
+  }
+}
+
+@media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
+  .about-brand-fx .fx-heading {
+    width: min(45vw, 52rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-brand-fx .fx-eyebrow,
+  .about-brand-fx .fx-heading,
+  .about-brand-fx .fx-word,
+  .about-brand-fx .fx-brand,
+  .about-brand-fx .fx-lead,
+  .about-brand-fx .fx-card,
+  .about-brand-fx .fx-card-char,
+  .about-brand-fx .fx-card-title,
+  .about-brand-fx .fx-card-body,
+  .about-brand-fx .fx-social,
+  .about-brand-fx .fx-cta,
+  .about-brand-fx .fx-cta-button {
+    will-change: auto;
+  }
+}
+
 [data-palette="refreshing-summer-fun"] {
   --primary: #4a72b8;
   --primary-foreground: #f5f9ff;
