@@ -193,7 +193,10 @@ const titleWords = title.split(" ");
     color: var(--fx-on-dark);
     background: var(--fx-card-surface);
     cursor: pointer;
-    transition: background-color 220ms ease, border-color 220ms ease, opacity 220ms ease;
+    transition:
+      background-color 220ms ease,
+      border-color 220ms ease,
+      opacity 220ms ease;
   }
 
   .knowledge-prev:focus-visible,
@@ -221,6 +224,13 @@ const titleWords = title.split(" ");
 
   .knowledge-swiper .swiper-wrapper {
     display: flex;
+    align-items: stretch;
+  }
+
+  .knowledge-swiper .swiper-slide {
+    min-width: 0;
+    flex-shrink: 0;
+    box-sizing: border-box;
   }
 
   .knowledge-swiper-pagination {
@@ -240,10 +250,11 @@ const titleWords = title.split(" ");
     min-height: clamp(19rem, 34dvh, 23rem);
     height: auto;
     padding: clamp(1.5rem, 3vw, 2.25rem);
-    border: 1px solid var(--fx-card-border);
     border-radius: 1.75rem;
     background: var(--fx-card-surface);
-    transition: background-color 220ms ease, border-color 220ms ease;
+    transition:
+      background-color 220ms ease,
+      border-color 220ms ease;
   }
 
   .fx-stack-card article {
@@ -263,11 +274,21 @@ const titleWords = title.split(" ");
   .fx-stack-name {
     margin-top: auto;
     color: var(--fx-on-dark);
-    font-size: clamp(2rem, 3.25vw, 3.75rem);
+    font-size: clamp(2rem, 3.25vw, 2.5rem);
     font-weight: 600;
     line-height: 0.98;
     letter-spacing: -0.045em;
     text-wrap: balance;
+  }
+
+  @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .fx-stack-name {
+      background-image: linear-gradient(110deg, var(--gradient-1) 0%, var(--gradient-2) 25%, var(--gradient-3) 50%, var(--gradient-4) 75%, var(--gradient-5) 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
   }
 
   .fx-stack-description {
@@ -415,6 +436,7 @@ const titleWords = title.split(" ");
             pinSpacing: true,
             scrub: isDesktop ? 0.55 : 0.4,
             anticipatePin: 1,
+            refreshPriority: 1,
             invalidateOnRefresh: true
           }
         });
@@ -437,12 +459,7 @@ const titleWords = title.split(" ");
         cardsReveal
           .fromTo(stackHeading, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }, 0)
           .fromTo(stackScroller, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 0.04)
-          .fromTo(
-            cards,
-            { opacity: 0, y: isDesktop ? 26 : 18 },
-            { opacity: 1, y: 0, duration: 0.42, ease: "power3.out", stagger: 0.025 },
-            0.08
-          );
+          .fromTo(cards, { opacity: 0, y: isDesktop ? 26 : 18 }, { opacity: 1, y: 0, duration: 0.42, ease: "power3.out", stagger: 0.025 }, 0.08);
       }
     );
 
@@ -456,6 +473,9 @@ const titleWords = title.split(" ");
     fxWindow.__aboutKnowledgeFxCleanup?.();
     const cleanupSwiper = initAboutKnowledgeSwiper();
     const cleanupFx = initAboutKnowledgeFx();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
     fxWindow.__aboutKnowledgeFxCleanup = () => {
       cleanupFx();
       cleanupSwiper();
@@ -465,6 +485,12 @@ const titleWords = title.split(" ");
     fxWindow.__aboutKnowledgeFxCleanup?.();
     fxWindow.__aboutKnowledgeFxCleanup = undefined;
   };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", fxWindow.__aboutKnowledgeFxLoad, { once: true });
+  } else {
+    fxWindow.__aboutKnowledgeFxLoad();
+  }
 
   document.addEventListener("astro:page-load", fxWindow.__aboutKnowledgeFxLoad);
   document.addEventListener("astro:before-swap", fxWindow.__aboutKnowledgeFxSwap);
