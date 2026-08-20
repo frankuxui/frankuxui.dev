@@ -1,11 +1,646 @@
 ---
+const horizontalCards = [
+  {
+    number: "01",
+    label: "Enfoque",
+    title: "Diseño con propósito",
+    body: "Cada interfaz nace de una intención: resolver problemas, simplificar decisiones y transformar ideas en experiencias digitales claras."
+  },
+  {
+    number: "02",
+    label: "Ingeniería",
+    title: "Código que evoluciona",
+    body: "Construyo productos frontend preparados para crecer, combinando arquitectura, rendimiento, accesibilidad y una experiencia de desarrollo sostenible."
+  },
+  {
+    number: "03",
+    label: "Interacción",
+    title: "Movimiento y detalle",
+    body: "La animación no es decoración. Utilizo motion para comunicar jerarquía, crear contexto y convertir cada interacción en una experiencia más natural."
+  },
+  {
+    number: "04",
+    label: "Producto",
+    title: "Producto y experiencia",
+    body: "Diseño y desarrollo forman parte del mismo proceso. Cada decisión visual debe funcionar también desde la lógica, el producto y la tecnología."
+  },
+  {
+    number: "05",
+    label: "Aprendizaje",
+    title: "Evolución constante",
+    body: "Aprender, experimentar y mejorar forman parte de mi manera de trabajar. Cada proyecto es una oportunidad para construir algo mejor que lo anterior."
+  }
+];
 
+const verticalCards = [
+  {
+    number: "01",
+    image: "/biography-cards/card-01.webp",
+    title: "Diseño con intención",
+    body: "Cada decisión visual debe responder a un propósito, no solamente a una tendencia."
+  },
+  {
+    number: "02",
+    image: "/biography-cards/card-02.webp",
+    title: "Experiencia primero",
+    body: "Diseñar significa entender cómo piensa, navega y toma decisiones una persona."
+  },
+  {
+    number: "03",
+    image: "/biography-cards/card-03.webp",
+    title: "Código sostenible",
+    body: "Una buena interfaz también necesita una arquitectura preparada para crecer."
+  },
+  {
+    number: "04",
+    image: "/biography-cards/card-04.webp",
+    title: "Movimiento funcional",
+    body: "La animación debe explicar, acompañar y mejorar la interacción."
+  },
+  {
+    number: "05",
+    image: "/biography-cards/card-05.webp",
+    title: "Evolución constante",
+    body: "Cada proyecto es una oportunidad para aprender, experimentar y construir algo mejor."
+  }
+];
+
+const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
 ---
 
-<header class="w-full flex items-center justify-center pt-32 sm:pt-36 pb-16 lg:pb-24" style={{ "min-height": "100dvh" }}>
-  <div class="w-full xl:max-w-5xl 3xl:max-w-8xl mx-auto px-10 text-center">
-    <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted anim-fade-up" style={{ "--anim-delay": "0.1s" }}>Biografía</p>
-    <h1 class="mt-6 font-bold tracking-tight text-foreground anim-fade-up text-[clamp(3rem,6.5vw,8rem)] leading-[1.05]" style={{ "--anim-delay": "0.3s" }}>La historia de mi vida</h1>
-    <p class="mt-8 sm:max-w-3xl mx-auto text-foreground-muted leading-relaxed anim-fade-up" style={{ "font-size": "var(--font-h3)", "--anim-delay": "0.5s" }}>Proximamente</p>
+<script is:inline>
+  document.documentElement.classList.add("biografia-js");
+  const isMobileBiography = window.matchMedia("(max-width: 767px)").matches;
+  if (!isMobileBiography && "scrollRestoration" in history) {
+    if (!("__biografiaPreviousScrollRestoration" in window)) {
+      window.__biografiaPreviousScrollRestoration = history.scrollRestoration;
+    }
+    history.scrollRestoration = "manual";
+  }
+  window.scrollTo(0, 0);
+</script>
+
+<section id="biografia-hero" class="biografia-intro-section relative w-full">
+  <div class="biografia-logo-layer absolute inset-0 flex items-center justify-center pointer-events-none" style="z-index: 25;">
+    <div class="biografia-logo-shell">
+      <svg class="biografia-logo-svg block max-w-none select-none" viewBox="0 0 4094 578" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path class="bio-letter" d="M0 569.242V8.75757H317.869V131.364H122.733V227.697H298.444V350.303H122.733V569.242H0Z"></path>
+        <path
+          class="bio-letter"
+          d="M363.011 569.242V8.75757H558.147C591.7 8.75757 621.059 16.3292 646.224 31.4725C671.388 46.6158 690.961 68.4186 704.941 96.8807C718.921 125.343 725.912 159.461 725.912 199.235C725.912 239.374 718.701 273.218 704.279 300.768C690.004 328.318 669.917 349.117 644.016 363.166C618.263 377.214 588.168 384.239 553.732 384.239H437.18V266.011H529.009C543.431 266.011 555.719 263.822 565.873 259.443C576.175 254.882 584.048 247.675 589.493 237.823C595.085 227.971 597.881 215.108 597.881 199.235C597.881 183.179 595.085 170.134 589.493 160.099C584.048 149.882 576.175 142.402 565.873 137.658C555.719 132.732 543.431 130.269 529.009 130.269H485.744V569.242H363.011ZM627.902 311.989L740.922 569.242H607.594L497.222 311.989H627.902Z"
+        ></path>
+        <path class="bio-letter" d="M895.663 569.242H763.217L912.439 8.75757H1080.2L1229.43 569.242H1096.98L998.087 163.11H994.555L895.663 569.242ZM870.939 348.114H1119.94V461.962H870.939V348.114Z"
+        ></path>
+        <path class="bio-letter" d="M1664.12 8.75757V569.242H1561.7L1398.35 274.769H1395.7V569.242H1272.97V8.75757H1377.16L1537.86 302.136H1541.39V8.75757H1664.12Z"></path>
+        <path class="bio-letter" d="M1722.18 569.242V8.75757H1844.91V235.36H1851.09L1987.07 8.75757H2130.11L1977.36 258.348L2133.64 569.242H1987.07L1885.53 359.061L1844.91 424.742V569.242H1722.18Z"
+        ></path>
+        <path
+          class="bio-letter"
+          d="M2434.07 8.75757H2556.8V367.818C2556.8 410.511 2548.56 447.457 2532.08 478.656C2515.75 509.673 2492.94 533.665 2463.65 550.633C2434.37 567.418 2400.37 575.811 2361.67 575.811C2322.67 575.811 2288.53 567.418 2259.24 550.633C2229.96 533.665 2207.15 509.673 2190.81 478.656C2174.63 447.457 2166.53 410.511 2166.53 367.818V8.75757H2289.26V354.682C2289.26 372.015 2292.36 387.523 2298.54 401.206C2304.72 414.708 2313.25 425.29 2324.14 432.953C2335.18 440.616 2347.69 444.447 2361.67 444.447C2375.8 444.447 2388.3 440.616 2399.19 432.953C2410.08 425.29 2418.62 414.708 2424.8 401.206C2430.98 387.523 2434.07 372.015 2434.07 354.682V8.75757Z"
+        ></path>
+        <path
+          class="bio-letter"
+          d="M2746.7 8.75757L2820.87 171.867H2824.4L2899.45 8.75757H3036.31L2901.22 289L3041.61 569.242H2901.22L2824.4 402.848H2820.87L2744.05 569.242H2604.54L2743.17 289L2608.96 8.75757H2746.7Z"
+        ></path>
+        <path
+          class="bio-letter"
+          d="M3236.69 578C3204.32 578 3176.43 570.885 3153.03 556.653C3129.63 542.422 3111.68 523.356 3099.17 499.456C3086.66 475.555 3080.41 449.191 3080.41 420.364C3080.41 399.382 3083.64 380.863 3090.12 364.808C3096.59 348.57 3105.64 333.7 3117.27 320.199C3128.9 306.698 3142.51 293.379 3158.11 280.242L3260.53 201.424C3270.83 193.396 3277.82 185.095 3281.5 176.52C3285.18 167.762 3287.02 160.008 3287.02 153.258C3287.02 144.318 3284.37 136.381 3279.07 129.448C3273.78 122.515 3265.54 119.14 3254.35 119.322C3247.43 119.322 3241.47 120.964 3236.47 124.248C3231.47 127.35 3227.57 131.729 3224.77 137.384C3222.12 143.04 3220.8 149.791 3220.8 157.636C3220.8 168.401 3223.3 179.439 3228.3 190.751C3233.31 201.88 3240.15 213.922 3248.83 226.876C3257.51 239.83 3267.3 254.335 3278.19 270.39L3497.17 569.242H3375.32L3191.66 328.409C3182.68 316.55 3172.75 302.045 3161.86 284.895C3150.97 267.562 3141.55 248.04 3133.61 226.329C3125.81 204.617 3121.91 180.99 3121.91 155.447C3121.91 126.985 3127.42 100.986 3138.46 77.4498C3149.5 53.9138 3164.95 35.1215 3184.82 21.0729C3204.68 7.02431 3227.86 0 3254.35 0C3279.66 0 3301.44 6.47695 3319.69 19.4309C3338.09 32.3848 3352.21 49.6263 3362.07 71.1553C3372.08 92.6843 3377.08 116.403 3377.08 142.311C3377.08 168.401 3371.86 192.758 3361.41 215.382C3351.11 238.005 3336.32 257.801 3317.04 274.769L3223.45 356.871C3216.24 363.075 3209.98 370.19 3204.68 378.218C3199.53 386.246 3196.96 396.645 3196.96 409.417C3196.96 419.999 3198.94 429.03 3202.92 436.51C3206.89 443.991 3212.48 449.738 3219.69 453.752C3227.05 457.766 3235.66 459.773 3245.52 459.773C3260.53 459.773 3275.54 455.303 3290.55 446.363C3305.71 437.24 3319.54 424.56 3332.05 408.322C3344.56 391.902 3354.57 372.562 3362.07 350.303C3369.73 327.862 3373.55 303.414 3373.55 276.958H3469.8C3469.8 309.434 3467.07 340.724 3461.63 370.829C3456.18 400.933 3447.43 428.483 3435.36 453.478C3423.29 478.474 3407.4 499.547 3387.68 516.697C3381.5 520.528 3375.47 524.177 3369.58 527.644C3363.69 531.111 3357.66 534.76 3351.48 538.591C3333.38 553.004 3314.47 563.222 3294.75 569.242C3275.03 575.081 3255.68 578 3236.69 578Z"
+        ></path>
+        <path
+          class="bio-letter"
+          d="M3790.2 8.75757H3912.94V367.818C3912.94 410.511 3904.7 447.457 3888.21 478.656C3871.88 509.673 3849.07 533.665 3819.78 550.633C3790.5 567.418 3756.5 575.811 3717.8 575.811C3678.8 575.811 3644.66 567.418 3615.38 550.633C3586.09 533.665 3563.28 509.673 3546.95 478.656C3530.76 447.457 3522.66 410.511 3522.66 367.818V8.75757H3645.4V354.682C3645.4 372.015 3648.49 387.523 3654.67 401.206C3660.85 414.708 3669.38 425.29 3680.27 432.953C3691.31 440.616 3703.82 444.447 3717.8 444.447C3731.93 444.447 3744.44 440.616 3755.33 432.953C3766.22 425.29 3774.75 414.708 3780.93 401.206C3787.11 387.523 3790.2 372.015 3790.2 354.682V8.75757Z"
+        ></path>
+        <path class="bio-letter" d="M4094 8.75757V569.242H3971.27V8.75757H4094Z"></path>
+      </svg>
+    </div>
   </div>
-</header>
+
+  <div class="biografia-photo-layer absolute inset-0 flex items-end justify-center pointer-events-none" style="z-index: 26;">
+    <picture class="contents">
+      <source srcset="/imagen-biography-frankuxui-mobile.png" media="(max-width: 767px)" />
+      <img
+        src="/imagen-biography-frankuxui.png"
+        alt="Frank Esteban"
+        class="biografia-photo block select-none"
+        style="height: clamp(72dvh, 90dvh, 1040px); aspect-ratio: 1/1; object-fit: cover; object-position: top center; will-change: filter, opacity;"
+      />
+    </picture>
+  </div>
+
+  <div class="biografia-vertical-stage absolute inset-0 pointer-events-none" data-header-contrast="dark">
+    <div class="biografia-vertical-cards">
+      {
+        verticalCards.map((card) => (
+          <article class="biografia-vertical-card">
+            <img class="biografia-vertical-card-image" src={card.image} alt="" width="1200" height="1200" loading="lazy" decoding="async" />
+            <div class="biografia-vertical-card-meta relative">
+              <span>{card.number}</span>
+              <span class="biografia-vertical-card-rule" />
+              <span>Principio</span>
+            </div>
+            <div class="biografia-vertical-card-copy">
+              <h2>{card.title}</h2>
+              <p>{card.body}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="biografia-aside absolute inset-y-0 left-0 flex items-center pointer-events-none">
+    <div class="biografia-aside-inner flex flex-col">
+      <p class="biografia-eyebrow font-semibold uppercase">Biografía</p>
+      <h1 class="biografia-title font-bold tracking-tight leading-[0.94]">Diseño, código<br />y evolución</h1>
+      <p class="biografia-desc">Diseñador UX/UI y desarrollador Frontend con más de 7 años creando experiencias digitales.</p>
+    </div>
+  </div>
+</section>
+
+<section class="biografia-horizontal-section relative" data-header-contrast="dark" aria-labelledby="biografia-horizontal-title">
+  <header class="biografia-horizontal-header">
+    <div class="biografia-horizontal-heading">
+      <p class="biografia-horizontal-eyebrow">Visión y proceso</p>
+      <h2 id="biografia-horizontal-title">Diseño y desarrollo<br />pensados para avanzar</h2>
+    </div>
+    <p class="biografia-horizontal-intro">
+      Más de siete años construyendo experiencias digitales donde estrategia, diseño, código y movimiento trabajan juntos para dar forma a productos claros, sólidos y memorables.
+    </p>
+  </header>
+  <div class="biografia-horizontal-viewport">
+    <div class="biografia-horizontal-track">
+      {
+        horizontalCards.map((card, index) => (
+          <article class="biografia-card">
+            <div class="biografia-card-meta">
+              <span class="biografia-card-number">{card.number}</span>
+              <span class="biografia-card-rule" aria-hidden="true" />
+              <span class="biografia-card-label">{card.label}</span>
+            </div>
+            <div class="biografia-card-copy">
+              <h2>{card.title}</h2>
+              <p>{card.body}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="biografia-final-section relative" data-header-contrast="dark" aria-labelledby="biografia-final-title">
+  <div class="biografia-final-viewport">
+    <h2 id="biografia-final-title" class="biografia-final-title" aria-label={finalLines.join(" ")}>
+      {
+        finalLines.map((line, lineIndex) => (
+          <span class={`biografia-final-line biografia-final-line-${lineIndex + 1}`} aria-hidden="true">
+            {Array.from(line).map((character) => (
+              <span class="biografia-final-char">{character === " " ? "\u00A0" : character}</span>
+            ))}
+          </span>
+        ))
+      }
+    </h2>
+  </div>
+</section>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  const FINAL_SCALE = 0.12;
+  const SCROLL_DISTANCE_FACTOR = 0.9;
+  const MOBILE_MEDIA_QUERY = "(max-width: 767px)";
+
+  type BiografiaWindow = Window & {
+    __biografiaCleanup?: () => void;
+    __biografiaPageLoadHandler?: () => void;
+    __biografiaBeforeSwapHandler?: () => void;
+    __biografiaPreviousScrollRestoration?: ScrollRestoration;
+  };
+
+  const biografiaWindow = window as BiografiaWindow;
+
+  function resetBiografiaToStart() {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }
+
+  function settleBiografiaAtStart() {
+    resetBiografiaToStart();
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      resetBiografiaToStart();
+      requestAnimationFrame(resetBiografiaToStart);
+    });
+  }
+
+  function initMobileHorizontalScroll(): (() => void) | undefined {
+    const horizontalSection = document.querySelector(".biografia-horizontal-section") as HTMLElement;
+    const horizontalViewport = document.querySelector(".biografia-horizontal-viewport") as HTMLElement;
+    const horizontalTrack = document.querySelector(".biografia-horizontal-track") as HTMLElement;
+    const horizontalCards = Array.from(document.querySelectorAll(".biografia-card")) as HTMLElement[];
+
+    if (!horizontalSection || !horizontalViewport || !horizontalTrack || horizontalCards.length !== 5) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.set(horizontalTrack, { autoAlpha: 1, scale: 1, transformOrigin: "50% 50%" });
+
+    const horizontalStartX = () => horizontalViewport.clientWidth * 0.88;
+    const horizontalEndX = () => {
+      const lastCard = horizontalCards.at(-1);
+      return lastCard ? -(lastCard.offsetLeft + lastCard.offsetWidth) : -horizontalTrack.scrollWidth;
+    };
+    const horizontalDistance = () => Math.max(horizontalStartX() - horizontalEndX(), window.innerWidth);
+
+    const horizontalTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: horizontalSection,
+        start: "top top",
+        end: () => `+=${Math.max(Math.round(horizontalDistance() * SCROLL_DISTANCE_FACTOR), window.innerWidth)}`,
+        pin: true,
+        pinSpacing: "margin",
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true
+      }
+    });
+
+    horizontalTl.fromTo(horizontalTrack, { x: horizontalStartX }, { x: horizontalEndX, duration: 1, ease: "none" }, 0);
+    ScrollTrigger.refresh();
+
+    return () => {
+      horizontalTl.scrollTrigger?.kill();
+      horizontalTl.kill();
+      gsap.set(horizontalTrack, { clearProps: "transform" });
+    };
+  }
+
+  function initBiografiaScroll(): (() => void) | undefined {
+    const introSection = document.querySelector("#biografia-hero") as HTMLElement;
+    if (!introSection) return;
+
+    // Hero and vertical cards stay in document flow on mobile. Only the
+    // already-established horizontal card narrative keeps its scroll motion.
+    if (window.matchMedia(MOBILE_MEDIA_QUERY).matches) {
+      if (biografiaWindow.__biografiaPreviousScrollRestoration) {
+        history.scrollRestoration = biografiaWindow.__biografiaPreviousScrollRestoration;
+        delete biografiaWindow.__biografiaPreviousScrollRestoration;
+      }
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      document.documentElement.style.overscrollBehavior = "";
+      return initMobileHorizontalScroll() ?? (() => undefined);
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const logoShell = introSection.querySelector(".biografia-logo-shell") as HTMLElement;
+    const logoSvg = introSection.querySelector(".biografia-logo-svg") as HTMLElement;
+    const letters = introSection.querySelectorAll(".bio-letter");
+    const photoLayer = introSection.querySelector(".biografia-photo-layer") as HTMLElement;
+    const photo = introSection.querySelector(".biografia-photo") as HTMLElement;
+    const asideLayer = introSection.querySelector(".biografia-aside") as HTMLElement;
+    const asideInner = introSection.querySelector(".biografia-aside-inner") as HTMLElement;
+    const headerContainer = document.querySelector("[data-header-container]") as HTMLElement | null;
+    const eyebrow = introSection.querySelector(".biografia-eyebrow") as HTMLElement;
+    const title = introSection.querySelector(".biografia-title") as HTMLElement;
+    const desc = introSection.querySelector(".biografia-desc") as HTMLElement;
+    const verticalStage = introSection.querySelector(".biografia-vertical-stage") as HTMLElement;
+    const verticalCards = Array.from(introSection.querySelectorAll(".biografia-vertical-card")) as HTMLElement[];
+    const horizontalSection = document.querySelector(".biografia-horizontal-section") as HTMLElement;
+    const horizontalViewport = document.querySelector(".biografia-horizontal-viewport") as HTMLElement;
+    const horizontalTrack = document.querySelector(".biografia-horizontal-track") as HTMLElement;
+    const horizontalCards = Array.from(document.querySelectorAll(".biografia-card")) as HTMLElement[];
+    const finalSection = document.querySelector(".biografia-final-section") as HTMLElement;
+    const finalTextChars = Array.from(document.querySelectorAll(".biografia-final-char")) as HTMLElement[];
+
+    if (
+      !logoShell ||
+      !logoSvg ||
+      !photoLayer ||
+      !photo ||
+      !asideLayer ||
+      !asideInner ||
+      !eyebrow ||
+      !title ||
+      !desc ||
+      !verticalStage ||
+      verticalCards.length !== 5 ||
+      !horizontalSection ||
+      !horizontalViewport ||
+      !horizontalTrack ||
+      horizontalCards.length !== 5 ||
+      !finalSection ||
+      finalTextChars.length === 0 ||
+      letters.length === 0
+    )
+      return;
+
+    const animations: gsap.core.Animation[] = [];
+    const ownedTriggers: ScrollTrigger[] = [];
+    const previousScrollRestoration = biografiaWindow.__biografiaPreviousScrollRestoration ?? history.scrollRestoration;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousOverscrollBehavior = document.documentElement.style.overscrollBehavior;
+    let active = true;
+
+    function syncHeroContentLeft() {
+      if (!headerContainer) return;
+      const headerStyles = getComputedStyle(headerContainer);
+      const headerRect = headerContainer.getBoundingClientRect();
+      const headerContentLeft = headerRect.left + (Number.parseFloat(headerStyles.paddingLeft) || 0);
+      asideInner.style.setProperty("--biografia-hero-content-left", `${headerContentLeft}px`);
+    }
+
+    function syncLogoColorWithStage() {
+      const stageRect = verticalStage.getBoundingClientRect();
+      const logoRect = logoSvg.getBoundingClientRect();
+      const clipTop = getComputedStyle(verticalStage).clipPath.match(/^inset\(\s*(-?\d*\.?\d+)(%|px)?/i);
+      const clipValue = clipTop ? Number.parseFloat(clipTop[1]) : 0;
+      const clipOffset = clipTop?.[2] === "%" ? (clipValue / 100) * stageRect.height : clipValue;
+      const visibleStageTop = stageRect.top + clipOffset;
+      const logoCenterY = logoRect.top + logoRect.height / 2;
+      const isOverDarkStage = logoCenterY >= visibleStageTop && logoCenterY <= stageRect.bottom;
+
+      logoSvg.classList.toggle("is-white", isOverDarkStage);
+    }
+
+    syncHeroContentLeft();
+
+    history.scrollRestoration = "manual";
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
+    let titleChars: HTMLElement[] = [];
+    if (title) {
+      if (!title.dataset.split) {
+        const nodes = Array.from(title.childNodes);
+        title.innerHTML = "";
+        nodes.forEach((node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            for (const ch of node.textContent || "") {
+              const span = document.createElement("span");
+              span.textContent = ch;
+              span.style.display = "inline-block";
+              span.style.whiteSpace = "pre";
+              title.appendChild(span);
+            }
+          } else if (node.nodeName === "BR") {
+            title.appendChild(document.createElement("br"));
+          } else {
+            title.appendChild(node);
+          }
+        });
+        title.dataset.split = "true";
+      }
+      titleChars = Array.from(title.querySelectorAll("span")) as HTMLElement[];
+    }
+
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overscrollBehavior = "none";
+
+    gsap.set(photo, { opacity: 0, y: 40, filter: "blur(0px)" });
+    gsap.set(logoShell, { scale: 1, x: 0, y: 0, transformOrigin: "50% 50%" });
+    gsap.set(letters, { opacity: 0, y: 30 });
+    gsap.set([photoLayer, asideLayer], { autoAlpha: 1 });
+    gsap.set(verticalStage, { clipPath: "inset(100% 0 0)" });
+    gsap.set(verticalCards, { yPercent: 112, scale: 0.985 });
+    gsap.set(horizontalTrack, { autoAlpha: 1, scale: 1, transformOrigin: "50% 50%" });
+    gsap.set(finalTextChars, { opacity: 0.14, yPercent: 30 });
+    logoSvg.classList.remove("is-white");
+
+    if (eyebrow) gsap.set(eyebrow, { opacity: 0, y: 24 });
+    if (titleChars.length) gsap.set(titleChars, { opacity: 0, x: -24 });
+    if (desc) gsap.set(desc, { opacity: 0, y: 24 });
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let introFallbackId = 0;
+    const introTl = gsap.timeline({
+      onComplete: () => {
+        window.clearTimeout(introFallbackId);
+        if (!active) return;
+        document.documentElement.style.overflow = previousHtmlOverflow;
+        document.body.style.overflow = previousBodyOverflow;
+        document.documentElement.style.overscrollBehavior = previousOverscrollBehavior;
+        initScrollAnimations();
+        ScrollTrigger.refresh();
+      }
+    });
+    animations.push(introTl);
+
+    // The intro locks scrolling until it finishes, but rAF is throttled while
+    // the tab is backgrounded, which would leave the page unscrollable. Force
+    // the timeline to settle if it has not finished on its own in time.
+    introFallbackId = window.setTimeout(() => {
+      if (active && introTl.progress() < 1) introTl.progress(1);
+    }, 3200);
+
+    introTl.to(letters, {
+      opacity: 1,
+      y: 0,
+      duration: prefersReducedMotion ? 0.01 : 0.16,
+      stagger: prefersReducedMotion ? 0.01 : 0.075,
+      ease: "power1.out",
+      delay: prefersReducedMotion ? 0.05 : 0.3
+    });
+
+    introTl.to(photo, { opacity: 1, y: 0, duration: prefersReducedMotion ? 0.1 : 0.9, ease: "power2.out" }, prefersReducedMotion ? ">" : "-=0.2");
+
+    const getFinalScale = () => {
+      if (window.innerWidth < 640) return 0.18;
+      if (window.innerWidth < 1024) return 0.145;
+      return FINAL_SCALE;
+    };
+
+    function computeTarget() {
+      syncHeroContentLeft();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const finalScale = getFinalScale();
+      const scaledW = logoShell.offsetWidth * finalScale;
+      const scaledH = logoShell.offsetHeight * finalScale;
+
+      // Align the visible wordmark edge with the actual text container edge.
+      let targetLeft = Math.min(Math.max(vw * 0.07, 32), 144);
+      const textAnchor = eyebrow.getBoundingClientRect().left;
+      if (textAnchor >= 0) targetLeft = textAnchor;
+      const logoVisualInset = (Number.parseFloat(getComputedStyle(logoShell).paddingLeft) || 0) * finalScale;
+      const targetShellLeft = targetLeft - logoVisualInset;
+      // Keep the shrunken wordmark clear of the fixed header (~112px tall)
+      // instead of letting it tuck under the nav on shorter viewports.
+      const targetTop = window.innerWidth < 1280 ? Math.max(vh * 0.13, 126) : Math.max(vh * 0.12, 92);
+
+      const targetCenterX = targetShellLeft + scaledW / 2;
+      const targetCenterY = targetTop + scaledH / 2;
+
+      return { x: targetCenterX - vw / 2, y: targetCenterY - vh / 2 };
+    }
+
+    function initScrollAnimations() {
+      const getCompactScale = () => {
+        if (window.innerWidth < 640) return 0.68;
+        if (window.innerWidth < 1024) return 0.6;
+        return 0.5;
+      };
+
+      const getCompactY = () => (window.innerWidth < 1024 ? -window.innerHeight * 0.16 : 0);
+      function addLogoTransition(timeline: gsap.core.Timeline) {
+        timeline.addLabel("logoTransition", 0);
+        timeline.to(photo, { filter: "blur(22px)", opacity: 0.42, duration: 0.52, ease: "none" }, "logoTransition");
+        timeline.to(
+          logoShell,
+          {
+            scale: () => getFinalScale(),
+            x: () => computeTarget().x,
+            y: () => computeTarget().y,
+            duration: 0.56,
+            ease: "power2.inOut"
+          },
+          "logoTransition"
+        );
+        timeline.to(photoLayer, { autoAlpha: 0, duration: 0.16, ease: "none" }, 0.52);
+      }
+
+      function addAsideReveal(timeline: gsap.core.Timeline) {
+        timeline.addLabel("asideReveal", 0.6);
+        timeline.to(eyebrow, { opacity: 1, y: 0, duration: 0.16, ease: "power2.out" }, "asideReveal");
+        timeline.to(titleChars, { opacity: 1, x: 0, duration: 0.32, stagger: 0.014, ease: "power3.out" }, ">");
+        timeline.to(desc, { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }, ">+0.08");
+        timeline.to({}, { duration: 0.24 });
+      }
+
+      function addAsideTransformation(timeline: gsap.core.Timeline) {
+        timeline.addLabel("asideTransform");
+        timeline.to(asideInner, { scale: () => getCompactScale(), y: () => getCompactY(), duration: 0.62, ease: "power2.inOut" }, "asideTransform");
+        timeline.to([eyebrow, title, desc], { color: "var(--biografia-stage-text)", duration: 0.62, ease: "none" }, "asideTransform");
+        timeline.to(verticalStage, { clipPath: "inset(0% 0 0)", duration: 0.62, ease: "power2.inOut", onUpdate: syncLogoColorWithStage }, "asideTransform");
+        timeline.to({}, { duration: 0.16 });
+      }
+
+      function addVerticalCards(timeline: gsap.core.Timeline) {
+        verticalCards.forEach((card, index) => {
+          const label = `verticalCard${index + 1}`;
+          timeline.addLabel(label);
+
+          if (index > 0) {
+            timeline.to(verticalCards[index - 1], { yPercent: -112, scale: 0.965, duration: 0.52, ease: "power2.inOut" }, label);
+          }
+
+          timeline.to(card, { yPercent: 0, scale: 1, duration: 0.52, ease: "power2.out" }, label);
+          timeline.to({}, { duration: index === verticalCards.length - 1 ? 0.62 : 0.3 });
+        });
+      }
+
+      // Tablet, laptop and desktop all run the same pinned story so the hero
+      // stays on screen for the whole reveal. Below 1280px the scroll budget is
+      // slightly longer per beat, because the shorter viewport makes every
+      // transition read faster.
+      const storyTl = gsap.timeline({ paused: true });
+      addLogoTransition(storyTl);
+      addAsideReveal(storyTl);
+      addAsideTransformation(storyTl);
+      addVerticalCards(storyTl);
+
+      const storyViewports = window.innerWidth < 1280 ? 10.5 : 9;
+      const storyTrigger = ScrollTrigger.create({
+        trigger: introSection,
+        start: "top top",
+        end: () =>
+          `+=${Math.round(Math.max(window.innerHeight * storyViewports, storyTl.duration() * window.innerHeight) * SCROLL_DISTANCE_FACTOR)}`,
+        pin: true,
+        pinSpacing: "margin",
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        animation: storyTl,
+        onUpdate: syncLogoColorWithStage
+      });
+      animations.push(storyTl);
+      ownedTriggers.push(storyTrigger);
+
+      const horizontalStartX = () => horizontalViewport.clientWidth * (window.innerWidth < 1024 ? 0.88 : 0.78);
+      const horizontalEndX = () => {
+        const lastCard = horizontalCards.at(-1);
+        return lastCard ? -(lastCard.offsetLeft + lastCard.offsetWidth) : -horizontalTrack.scrollWidth;
+      };
+      const horizontalDistance = () => Math.max(horizontalStartX() - horizontalEndX(), window.innerWidth);
+
+      const horizontalTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: horizontalSection,
+          start: "top top",
+          end: () => `+=${Math.max(Math.round(horizontalDistance() * SCROLL_DISTANCE_FACTOR), window.innerWidth)}`,
+          pin: true,
+          pinSpacing: "margin",
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true
+        }
+      });
+      animations.push(horizontalTl);
+      if (horizontalTl.scrollTrigger) ownedTriggers.push(horizontalTl.scrollTrigger);
+
+      horizontalTl.fromTo(horizontalTrack, { x: horizontalStartX }, { x: horizontalEndX, duration: 1, ease: "none" }, 0);
+
+      const finalTextTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: finalSection,
+          start: "top top",
+          end: () => `+=${Math.round(Math.max(window.innerHeight * 2.2, finalTextChars.length * 42) * SCROLL_DISTANCE_FACTOR)}`,
+          pin: true,
+          pinSpacing: "margin",
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true
+        }
+      });
+      animations.push(finalTextTl);
+      if (finalTextTl.scrollTrigger) ownedTriggers.push(finalTextTl.scrollTrigger);
+
+      finalTextTl.to(finalTextChars, {
+        color: "var(--biografia-stage-text)",
+        opacity: 1,
+        yPercent: 0,
+        duration: 0.34,
+        stagger: 0.035,
+        ease: "power2.out"
+      });
+      finalTextTl.to({}, { duration: 0.16 });
+    }
+
+    return () => {
+      active = false;
+      window.clearTimeout(introFallbackId);
+      ownedTriggers.forEach((trigger) => trigger.kill());
+      animations.forEach((animation) => animation.kill());
+      logoSvg.classList.remove("is-white");
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overscrollBehavior = previousOverscrollBehavior;
+      history.scrollRestoration = previousScrollRestoration;
+      delete biografiaWindow.__biografiaPreviousScrollRestoration;
+    };
+  }
+
+  if (biografiaWindow.__biografiaPageLoadHandler) {
+    document.removeEventListener("astro:page-load", biografiaWindow.__biografiaPageLoadHandler);
+  }
+  if (biografiaWindow.__biografiaBeforeSwapHandler) {
+    document.removeEventListener("astro:before-swap", biografiaWindow.__biografiaBeforeSwapHandler);
+  }
+
+  biografiaWindow.__biografiaPageLoadHandler = () => {
+    biografiaWindow.__biografiaCleanup?.();
+    biografiaWindow.__biografiaCleanup = initBiografiaScroll();
+    settleBiografiaAtStart();
+  };
+  biografiaWindow.__biografiaBeforeSwapHandler = () => {
+    biografiaWindow.__biografiaCleanup?.();
+    biografiaWindow.__biografiaCleanup = undefined;
+  };
+
+  document.addEventListener("astro:page-load", biografiaWindow.__biografiaPageLoadHandler);
+  document.addEventListener("astro:before-swap", biografiaWindow.__biografiaBeforeSwapHandler);
+</script>

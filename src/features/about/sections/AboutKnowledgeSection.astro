@@ -1,42 +1,497 @@
 ---
 const knowledgeTopics = [
-  "Next.js",
-  "Tailwind CSS",
-  "React",
-  "UX/UI",
-  "SEO",
-  "n8n",
-  "Docker",
-  "Markdown",
-  "MDX",
-  "Automatización de contenidos",
-  "Integraciones API",
-  "Tanstack",
-  "Astro",
-  "Svelte",
-  "Vite",
-  "JavaScript",
-  "TypeScript",
-  "HTML5",
-  "CSS3",
-  "PM2",
-  "Traefik"
+  { name: "Next.js", category: "Framework", description: "Aplicaciones React con renderizado híbrido, rutas modernas y una arquitectura preparada para crecer." },
+  { name: "Tailwind CSS", category: "Sistema visual", description: "Interfaces consistentes construidas desde tokens, composición responsive y utilidades mantenibles." },
+  { name: "React", category: "Interfaz", description: "Componentes reutilizables, estados predecibles y experiencias interactivas centradas en el producto." },
+  { name: "UX/UI", category: "Diseño de producto", description: "Investigación, arquitectura y diseño visual conectados para resolver necesidades reales con claridad." },
+  { name: "SEO", category: "Descubrimiento", description: "Estructura, contenido y rendimiento técnico orientados a mejorar la visibilidad orgánica." },
+  { name: "n8n", category: "Automatización", description: "Flujos que conectan herramientas, eliminan tareas repetitivas y mantienen los procesos observables." },
+  { name: "Docker", category: "Infraestructura", description: "Entornos reproducibles para desarrollar, probar y desplegar servicios con mayor seguridad." },
+  { name: "Markdown", category: "Contenido", description: "Documentación ligera y portable que mantiene el conocimiento fácil de escribir y versionar." },
+  { name: "MDX", category: "Contenido interactivo", description: "Narrativas técnicas que combinan documentación estructurada con componentes dinámicos." },
+  { name: "Automatización de contenidos", category: "Flujo editorial", description: "Sistemas que transforman, validan y publican contenido sin perder control editorial." },
+  { name: "Integraciones API", category: "Sistemas conectados", description: "Conexiones robustas entre productos, servicios y datos mediante contratos bien definidos." },
+  { name: "TanStack", category: "Datos y estado", description: "Herramientas especializadas para consultar, ordenar y presentar información compleja con precisión." },
+  { name: "Astro", category: "Framework web", description: "Sitios rápidos y orientados al contenido con JavaScript enviado solo cuando aporta valor." },
+  { name: "Svelte", category: "Interfaz", description: "Experiencias reactivas con componentes concisos y una huella mínima en el navegador." },
+  { name: "Vite", category: "Tooling", description: "Entornos de desarrollo rápidos y configuraciones de build simples para proyectos modernos." },
+  { name: "JavaScript", category: "Lenguaje", description: "Lógica de interacción, comportamiento en cliente e integración de experiencias web completas." },
+  { name: "TypeScript", category: "Lenguaje tipado", description: "Contratos explícitos que reducen errores y hacen más segura la evolución del producto." },
+  { name: "HTML5", category: "Web semántica", description: "Estructuras accesibles que comunican correctamente el propósito de cada contenido." },
+  { name: "CSS3", category: "Diseño visual", description: "Layouts, tipografía y movimiento responsive ejecutados directamente en la plataforma web." },
+  { name: "PM2", category: "Operación", description: "Gestión y supervisión de procesos Node.js para mantener servicios disponibles y controlados." },
+  { name: "Traefik", category: "Infraestructura web", description: "Enrutamiento dinámico, certificados y exposición segura de servicios en producción." }
 ];
+
+const title = "Conocimiento práctico para diseñadores y desarrolladores.";
+const titleWords = title.split(" ");
 ---
 
-<section class="scroll-mt-32 py-16 lg:py-24" aria-labelledby="about-knowledge-title">
-  <div class="w-full max-w-12xl mx-auto px-10">
-    <div class="max-w-4xl">
-      <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Divulgación técnica</p>
-      <h2 id="about-knowledge-title" class="mt-4 font-bold tracking-tight text-foreground max-w-3xl text-[clamp(2.5rem,4vw,5rem)] leading-[1.2]">
-        Conocimiento práctico para diseñadores y desarrolladores.
+<section class="about-knowledge-fx scroll-mt-32 py-16 lg:py-40 w-full min-w-0 relative isolate" aria-labelledby="about-knowledge-title">
+  <div class="fx-surface" data-header-contrast="dark" aria-hidden="true"></div>
+
+  <div class="fx-content w-full max-w-12xl mx-auto">
+    <div class="fx-text px-6 sm:px-10">
+      <p class="fx-eyebrow text-center text-sm font-medium uppercase tracking-[0.22em]">Divulgación técnica</p>
+      <h2 id="about-knowledge-title" class="fx-title mt-6 w-full max-w-6xl mx-auto text-center font-semibold tracking-[-0.055em]" aria-label={title}>
+        {
+          titleWords.map((word) => (
+            <span class="fx-word" aria-hidden="true">
+              {Array.from(word).map((character) => (
+                <span class="fx-char">{character}</span>
+              ))}
+            </span>
+          ))
+        }
       </h2>
-      <p class="mt-8 max-w-3xl text-foreground-muted leading-relaxed" style={{ "font-size": "var(--font-body)" }}>
+      <p class="fx-body mt-10 max-w-2xl mx-auto text-center leading-relaxed" style={{ "font-size": "var(--font-h5)" }}>
         Además de construir productos digitales, documento procesos, soluciones y aprendizajes mediante artículos y tutoriales que otras personas puedan aplicar directamente en sus proyectos.
       </p>
-      <ul class="mt-10 flex flex-wrap gap-3" aria-label="Temas de divulgación">
-        {knowledgeTopics.map((topic) => <li class="inline-flex items-center justify-center font-medium px-8 h-12 text-sm rounded-full bg-secondary text-secondary-foreground">{topic}</li>)}
-      </ul>
+    </div>
+
+    <div class="fx-stack-library mt-16 lg:mt-24">
+      <div class="fx-stack-heading px-6 sm:px-10">
+        <div class="flex min-w-0 flex-col gap-1">
+          <span>Stack y disciplinas</span>
+          <span class="fx-stack-hint">Desliza para explorar</span>
+        </div>
+        <div class="flex flex-none items-center gap-3">
+          <button type="button" class="knowledge-prev" aria-label="Tecnología anterior">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          <button type="button" class="knowledge-next" aria-label="Siguiente tecnología">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="knowledge-swiper-container">
+        <div class="knowledge-swiper" role="region" aria-roledescription="carrusel" aria-label="Stack y disciplinas">
+          <div class="swiper-wrapper">
+            {
+              knowledgeTopics.map((topic) => (
+                <div class="swiper-slide fx-stack-card">
+                  <article>
+                    <p class="fx-stack-category">{topic.category}</p>
+                    <h3 class="fx-stack-name">{topic.name}</h3>
+                    <p class="fx-stack-description">{topic.description}</p>
+                  </article>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        <div class="knowledge-swiper-pagination swiper-pagination"></div>
+        <p id="knowledge-swiper-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .about-knowledge-fx {
+    --fx-surface-color: #0b0b0b;
+    --fx-on-dark: #f5f5f0;
+    --fx-on-dark-muted: #a5a49e;
+    --fx-on-dark-soft: rgba(245, 245, 240, 0.56);
+    --fx-on-dark-subtle: rgba(245, 245, 240, 0.48);
+    --fx-card-surface: rgba(245, 245, 240, 0.055);
+    --fx-card-surface-hover: rgba(245, 245, 240, 0.085);
+    --fx-card-border: rgba(245, 245, 240, 0.16);
+    --fx-card-border-hover: rgba(245, 245, 240, 0.3);
+    --swiper-pagination-color: var(--fx-on-dark);
+    --swiper-pagination-bullet-inactive-color: var(--fx-on-dark-muted);
+    --swiper-pagination-bullet-inactive-opacity: 0.38;
+    overflow: clip;
+    color: var(--fx-on-dark);
+    background: var(--fx-surface-color);
+  }
+
+  .fx-surface {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    background: var(--fx-surface-color);
+    pointer-events: none;
+  }
+
+  .fx-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .fx-text {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .fx-eyebrow {
+    color: var(--fx-on-dark-soft);
+  }
+
+  .fx-title {
+    color: var(--fx-on-dark);
+    font-size: clamp(3.2rem, 8vw, 9rem);
+    line-height: 0.94;
+    text-wrap: balance;
+  }
+
+  .fx-word {
+    display: inline-block;
+    margin-right: 0.25em;
+  }
+
+  .fx-char {
+    display: inline-block;
+    opacity: 0.14;
+    will-change: opacity;
+  }
+
+  .fx-word:last-child {
+    margin-right: 0;
+  }
+
+  .fx-body {
+    color: var(--fx-on-dark-soft);
+    text-wrap: pretty;
+  }
+
+  .fx-stack-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    color: var(--fx-on-dark-subtle);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .fx-stack-hint {
+    color: var(--fx-on-dark-muted);
+    font-size: 0.68rem;
+  }
+
+  .knowledge-prev,
+  .knowledge-next {
+    display: inline-flex;
+    width: 3rem;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--fx-card-border);
+    border-radius: 9999px;
+    color: var(--fx-on-dark);
+    background: var(--fx-card-surface);
+    cursor: pointer;
+    transition:
+      background-color 220ms ease,
+      border-color 220ms ease,
+      opacity 220ms ease;
+  }
+
+  .knowledge-prev:focus-visible,
+  .knowledge-next:focus-visible {
+    outline: 2px solid var(--fx-on-dark);
+    outline-offset: 0.25rem;
+  }
+
+  .knowledge-prev.swiper-button-disabled,
+  .knowledge-next.swiper-button-disabled {
+    opacity: 0.32;
+    cursor: default;
+  }
+
+  .knowledge-swiper-container {
+    width: 100%;
+    overflow: hidden;
+    padding-inline: 1.5rem;
+  }
+
+  .knowledge-swiper {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .knowledge-swiper .swiper-wrapper {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .knowledge-swiper .swiper-slide {
+    min-width: 0;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  .knowledge-swiper-pagination {
+    position: relative;
+    inset: auto;
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .knowledge-swiper-container {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .fx-stack-card {
+    width: 100%;
+    min-height: clamp(19rem, 34dvh, 23rem);
+    height: auto;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border-radius: 1.75rem;
+    background: var(--fx-card-surface);
+    transition:
+      background-color 220ms ease,
+      border-color 220ms ease;
+  }
+
+  .fx-stack-card article {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fx-stack-category {
+    color: var(--fx-on-dark-subtle);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .fx-stack-name {
+    margin-top: auto;
+    color: var(--fx-on-dark);
+    font-size: clamp(2rem, 3.25vw, 2.5rem);
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+  }
+
+  @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .fx-stack-name {
+      background-image: linear-gradient(110deg, var(--gradient-1) 0%, var(--gradient-2) 25%, var(--gradient-3) 50%, var(--gradient-4) 75%, var(--gradient-5) 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  .fx-stack-description {
+    max-width: 34ch;
+    margin-top: 1.25rem;
+    color: var(--fx-on-dark-muted);
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .knowledge-prev:not(.swiper-button-disabled):hover,
+    .knowledge-next:not(.swiper-button-disabled):hover,
+    .fx-stack-card:hover {
+      border-color: var(--fx-card-border-hover);
+      background: var(--fx-card-surface-hover);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-char {
+      opacity: 1;
+      will-change: auto;
+    }
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import Swiper from "swiper";
+  import { A11y, Navigation, Pagination } from "swiper/modules";
+  import "swiper/css";
+  import "swiper/css/pagination";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  type FxWindow = Window & {
+    __aboutKnowledgeFxCleanup?: () => void;
+    __aboutKnowledgeFxLoad?: () => void;
+    __aboutKnowledgeFxSwap?: () => void;
+  };
+
+  const fxWindow = window as FxWindow;
+  let knowledgeSwiperInstance: Swiper | null = null;
+
+  function initAboutKnowledgeSwiper(): () => void {
+    knowledgeSwiperInstance?.destroy(true, true);
+    knowledgeSwiperInstance = null;
+
+    const el = document.querySelector(".knowledge-swiper") as HTMLElement | null;
+    const status = document.getElementById("knowledge-swiper-status");
+    if (!el) return () => undefined;
+
+    function announceActiveSlide() {
+      if (!status || !knowledgeSwiperInstance) return;
+      const activeSlide = knowledgeSwiperInstance.slides[knowledgeSwiperInstance.activeIndex];
+      const name = activeSlide?.querySelector(".fx-stack-name")?.textContent?.trim();
+      if (name) status.textContent = `Mostrando ${name}, elemento ${knowledgeSwiperInstance.activeIndex + 1} de ${knowledgeSwiperInstance.slides.length}`;
+    }
+
+    knowledgeSwiperInstance = new Swiper(el, {
+      modules: [Navigation, Pagination, A11y],
+      slidesPerView: 1.08,
+      centeredSlides: true,
+      spaceBetween: 14,
+      grabCursor: true,
+      watchOverflow: true,
+      speed: 550,
+      resistanceRatio: 0.85,
+      navigation: {
+        prevEl: ".knowledge-prev",
+        nextEl: ".knowledge-next"
+      },
+      pagination: {
+        el: ".knowledge-swiper-pagination",
+        clickable: true,
+        dynamicBullets: true
+      },
+      a11y: {
+        prevSlideMessage: "Tecnología anterior",
+        nextSlideMessage: "Siguiente tecnología",
+        firstSlideMessage: "Esta es la primera tecnología",
+        lastSlideMessage: "Esta es la última tecnología",
+        paginationBulletMessage: "Ir a la tecnología {{index}}"
+      },
+      breakpoints: {
+        640: { slidesPerView: 1.55, spaceBetween: 20, centeredSlides: false },
+        768: { slidesPerView: 2.15, spaceBetween: 24, centeredSlides: false },
+        1024: { slidesPerView: 2.8, spaceBetween: 24, centeredSlides: false },
+        1280: { slidesPerView: 3.35, spaceBetween: 24, centeredSlides: false },
+        1536: { slidesPerView: 4, spaceBetween: 24, centeredSlides: false },
+        1920: { slidesPerView: 4.5, spaceBetween: 24, centeredSlides: false },
+        2560: { slidesPerView: 6, spaceBetween: 24, centeredSlides: false }
+      },
+      on: {
+        slideChange: announceActiveSlide
+      }
+    });
+    announceActiveSlide();
+
+    return () => {
+      knowledgeSwiperInstance?.destroy(true, true);
+      knowledgeSwiperInstance = null;
+    };
+  }
+
+  function initAboutKnowledgeFx(): () => void {
+    const section = document.querySelector(".about-knowledge-fx") as HTMLElement | null;
+    if (!section) return () => undefined;
+
+    const textBlock = section.querySelector(".fx-text") as HTMLElement | null;
+    const eyebrow = section.querySelector(".fx-eyebrow") as HTMLElement | null;
+    const characters = Array.from(section.querySelectorAll(".fx-char")) as HTMLElement[];
+    const body = section.querySelector(".fx-body") as HTMLElement | null;
+    const stackLibrary = section.querySelector(".fx-stack-library") as HTMLElement | null;
+    const stackHeading = section.querySelector(".fx-stack-heading") as HTMLElement | null;
+    const stackScroller = section.querySelector(".knowledge-swiper-container") as HTMLElement | null;
+    const cards = Array.from(section.querySelectorAll(".fx-stack-card")) as HTMLElement[];
+    if (!textBlock || !eyebrow || !body || !stackLibrary || !stackHeading || !stackScroller || characters.length === 0 || cards.length === 0) return () => undefined;
+
+    const mm = gsap.matchMedia();
+
+    mm.add(
+      {
+        isDesktop: "(min-width: 768px)",
+        isMobile: "(max-width: 767px)",
+        reduced: "(prefers-reduced-motion: reduce)"
+      },
+      (context) => {
+        const { isDesktop, reduced } = context.conditions as { isDesktop: boolean; isMobile: boolean; reduced: boolean };
+
+        if (reduced) {
+          gsap.set([eyebrow, body, stackHeading, stackScroller, ...characters, ...cards], { clearProps: "all", opacity: 1, x: 0, y: 0 });
+          return;
+        }
+
+        const titleReveal = gsap.timeline({
+          scrollTrigger: {
+            trigger: textBlock,
+            start: "top top",
+            end: () => `+=${Math.round(window.innerHeight * (isDesktop ? 1.55 : 1.35))}`,
+            pin: true,
+            pinSpacing: true,
+            scrub: isDesktop ? 0.55 : 0.4,
+            anticipatePin: 1,
+            refreshPriority: 1,
+            invalidateOnRefresh: true
+          }
+        });
+
+        titleReveal
+          .fromTo(eyebrow, { opacity: 0.28 }, { opacity: 1, duration: 0.3, ease: "none" }, 0)
+          .fromTo(characters, { opacity: 0.14 }, { opacity: 1, duration: 0.08, stagger: 0.025, ease: "none" }, 0.06)
+          .fromTo(body, { opacity: 0.2, y: isDesktop ? 20 : 14 }, { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" }, 1.1);
+
+        const cardsReveal = gsap.timeline({
+          scrollTrigger: {
+            trigger: stackLibrary,
+            start: isDesktop ? "top 88%" : "top 92%",
+            end: isDesktop ? "top 56%" : "top 62%",
+            scrub: 0.45,
+            invalidateOnRefresh: true
+          }
+        });
+
+        cardsReveal
+          .fromTo(stackHeading, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.26, ease: "power2.out" }, 0)
+          .fromTo(stackScroller, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 0.04)
+          .fromTo(cards, { opacity: 0, y: isDesktop ? 26 : 18 }, { opacity: 1, y: 0, duration: 0.42, ease: "power3.out", stagger: 0.025 }, 0.08);
+      }
+    );
+
+    return () => mm.revert();
+  }
+
+  if (fxWindow.__aboutKnowledgeFxLoad) document.removeEventListener("astro:page-load", fxWindow.__aboutKnowledgeFxLoad);
+  if (fxWindow.__aboutKnowledgeFxSwap) document.removeEventListener("astro:before-swap", fxWindow.__aboutKnowledgeFxSwap);
+
+  fxWindow.__aboutKnowledgeFxLoad = () => {
+    fxWindow.__aboutKnowledgeFxCleanup?.();
+    const cleanupSwiper = initAboutKnowledgeSwiper();
+    const cleanupFx = initAboutKnowledgeFx();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
+    fxWindow.__aboutKnowledgeFxCleanup = () => {
+      cleanupFx();
+      cleanupSwiper();
+    };
+  };
+  fxWindow.__aboutKnowledgeFxSwap = () => {
+    fxWindow.__aboutKnowledgeFxCleanup?.();
+    fxWindow.__aboutKnowledgeFxCleanup = undefined;
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", fxWindow.__aboutKnowledgeFxLoad, { once: true });
+  } else {
+    fxWindow.__aboutKnowledgeFxLoad();
+  }
+
+  document.addEventListener("astro:page-load", fxWindow.__aboutKnowledgeFxLoad);
+  document.addEventListener("astro:before-swap", fxWindow.__aboutKnowledgeFxSwap);
+</script>
