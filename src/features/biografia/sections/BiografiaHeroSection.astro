@@ -77,7 +77,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
     }
     history.scrollRestoration = "manual";
   }
-  if (!isMobileBiography) window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 </script>
 
 <section id="biografia-hero" class="biografia-intro-section relative w-full">
@@ -220,6 +220,21 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
   };
 
   const biografiaWindow = window as BiografiaWindow;
+
+  function resetBiografiaToStart() {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }
+
+  function settleBiografiaAtStart() {
+    resetBiografiaToStart();
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+      resetBiografiaToStart();
+      requestAnimationFrame(resetBiografiaToStart);
+    });
+  }
 
   function initMobileHorizontalScroll(): (() => void) | undefined {
     const horizontalSection = document.querySelector(".biografia-horizontal-section") as HTMLElement;
@@ -619,6 +634,7 @@ const finalLines = ["Crear.", "Evolucionar.", "Volver a crear."];
   biografiaWindow.__biografiaPageLoadHandler = () => {
     biografiaWindow.__biografiaCleanup?.();
     biografiaWindow.__biografiaCleanup = initBiografiaScroll();
+    settleBiografiaAtStart();
   };
   biografiaWindow.__biografiaBeforeSwapHandler = () => {
     biografiaWindow.__biografiaCleanup?.();

@@ -74,7 +74,22 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
     <MobileMenuPanel />
 
     <script>
+      type RootNavigationWindow = Window & {
+        __biografiaScrollResetAfterSwap?: () => void;
+        __biografiaScrollResetPageLoad?: () => void;
+      };
+
+      const rootNavigationWindow = window as RootNavigationWindow;
       let plasmaAnimId: number | null = null;
+
+      function resetBiographyEntryScroll() {
+        const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+        if (pathname !== "/biografia") return;
+
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
 
       function hexToRgb(hex: string): [number, number, number] {
         const clean = hex.replace("#", "").trim();
@@ -171,6 +186,24 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
 
       document.addEventListener("astro:page-load", initBgGradient);
       window.addEventListener("frankuxui:palette-change", initBgGradient);
+
+      if (rootNavigationWindow.__biografiaScrollResetAfterSwap) {
+        document.removeEventListener("astro:after-swap", rootNavigationWindow.__biografiaScrollResetAfterSwap);
+      }
+      if (rootNavigationWindow.__biografiaScrollResetPageLoad) {
+        document.removeEventListener("astro:page-load", rootNavigationWindow.__biografiaScrollResetPageLoad);
+      }
+
+      rootNavigationWindow.__biografiaScrollResetAfterSwap = resetBiographyEntryScroll;
+      rootNavigationWindow.__biografiaScrollResetPageLoad = resetBiographyEntryScroll;
+      document.addEventListener("astro:after-swap", rootNavigationWindow.__biografiaScrollResetAfterSwap);
+      document.addEventListener("astro:page-load", rootNavigationWindow.__biografiaScrollResetPageLoad);
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", resetBiographyEntryScroll, { once: true });
+      } else {
+        resetBiographyEntryScroll();
+      }
     </script>
 
     <style is:global>
