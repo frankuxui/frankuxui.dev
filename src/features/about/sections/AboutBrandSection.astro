@@ -402,6 +402,7 @@ const titleLeadWords = titleLead.split(" ");
     if (!section) return () => undefined;
 
     const narrative = section.querySelector(".fx-narrative") as HTMLElement | null;
+    const stage = section.querySelector(".fx-stage") as HTMLElement | null;
     const heading = section.querySelector(".fx-heading") as HTMLElement | null;
     const eyebrow = section.querySelector(".fx-eyebrow") as HTMLElement | null;
     const title = section.querySelector(".fx-title") as HTMLElement | null;
@@ -416,7 +417,7 @@ const titleLeadWords = titleLead.split(" ");
     const socials = section.querySelectorAll(".fx-social");
     const ctaPanel = section.querySelector(".fx-cta") as HTMLElement | null;
     const ctaButton = section.querySelector(".fx-cta-button") as HTMLElement | null;
-    if (!narrative || !heading || !eyebrow || !title || !lead || !primaryWash || !logoScene || !logoSvg || !ctaPanel || cards.length !== 3 || logoPieces.length !== 7) {
+    if (!narrative || !stage || !heading || !eyebrow || !title || !lead || !primaryWash || !logoScene || !logoSvg || !ctaPanel || cards.length !== 3 || logoPieces.length !== 7) {
       return () => undefined;
     }
 
@@ -491,12 +492,32 @@ const titleLeadWords = titleLead.split(" ");
         const assemblyOrder = [4, 0, 1, 2, 5, 3, 6];
         const assemblyStarts = [0, 0.055, 0.13, 0.2, 0.27, 0.34, 0.43];
         const departureStarts = [0, 0.035, 0.085, 0.13, 0.06, 0.11, 0.17];
+        const getIntroLayout = () => {
+          if (!isDesktop) return { headingX: 0, logoX: 0 };
+
+          const stageStyles = getComputedStyle(stage);
+          const stageRect = stage.getBoundingClientRect();
+          const paddingLeft = Number.parseFloat(stageStyles.paddingLeft) || 0;
+          const columnGap = Number.parseFloat(stageStyles.columnGap) || 0;
+          const headingWidth = heading.offsetWidth;
+          const logoWidth = logoSvg.getBoundingClientRect().width;
+          const groupWidth = headingWidth + columnGap + logoWidth;
+          const naturalHeadingLeft = stageRect.left + paddingLeft;
+          const centeredHeadingLeft = (window.innerWidth - groupWidth) / 2;
+          const centeredLogoCenter = centeredHeadingLeft + headingWidth + columnGap + logoWidth / 2;
+
+          return {
+            headingX: centeredHeadingLeft - naturalHeadingLeft,
+            logoX: centeredLogoCenter - window.innerWidth / 2
+          };
+        };
         const getPieceExpansion = (piece: SVGPathElement, index: number) => {
           const svgRect = logoSvg.getBoundingClientRect();
+          const logoOffsetX = Number(gsap.getProperty(logoSvg, "x")) || 0;
           const box = piece.getBBox();
           const pieceWidth = Math.max((box.width / 161) * svgRect.width, 1);
           const pieceHeight = Math.max((box.height / 215) * svgRect.height, 1);
-          const centerX = svgRect.left + ((box.x + box.width / 2) / 161) * svgRect.width;
+          const centerX = svgRect.left - logoOffsetX + ((box.x + box.width / 2) / 161) * svgRect.width;
           const centerY = svgRect.top + ((box.y + box.height / 2) / 215) * svgRect.height;
           const vector = pieceVectors[index];
           const x = vector.x * window.innerWidth * 0.8;
@@ -516,7 +537,7 @@ const titleLeadWords = titleLead.split(" ");
           scrollTrigger: {
             trigger: narrative,
             start: "top top",
-            end: () => `+=${Math.round(window.innerHeight * (isDesktop ? 8.4 : 8.9))}`,
+            end: () => `+=${Math.round(window.innerHeight * (isDesktop ? 7.6 : 8.1))}`,
             pin: true,
             pinSpacing: "margin",
             scrub: isDesktop ? 0.9 : 0.65,
@@ -575,6 +596,20 @@ const titleLeadWords = titleLead.split(" ");
 
         storyTl.to({}, { duration: 0.5 }).addLabel("logoExpansion");
 
+        storyTl
+          .fromTo(
+            heading,
+            { x: () => getIntroLayout().headingX },
+            { x: 0, duration: 1.08, ease: "power2.inOut", immediateRender: true },
+            "logoExpansion"
+          )
+          .fromTo(
+            logoSvg,
+            { x: () => getIntroLayout().logoX },
+            { x: 0, duration: 0.96, ease: "power2.inOut", immediateRender: true },
+            "logoExpansion"
+          );
+
         logoPieces.forEach((piece, index) => {
           storyTl.to(
             piece,
@@ -591,7 +626,7 @@ const titleLeadWords = titleLead.split(" ");
         });
 
         storyTl
-          .to(headingTone, { value: 1, duration: 0.34, ease: "none" }, "logoExpansion+=0.62")
+          .to(headingTone, { value: 1, duration: 0.3, ease: "none" }, "logoExpansion+=0.32")
           .to(primaryWash, { opacity: 1, duration: 0.24, ease: "none" }, "logoExpansion+=1.55")
           .set(section, { backgroundColor: backgroundColors[0] })
           .set(logoScene, { opacity: 0 })
