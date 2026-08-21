@@ -13,6 +13,7 @@ import SiteFeedbackModal from "@/components/SiteFeedbackModal.astro";
 import MobileMenuPanel from "@/components/MobileMenuPanel.astro";
 import LogoIntroAnimation from "@/components/LogoIntroAnimation.astro";
 import NotesSearchModal from "@/components/NotesSearchModal.astro";
+import AboutBrandCtaSection from "@/features/about/sections/AboutBrandCtaSection.astro";
 
 interface Props {
   title?: string;
@@ -63,6 +64,7 @@ const { title = siteConfig.title, description = siteConfig.description, image, k
     <main id="main-content" class="relative z-20 w-full flex flex-col items-center justify-center" transition:animate={mainAnimate}>
       <slot />
     </main>
+    <AboutBrandCtaSection />
     <Footer />
     <div id="portal" class="z-[999]">
       <PaletteModal />

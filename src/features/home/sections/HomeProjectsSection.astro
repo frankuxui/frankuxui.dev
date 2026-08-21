@@ -1,0 +1,89 @@
+---
+
+---
+
+<section class="home-projects w-full py-16 lg:py-24" aria-labelledby="home-projects-title">
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <div class="home-projects__card relative mx-auto max-w-10xl rounded-4xl overflow-hidden bg-primary">
+      <div class="home-projects__layout flex flex-col lg:flex-row">
+        <div class="home-projects__content flex flex-col justify-center p-8 sm:p-12 lg:p-16 xl:p-20">
+          <p class="text-sm font-medium uppercase tracking-[0.22em] text-primary-foreground/50">Proyectos</p>
+          <h2
+            id="home-projects-title"
+            class="mt-4 font-semibold tracking-tight text-primary-foreground leading-[1.1]"
+            style={{ "font-size": "clamp(1.5rem, 3.5vw, 3.2rem)" }}
+          >
+            Productos digitales diseñados y desarrollados con criterio.
+          </h2>
+          <p class="mt-5 text-primary-foreground/60 leading-relaxed max-w-xl" style={{ "font-size": "var(--font-h5)" }}>
+            Interfaces, sistemas de componentes y experiencias construidas desde la investigación hasta la implementación real.
+          </p>
+          <div class="mt-8">
+            <a
+              href="https://frankuxui.com/proyectos"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="home-projects__btn inline-flex items-center gap-3 rounded-full bg-primary-foreground text-primary font-semibold px-8 h-12 xl:px-10 xl:h-14 xl:text-lg transition-transform duration-300 hover:scale-[1.04]"
+              aria-label="Ver proyectos en frankuxui.com (abre en nueva ventana)"
+            >
+              <span>Ver proyectos</span>
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="home-projects__btn-arrow">
+                <path d="M3.5 10.5L10.5 3.5M10.5 3.5H4.5M10.5 3.5V9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="home-projects__image relative lg:flex-1">
+          <img
+            src="/projects-preview.jpg"
+            alt="Vista previa de proyecto de componentes de música"
+            class="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .home-projects__content {
+    flex: 1 1 auto;
+  }
+
+  .home-projects__image {
+    min-height: 14rem;
+  }
+
+  .home-projects__btn-arrow {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .home-projects__btn:hover .home-projects__btn-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  @media (min-width: 1024px) {
+    .home-projects__layout {
+      min-height: clamp(20rem, 32dvh, 28rem);
+    }
+
+    .home-projects__content {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+
+    .home-projects__image {
+      flex: 0 0 50%;
+      max-width: 50%;
+      min-height: auto;
+    }
+
+    .home-projects__image img {
+      position: absolute;
+      inset: 0;
+    }
+  }
+</style>

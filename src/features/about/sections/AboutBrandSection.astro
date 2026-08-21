@@ -403,7 +403,6 @@ const titleLeadWords = titleLead.split(" ");
     const logoSvg = section.querySelector(".fx-logo-svg") as SVGSVGElement | null;
     const logoPieces = Array.from(section.querySelectorAll(".fx-logo-piece")) as SVGPathElement[];
     const cards = Array.from(section.querySelectorAll(".fx-card")) as HTMLElement[];
-    const previousIntroLogo = document.querySelector("#logo-intro-btn") as HTMLElement | null;
     if (!narrative || !stage || !heading || !eyebrow || !title || !lead || !primaryWash || !logoScene || !logoSvg || cards.length !== 3 || logoPieces.length !== 7) {
       return () => undefined;
     }
@@ -521,7 +520,7 @@ const titleLeadWords = titleLead.split(" ");
           scrollTrigger: {
             trigger: narrative,
             start: "top top",
-            end: () => `+=${Math.round(window.innerHeight * (isDesktop ? 7.6 : 8.1))}`,
+            end: () => `+=${Math.round(window.innerHeight * (isDesktop ? 7.6 : 9.5))}`,
             pin: true,
             pinSpacing: "margin",
             scrub: isDesktop ? 0.9 : 0.65,
@@ -556,10 +555,6 @@ const titleLeadWords = titleLead.split(" ");
           gsap.set(title, { opacity: 0, y: 16 });
           gsap.set(body, { opacity: 0, y: 10 });
         });
-
-        if (previousIntroLogo) {
-          storyTl.to(previousIntroLogo, { opacity: 0, duration: 0.18, ease: "none" }, 0);
-        }
 
         storyTl
           .to(eyebrow, { opacity: 1, y: 0, duration: 0.24, ease: "power2.out" }, 0)
@@ -597,7 +592,7 @@ const titleLeadWords = titleLead.split(" ");
         });
 
         storyTl
-          .to(headingTone, { value: 1, duration: 0.3, ease: "none" }, "logoExpansion+=0.32")
+          .to(headingTone, { value: 1, duration: isDesktop ? 0.3 : 0.45, ease: "none" }, isDesktop ? "logoExpansion+=0.32" : "logoExpansion+=1.05")
           .to(primaryWash, { opacity: 1, duration: 0.24, ease: "none" }, "logoExpansion+=1.55")
           .set(section, { backgroundColor: backgroundColors[0] })
           .set(logoScene, { opacity: 0 })
@@ -605,7 +600,9 @@ const titleLeadWords = titleLead.split(" ");
           .to({}, { duration: 0.34 });
 
         if (!isDesktop) {
-          storyTl.set(logoScene, { zIndex: 6 }, "logoExpansion");
+          storyTl
+            .to(heading, { opacity: 0, y: -rise, duration: 0.42, ease: "power2.inOut" })
+            .to({}, { duration: 0.28 });
         }
 
         cardParts.forEach(({ card, chars, title, body }, index) => {
@@ -626,10 +623,6 @@ const titleLeadWords = titleLead.split(" ");
             .to(body, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" }, ">+0.04")
             .to({}, { duration: index === cardParts.length - 1 ? 0.62 : 0.46 });
         });
-
-        if (previousIntroLogo) {
-          storyTl.to(previousIntroLogo, { opacity: 1, duration: 0.18, ease: "none" }, ">-0.18");
-        }
 
         // Render the contrast state after every child tween so the intro
         // animation cannot restore stale inline colors on the heading.

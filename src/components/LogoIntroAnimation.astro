@@ -113,9 +113,7 @@
     window.addEventListener("scroll", scheduleUpdate, { passive: true });
     window.addEventListener("resize", scheduleUpdate, { passive: true });
     const contrastObserver = new MutationObserver(scheduleUpdate);
-    document.querySelectorAll('[data-header-contrast="dark"]').forEach((section) =>
-      contrastObserver.observe(section, { attributes: true, attributeFilter: ["class", "style"] })
-    );
+    document.querySelectorAll('[data-header-contrast="dark"]').forEach((section) => contrastObserver.observe(section, { attributes: true, attributeFilter: ["class", "style"] }));
 
     logoIntroWindow.__logoIntroContrastCleanup = () => {
       window.removeEventListener("scroll", scheduleUpdate);
