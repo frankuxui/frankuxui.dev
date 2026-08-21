@@ -572,6 +572,12 @@ const titleLeadWords = titleLead.split(" ");
           .set(logoPieces, { x: 0, y: 0, scale: 1, rotation: 0 })
           .to({}, { duration: 0.34 });
 
+        if (!isDesktop) {
+          storyTl
+            .set(logoScene, { zIndex: 6 }, "logoExpansion")
+            .to(heading, { opacity: 0, duration: 0.5, ease: "power2.inOut" }, "logoExpansion+=0.4");
+        }
+
         cardParts.forEach(({ card, chars, title, body }, index) => {
           if (index > 0) {
             storyTl
