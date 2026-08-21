@@ -27,7 +27,7 @@ const titleLeadWords = titleLead.split(" ");
 <section class="about-brand-fx relative w-full" aria-labelledby="about-brand-title">
   <div class="fx-narrative">
     <div class="fx-primary-wash" data-header-contrast="dark" aria-hidden="true"></div>
-    <div class="fx-stage mx-auto w-full max-w-12xl px-6 sm:px-10">
+    <div class="fx-stage mx-auto w-full max-w-12xl px-10">
       <div class="fx-heading text-left">
         <p class="fx-eyebrow text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted">Marca personal</p>
         <h2 id="about-brand-title" class="fx-title mt-6 font-semibold leading-[0.94] tracking-[-0.055em] text-foreground" aria-label={titleLead}>
@@ -87,7 +87,6 @@ const titleLeadWords = titleLead.split(" ");
       </div>
     </div>
   </div>
-
 </section>
 
 <style>
@@ -172,7 +171,7 @@ const titleLeadWords = titleLead.split(" ");
   .fx-cards {
     position: absolute;
     z-index: 4;
-    inset: 0 1.5rem;
+    inset: 0;
     margin: 0;
   }
 
@@ -213,6 +212,39 @@ const titleLeadWords = titleLead.split(" ");
     font-size: clamp(1rem, 2vw, 1.25rem) !important;
     line-height: 1.62;
     text-wrap: pretty;
+  }
+
+  @media (max-width: 767px) {
+    .fx-stage {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: clamp(1.5rem, 4dvh, 2.5rem);
+    }
+
+    .fx-heading {
+      order: 2;
+      max-width: 100%;
+    }
+
+    .fx-logo-scene {
+      order: 1;
+      position: relative;
+      top: auto;
+      left: auto;
+      width: 100%;
+      height: auto;
+      justify-content: flex-start;
+      transform: none;
+    }
+
+    .fx-logo-svg {
+      width: clamp(8rem, 38vw, 12rem);
+    }
+
+    .fx-cards {
+      inset: 0 2.5rem;
+    }
   }
 
   @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
@@ -573,9 +605,7 @@ const titleLeadWords = titleLead.split(" ");
           .to({}, { duration: 0.34 });
 
         if (!isDesktop) {
-          storyTl
-            .set(logoScene, { zIndex: 6 }, "logoExpansion")
-            .to(heading, { opacity: 0, duration: 0.5, ease: "power2.inOut" }, "logoExpansion+=0.4");
+          storyTl.set(logoScene, { zIndex: 6 }, "logoExpansion");
         }
 
         cardParts.forEach(({ card, chars, title, body }, index) => {
