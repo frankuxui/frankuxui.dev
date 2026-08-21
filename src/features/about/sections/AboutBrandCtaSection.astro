@@ -6,40 +6,475 @@ const socialProfiles = [
   { name: "CodePen", href: "https://codepen.io/frankuxui" },
   { name: "Instagram", href: "https://www.instagram.com/frankuxui/" }
 ];
+
+const titleLine1 = "¿Creamos algo que";
+const titleLine2 = "merezca ser recordado?";
 ---
 
-<section
-  id="about-brand-cta"
-  class="w-full py-16 sm:py-20 lg:py-24"
-  style={{ background: "var(--surface-black)" }}
-  data-header-contrast="dark"
-  aria-label="Contacto y perfiles sociales"
->
-  <div class="mx-auto w-full max-w-4xl px-6 sm:px-10">
-    <div class="flex w-full flex-col justify-between gap-8 border-y border-background/15 py-8 sm:py-10 md:flex-row md:items-center">
-      <ul class="flex flex-wrap gap-x-6 gap-y-3" aria-label="Perfiles sociales">
-        {
-          socialProfiles.map((profile) => (
-            <li>
-              <a
-                href={profile.href}
-                target="_blank"
-                rel="me noopener noreferrer"
-                class="text-sm text-background/65 underline decoration-background/25 underline-offset-8 transition-none hover:text-background"
-              >
-                {profile.name}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+<section id="about-brand-cta" class="brand-cta relative w-full overflow-clip" style={{ background: "var(--surface-black)" }} data-header-contrast="dark" aria-labelledby="brand-cta-title">
+  <div class="brand-cta__glow" aria-hidden="true"></div>
 
-      <a
-        href="/contacto"
-        class="inline-flex h-12 flex-none items-center justify-center rounded-full bg-background px-8 font-medium text-foreground transition-none hover:bg-background/90"
-      >
-        Contactar
-      </a>
+  <div class="brand-cta__inner mx-auto w-full max-w-12xl px-10">
+    <div class="brand-cta__top mx-auto w-full max-w-5xl">
+      <div class="brand-cta__content">
+        <p class="brand-cta__eyebrow">Conectemos</p>
+
+        <h2 id="brand-cta-title" class="brand-cta__title">
+          <span class="brand-cta__line">{titleLine1}</span>
+          <span class="brand-cta__line">{titleLine2}</span>
+        </h2>
+
+        <p class="brand-cta__desc">
+          Estoy abierto a nuevos proyectos, colaboraciones y conversaciones donde diseño, producto y tecnología puedan convertirse en una experiencia digital con personalidad.
+        </p>
+      </div>
+
+      <div class="brand-cta__action">
+        <a href="/contacto" class="brand-cta__btn group" aria-label="Ir a la página de contacto">
+          <span class="brand-cta__btn-label">Hablemos</span>
+          <span class="brand-cta__btn-arrow" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4.5 10H15.5M15.5 10L10.5 5M15.5 10L10.5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+        </a>
+      </div>
     </div>
+
+    <div class="brand-cta__divider" aria-hidden="true"></div>
+
+    <nav class="brand-cta__social" aria-label="Perfiles sociales">
+      {
+        socialProfiles.map((profile, index) => (
+          <a href={profile.href} target="_blank" rel="me noopener noreferrer" class="brand-cta__social-link group" aria-label={`${profile.name} (abre en nueva ventana)`}>
+            <span class="brand-cta__social-num">{String(index + 1).padStart(2, "0")}</span>
+            <span class="brand-cta__social-sep" aria-hidden="true">
+              —
+            </span>
+            <span class="brand-cta__social-name">{profile.name}</span>
+            <span class="brand-cta__social-arrow" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.5 10.5L10.5 3.5M10.5 3.5H4.5M10.5 3.5V9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="brand-cta__watermark" aria-hidden="true">FRANKUXUI</div>
   </div>
 </section>
+
+<style>
+  .brand-cta {
+    isolation: isolate;
+    padding-block: clamp(6rem, 14dvh, 10rem) clamp(4rem, 10dvh, 8rem);
+  }
+
+  .brand-cta__glow {
+    position: absolute;
+    z-index: 0;
+    top: 10%;
+    right: -8%;
+    width: clamp(20rem, 42vw, 38rem);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--primary);
+    opacity: 0.06;
+    filter: blur(clamp(60px, 10vw, 120px));
+    pointer-events: none;
+  }
+
+  .brand-cta__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .brand-cta__top {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 5dvh, 3rem);
+  }
+
+  .brand-cta__eyebrow {
+    font-size: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: rgba(255, 255, 255, 0.349);
+  }
+
+  .brand-cta__title {
+    font-size: clamp(2.4rem, 1.2rem + 5.2vw, 5.4rem);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+    color: #fff;
+    text-wrap: balance;
+    max-width: 18ch;
+    margin-top: clamp(0.5rem, 1.5dvh, 1rem);
+  }
+
+  .brand-cta__line {
+    display: block;
+  }
+
+  .brand-cta__desc {
+    max-width: 42rem;
+    font-size: clamp(1rem, 0.92rem + 0.33vw, 1.25rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.5);
+    text-wrap: pretty;
+    margin-top: clamp(1rem, 2dvh, 1.5rem);
+  }
+
+  .brand-cta__action {
+    margin-top: clamp(0.5rem, 1.5dvh, 1rem);
+  }
+
+  .brand-cta__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    height: clamp(3.2rem, 3rem + 0.8vw, 4rem);
+    padding-inline: clamp(2rem, 1.8rem + 0.8vw, 2.8rem);
+    border-radius: 9999px;
+    background: white;
+    color: black;
+    font-size: clamp(1rem, 0.94rem + 0.25vw, 1.15rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    transition:
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      background 0.3s ease;
+  }
+
+  .brand-cta__btn:hover {
+    transform: scale(1.04);
+    background: color-mix(in srgb, white 90%, var(--primary));
+  }
+
+  .brand-cta__btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+
+  .brand-cta__btn-arrow {
+    display: flex;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .brand-cta__btn:hover .brand-cta__btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .brand-cta__divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    margin-block: clamp(3rem, 7dvh, 5rem);
+    transform-origin: left center;
+  }
+
+  .brand-cta__social {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .brand-cta__social-link {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.75rem, 1vw, 1.25rem);
+    padding-block: clamp(0.85rem, 1.2dvh, 1.1rem);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.45);
+    transition: color 0.25s ease;
+  }
+
+  .brand-cta__social-link:first-child {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .brand-cta__social-link:hover {
+    color: #fff;
+  }
+
+  .brand-cta__social-link:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .brand-cta__social-num {
+    font-size: clamp(0.8rem, 0.76rem + 0.15vw, 0.9rem);
+    font-variant-numeric: tabular-nums;
+    min-width: 1.5em;
+    color: rgba(255, 255, 255, 0.25);
+    transition: color 0.25s ease;
+  }
+
+  .brand-cta__social-link:hover .brand-cta__social-num {
+    color: var(--primary);
+  }
+
+  .brand-cta__social-sep {
+    color: rgba(255, 255, 255, 0.15);
+    font-size: 0.85em;
+    transition: color 0.25s ease;
+  }
+
+  .brand-cta__social-link:hover .brand-cta__social-sep {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .brand-cta__social-name {
+    font-size: clamp(0.95rem, 0.88rem + 0.3vw, 1.15rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .brand-cta__social-link:hover .brand-cta__social-name {
+    transform: translateX(6px);
+  }
+
+  .brand-cta__social-arrow {
+    display: flex;
+    margin-left: auto;
+    opacity: 0;
+    transform: translate(-4px, 4px);
+    transition:
+      opacity 0.25s ease,
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .brand-cta__social-link:hover .brand-cta__social-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  .brand-cta__watermark {
+    --light-pos: -30%;
+    margin-top: clamp(4rem, 10dvh, 7rem);
+    font-size: clamp(3.5rem, 2rem + 8vw, 12rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    text-align: center;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    color: transparent;
+    background: linear-gradient(
+      105deg,
+      rgba(255, 255, 255, 0.04) 0%,
+      rgba(255, 255, 255, 0.04) calc(var(--light-pos) - 18%),
+      rgba(255, 255, 255, 0.08) calc(var(--light-pos) - 8%),
+      rgba(255, 255, 255, 0.22) var(--light-pos),
+      rgba(255, 255, 255, 0.08) calc(var(--light-pos) + 8%),
+      rgba(255, 255, 255, 0.04) calc(var(--light-pos) + 18%),
+      rgba(255, 255, 255, 0.04) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  @media (min-width: 1024px) {
+    .brand-cta__top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: clamp(3rem, 6vw, 8rem);
+    }
+
+    .brand-cta__action {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .brand-cta__social {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .brand-cta__social-link {
+      flex: 1 1 auto;
+      min-width: clamp(10rem, 16vw, 14rem);
+      border-bottom: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      padding-block: clamp(1rem, 1.5dvh, 1.3rem);
+      padding-inline: clamp(1rem, 1.5vw, 1.5rem) clamp(1.5rem, 2vw, 2.5rem);
+    }
+
+    .brand-cta__social-link:first-child {
+      border-top: none;
+      padding-left: 0;
+    }
+
+    .brand-cta__social-link:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-cta__btn {
+      transition: none;
+    }
+
+    .brand-cta__btn-arrow,
+    .brand-cta__social-name,
+    .brand-cta__social-arrow {
+      transition: none;
+    }
+
+    .brand-cta__watermark {
+      color: rgba(255, 255, 255, 0.04);
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+    }
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  type CtaWindow = Window & {
+    __brandCtaCleanup?: () => void;
+    __brandCtaLoad?: () => void;
+    __brandCtaSwap?: () => void;
+  };
+
+  const ctaWindow = window as CtaWindow;
+
+  function initBrandCta(): () => void {
+    const section = document.querySelector(".brand-cta") as HTMLElement | null;
+    if (!section) return () => undefined;
+
+    const glow = section.querySelector(".brand-cta__glow") as HTMLElement | null;
+    const eyebrow = section.querySelector(".brand-cta__eyebrow") as HTMLElement | null;
+    const lines = Array.from(section.querySelectorAll(".brand-cta__line")) as HTMLElement[];
+    const desc = section.querySelector(".brand-cta__desc") as HTMLElement | null;
+    const btn = section.querySelector(".brand-cta__btn") as HTMLElement | null;
+    const divider = section.querySelector(".brand-cta__divider") as HTMLElement | null;
+    const socialLinks = Array.from(section.querySelectorAll(".brand-cta__social-link")) as HTMLElement[];
+    const watermark = section.querySelector(".brand-cta__watermark") as HTMLElement | null;
+
+    if (!eyebrow || lines.length < 2 || !desc || !btn || !divider || socialLinks.length < 1 || !watermark) {
+      return () => undefined;
+    }
+
+    const mm = gsap.matchMedia();
+
+    mm.add(
+      {
+        motion: "(prefers-reduced-motion: no-preference)",
+        reduced: "(prefers-reduced-motion: reduce)"
+      },
+      (context) => {
+        const { reduced } = context.conditions as { motion: boolean; reduced: boolean };
+
+        if (reduced) {
+          gsap.set([eyebrow, ...lines, desc, btn, divider, ...socialLinks, watermark], {
+            clearProps: "all",
+            opacity: 1,
+            y: 0
+          });
+          if (glow) gsap.set(glow, { clearProps: "all" });
+          return;
+        }
+
+        const rise = 28;
+
+        gsap.set(eyebrow, { opacity: 0, y: rise * 0.4 });
+        gsap.set(lines, { opacity: 0, y: rise });
+        gsap.set(desc, { opacity: 0, y: rise * 0.5 });
+        gsap.set(btn, { opacity: 0, scale: 0.92 });
+        gsap.set(divider, { scaleX: 0 });
+        gsap.set(socialLinks, { opacity: 0, y: 18 });
+        gsap.set(watermark, { opacity: 0, y: 40 });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top 75%",
+            end: "bottom 20%",
+            toggleActions: "play none none none"
+          }
+        });
+
+        tl.to(eyebrow, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" })
+          .to(lines[0], { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.25")
+          .to(lines[1], { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.35")
+          .to(desc, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.25")
+          .to(btn, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, "-=0.2")
+          .to(divider, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, "-=0.25")
+          .to(socialLinks, { opacity: 1, y: 0, duration: 0.4, stagger: 0.07, ease: "power2.out" }, "-=0.3")
+          .to(watermark, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.2");
+
+        if (glow) {
+          gsap.to(glow, {
+            y: -40,
+            scale: 1.08,
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.2
+            }
+          });
+        }
+
+        gsap.to(watermark, {
+          y: -25,
+          scrollTrigger: {
+            trigger: watermark,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1
+          }
+        });
+
+        gsap.fromTo(
+          watermark,
+          { "--light-pos": "-30%" },
+          {
+            "--light-pos": "130%",
+            ease: "none",
+            scrollTrigger: {
+              trigger: watermark,
+              start: "top 90%",
+              end: "bottom 10%",
+              scrub: 0.8
+            }
+          }
+        );
+      }
+    );
+
+    return () => mm.revert();
+  }
+
+  if (ctaWindow.__brandCtaLoad) document.removeEventListener("astro:page-load", ctaWindow.__brandCtaLoad);
+  if (ctaWindow.__brandCtaSwap) document.removeEventListener("astro:before-swap", ctaWindow.__brandCtaSwap);
+
+  ctaWindow.__brandCtaLoad = () => {
+    ctaWindow.__brandCtaCleanup?.();
+    ctaWindow.__brandCtaCleanup = initBrandCta();
+  };
+  ctaWindow.__brandCtaSwap = () => {
+    ctaWindow.__brandCtaCleanup?.();
+    ctaWindow.__brandCtaCleanup = undefined;
+  };
+
+  document.addEventListener("astro:page-load", ctaWindow.__brandCtaLoad);
+  document.addEventListener("astro:before-swap", ctaWindow.__brandCtaSwap);
+</script>

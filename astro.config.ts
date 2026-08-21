@@ -27,7 +27,9 @@ export default defineConfig({
   env: {
     schema: {
       N8N_CONTACT_WEBHOOK_URL: envField.string({ context: "server", access: "secret" }),
-      N8N_FEEDBACK_WEBHOOK_URL: envField.string({ context: "server", access: "secret" })
+      N8N_FEEDBACK_WEBHOOK_URL: envField.string({ context: "server", access: "secret" }),
+      BLOG_API_URL: envField.string({ context: "server", access: "secret", default: "https://frankuxui.com" }),
+      BLOG_API_TOKEN: envField.string({ context: "server", access: "secret" })
     }
   },
   integrations: [

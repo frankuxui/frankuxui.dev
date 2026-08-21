@@ -1,0 +1,216 @@
+---
+type PostMedia = {
+  url: string;
+  alt?: string | null;
+  caption?: string | null;
+  width?: number | null;
+  height?: number | null;
+};
+
+type PostSeo = {
+  title?: string | null;
+  description?: string | null;
+  image?: PostMedia | null;
+};
+
+type PostCategory = {
+  id: string;
+  documentId: string;
+  name: string;
+  slug: string;
+  description?: string | null;
+};
+
+type Post = {
+  id: string;
+  documentId: string;
+  slug: string;
+  title: string;
+  subtitle?: string | null;
+  description?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  content: string;
+  media: PostMedia[];
+  seo: PostSeo | null;
+  categories: PostCategory[];
+};
+
+type PostCollection = {
+  data: Post[];
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+};
+
+import { BLOG_API_URL, BLOG_API_TOKEN } from "astro:env/server";
+
+const blogHeaders = { Authorization: `Bearer ${BLOG_API_TOKEN}` };
+
+let latestPost: Post | null = null;
+let categories: PostCategory[] = [];
+
+try {
+  const [postsRes, catsRes] = await Promise.all([fetch(`${BLOG_API_URL}/api/v1/blog/posts`, { headers: blogHeaders }), fetch(`${BLOG_API_URL}/api/v1/blog/categories`, { headers: blogHeaders })]);
+
+  if (postsRes.ok) {
+    const postsData: PostCollection = await postsRes.json();
+    if (postsData.data?.length) {
+      latestPost = postsData.data[0];
+    }
+  }
+
+  if (catsRes.ok) {
+    const catsData = await catsRes.json();
+    categories = Array.isArray(catsData.data) ? catsData.data : Array.isArray(catsData) ? catsData : [];
+  }
+} catch {
+  // API unavailable — section will render gracefully without data
+}
+
+const coverImage = latestPost?.media?.[0] ?? latestPost?.seo?.image ?? null;
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("es-ES", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+---
+
+<section id="blog" class="scroll-mt-32 py-16 lg:py-24 w-full min-w-0" aria-labelledby="home-blog-title">
+  <div class="w-full max-w-12xl mx-auto px-10">
+    <div class="mx-auto max-w-6xl">
+      <div class="mb-12 lg:mb-16">
+        <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted anim-fade-up">Blog</p>
+        <h2 id="home-blog-title" class="w-full mt-4 font-medium tracking-tight text-foreground text-[clamp(1.5rem,4vw,4rem)] leading-[1.2] anim-fade-up" style={{ "--anim-delay": "0.1s" }}>
+          Últimos artículos de mi blog sobre diseño, desarrollo frontend y productividad
+        </h2>
+        <p class="mt-6 max-w-2xl text-foreground-muted leading-relaxed text-lg xl:text-xl anim-fade-up" style={{ "--anim-delay": "0.2s" }}>
+          Artículos sobre diseño, desarrollo frontend, productividad y herramientas que uso en mi día a día.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16">
+        {
+          latestPost && (
+            <a
+              href={`https://frankuxui.com/blog/${latestPost.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="home-blog__featured group relative flex flex-col justify-end overflow-hidden rounded-3xl anim-fade-up"
+              style={{ "--anim-delay": "0.3s" }}
+              aria-label={`Leer artículo: ${latestPost.title} (abre en nueva ventana)`}
+            >
+              {latestPost.categories?.length > 0 && (
+                <div class="mt-4 flex flex-wrap gap-2 absolute top-4 left-4 z-10">
+                  {latestPost.categories.map((cat) => (
+                    <span class="text-xs font-medium text-black bg-white rounded-full px-3 inline-flex items-center justify-center h-8">{cat.name}</span>
+                  ))}
+                </div>
+              )}
+              {coverImage && (
+                <img
+                  src={coverImage.url}
+                  alt={coverImage.alt ?? latestPost.title}
+                  width={coverImage.width ?? 400}
+                  height={coverImage.height ?? 550}
+                  loading="lazy"
+                  decoding="async"
+                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              )}
+
+              <div aria-hidden="true" class="home-blog__overlay absolute inset-0 pointer-events-none" />
+
+              <div class="relative z-10 flex flex-col justify-end p-8 sm:p-10 xl:p-12">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-white/90 bg-white/15 backdrop-blur-sm rounded-full px-4 py-1.5">
+                    Último artículo
+                  </span>
+                  <time datetime={latestPost.publishedAt} class="text-sm text-white/60">
+                    {formatDate(latestPost.publishedAt)}
+                  </time>
+                </div>
+
+                <h3 class="font-semibold tracking-tight text-white leading-snug" style={{ "font-size": "clamp(1.25rem, 2.5vw, 1.75rem)" }}>
+                  {latestPost.title}
+                </h3>
+
+                {latestPost.description && <p class="mt-3 text-white/70 leading-relaxed line-clamp-2 text-base">{latestPost.description}</p>}
+              </div>
+            </a>
+          )
+        }
+
+        <div class="lg:sticky lg:top-48 3xl:top-56 lg:self-start anim-fade-up" style={{ "--anim-delay": "0.4s" }}>
+          {
+            categories.length > 0 && (
+              <div>
+                <p class="text-sm font-medium uppercase tracking-[0.22em] text-foreground-muted mb-6">Categorías</p>
+                <ul class="flex flex-wrap gap-3" aria-label="Categorías del blog">
+                  {categories.map((cat) => (
+                    <li>
+                      <a
+                        href={`https://frankuxui.com/blog?category=${cat.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center justify-center font-medium px-8 h-12 text-sm rounded-full bg-background text-foreground transition-colors duration-200 hover:bg-white/90 hover:text-black"
+                      >
+                        {cat.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+
+          <div class="mt-10">
+            <a
+              href="https://frankuxui.com/blog"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 font-medium h-12 bg-primary rounded-full text-primary-foreground px-8 transition-all duration-500 hover:bg-primary/90"
+              aria-label="Ver todos los artículos del blog (abre en nueva ventana)"
+            >
+              Visitar el blog
+              <svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M3.5 10.5L10.5 3.5M10.5 3.5H4.5M10.5 3.5V9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .home-blog__featured {
+    min-height: clamp(28rem, 54dvh, 56rem);
+  }
+  @media (min-width: 2048px) {
+    .home-blog__featured {
+      min-height: clamp(28rem, 60dvh, 58rem);
+    }
+  }
+  .home-blog__overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+  }
+
+  .home-blog__arrow {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .home-blog__featured:hover .home-blog__arrow {
+    transform: translate(3px, -3px);
+  }
+</style>
