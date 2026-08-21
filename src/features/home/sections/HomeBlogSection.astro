@@ -131,8 +131,8 @@ function formatDate(dateStr: string) {
               <div aria-hidden="true" class="home-blog__overlay absolute inset-0 pointer-events-none" />
 
               <div class="relative z-10 flex flex-col justify-end p-8 sm:p-10 xl:p-12">
-                <div class="flex items-center gap-3 mb-4">
-                  <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-white/90 bg-white/15 backdrop-blur-sm rounded-full px-4 py-1.5">
+                <div class="flex items-start sm:items-center flex-col sm:flex-row gap-3 mb-4">
+                  <span class="inline-flex items-center gap-1.5 sm:text-xs font-semibold uppercase tracking-[0.15em] text-white/90 bg-white/15 backdrop-blur-sm rounded-full px-4 py-1.5">
                     Último artículo
                   </span>
                   <time datetime={latestPost.publishedAt} class="text-sm text-white/60">
@@ -144,7 +144,7 @@ function formatDate(dateStr: string) {
                   {latestPost.title}
                 </h3>
 
-                {latestPost.description && <p class="mt-3 text-white/70 leading-relaxed line-clamp-2 text-base">{latestPost.description}</p>}
+                {latestPost.description && <p class="mt-3 text-white/80 leading-relaxed line-clamp-2 text-base">{latestPost.description}</p>}
               </div>
             </a>
           )
@@ -195,8 +195,9 @@ function formatDate(dateStr: string) {
 
 <style>
   .home-blog__featured {
-    min-height: clamp(28rem, 54dvh, 56rem);
+    min-height: clamp(34rem, 60dvh, 58rem);
   }
+
   @media (min-width: 2048px) {
     .home-blog__featured {
       min-height: clamp(28rem, 60dvh, 58rem);
