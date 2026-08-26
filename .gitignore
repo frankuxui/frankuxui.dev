@@ -18,7 +18,14 @@ pnpm-debug.log*
 
 # environment variables
 .env
+.env.*
+!.env.example
 .env.production
+
+# local agent/tooling configuration
+.agents/
+.codex/
+.claude/settings.local.json
 
 # macOS-specific files
 .DS_Store

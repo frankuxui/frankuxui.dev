@@ -32,6 +32,12 @@ export default defineConfig({
       BLOG_API_TOKEN: envField.string({ context: "server", access: "secret" })
     }
   },
+
+  // Redirecciones
+  redirects: {
+    "/articulos": "https://frankuxui.com/blog"
+  },
+
   integrations: [
     mdx(),
     sitemap({
